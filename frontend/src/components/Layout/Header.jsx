@@ -141,7 +141,7 @@ const Header = ({ toggleSidebar }) => {
       {/* 主菜单栏 */}
       <div className="flex items-center px-4 py-2 border-b border-gray-100">
         {/* Logo区域 */}
-        <div className="flex items-center mr-10">
+        <div className="flex items-center ">
           <button 
             onClick={toggleSidebar} 
             className="text-gray-500 hover:text-blue-600 focus:outline-none mr-3"
@@ -150,7 +150,6 @@ const Header = ({ toggleSidebar }) => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
           </button>
-          <Link to="/" className="text-xl font-semibold text-blue-600">SmartTag</Link>
         </div>
         
         {/* 顶部主菜单 */}

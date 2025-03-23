@@ -84,11 +84,11 @@ const Sidebar = ({ isOpen, isMobile, closeSidebar }) => {
   if (!isOpen) return null;
   
   return (
-    <div className={`fixed inset-y-0 left-0 w-64 bg-white shadow-md overflow-y-auto transition-transform transform z-40 ${
+    <div className={`fixed inset-y-0 left-0 w-64 bg-white shadow-md transform z-40 flex flex-col ${
       isOpen ? 'translate-x-0' : '-translate-x-full'
-    } ${isMobile ? 'z-50' : 'z-30'}`}>
-      {/* 侧边栏头部 - 显示SmartTag标识 */}
-      <div className="h-16 px-4 flex items-center justify-between border-b border-gray-200 bg-blue-600">
+    } ${isMobile ? 'z-50' : 'z-30'} transition-transform`}>
+      {/* 侧边栏头部 - 显示SmartTag标识 - 固定不滚动 */}
+      <div className="h-16 px-6 flex items-center justify-between border-b border-gray-200 bg-blue-600 flex-shrink-0">
         <div className="flex items-center">
           <span className="text-xl font-bold text-white">Smart</span>
           <span className="text-xl font-medium text-blue-200">Tag</span>
@@ -105,73 +105,113 @@ const Sidebar = ({ isOpen, isMobile, closeSidebar }) => {
         )}
       </div>
       
-      {/* 侧边栏内容 - 只显示当前活动一级菜单的子菜单 */}
-      <nav className="px-2 pt-4">
-        {/* 一级菜单列表 */}
-
-        {/* 显示当前活动一级菜单的子菜单 */}
-        {mainMenu && mainMenu.children && mainMenu.children.map((level2Item, index) => (
-          <div key={index} className="mb-4">
-            {/* 二级菜单项 - 可折叠 */}
-            <div className="mb-2">
-              <button
-                onClick={(e) => {
-                  toggleSubmenu(level2Item.name, e);
-                }}
-                className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                  (activePath && level2Item.path && activePath.startsWith(level2Item.path)) || activeSubMenu === level2Item.name
-                  ? 'text-blue-600 bg-blue-50' 
-                  : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                <span>{level2Item.name}</span>
-                <svg 
-                  className={`w-4 h-4 transition-transform ${expandedMenus && expandedMenus[level2Item.name] ? 'transform rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24" 
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-              </button>
-            </div>
-            
-            {/* 三级菜单项 */}
-            {expandedMenus && expandedMenus[level2Item.name] && level2Item.children && (
-              <div className="ml-4 space-y-1">
-                {level2Item.children.map((level3Item, idx) => (
-                  <NavLink
-                    key={idx}
-                    to={level3Item.path || '#'}
+      {/* 侧边栏内容 - 可滚动区域 */}
+      <div className="flex-1 overflow-y-auto">
+        <nav className="px-4 py-5">
+          {/* 一级菜单列表 */}
+          <div className="mb-6">
+            <ul className="space-y-1">
+              {menuItems.map((menuItem, idx) => (
+                <li key={idx}>
+                  <button
                     onClick={() => {
                       handleNavClick();
-                      handleMenuItemClick(level2Item, level3Item);
+                      if (handleMenuChange) {
+                        handleMenuChange({ 
+                          menuName: menuItem.name, 
+                          path: menuItem.path 
+                        });
+                      }
                     }}
-                    className={({ isActive }) => {
-                      const isPathActive = activePath && level3Item.path && activePath === level3Item.path;
-                      return `
-                        block px-3 py-2 text-sm rounded-md ${
-                          isActive || isPathActive
-                          ? 'text-blue-600 bg-blue-50 font-medium'
-                          : 'text-gray-700 hover:bg-gray-100'
-                        }
-                      `;
-                    }}
+                    className={`
+                      flex items-center w-full px-3 py-2 text-sm font-medium rounded-lg transition-colors
+                      ${(activePath && menuItem.path && activePath.startsWith(menuItem.path)) || activeMenu === menuItem.name
+                        ? 'bg-blue-50 text-blue-700' 
+                        : 'text-gray-700 hover:bg-gray-100'
+                      }
+                    `}
                   >
-                    <div className="flex items-center justify-between">
-                      <span>{level3Item.name}</span>
-                      {level3Item.isNew && (
-                        <span className="ml-1 px-1.5 text-xs text-white bg-red-500 rounded-sm font-normal leading-4">NEW</span>
-                      )}
-                    </div>
-                  </NavLink>
-                ))}
-              </div>
-            )}
+                    <span>{menuItem.name}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
-        ))}
-      </nav>
+
+          {/* 分隔线 */}
+          <div className="my-6 border-t border-gray-200"></div>
+
+          {/* 当前选中的一级菜单的子菜单列表 */}
+          <div className="mb-2">
+            <h3 className="px-3 mb-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              {mainMenu.name}
+            </h3>
+          </div>
+
+          {/* 显示当前活动一级菜单的子菜单 */}
+          {mainMenu && mainMenu.children && mainMenu.children.map((level2Item, index) => (
+            <div key={index} className="mb-4">
+              {/* 二级菜单项 - 可折叠 */}
+              <div className="mb-2">
+                <button
+                  onClick={(e) => {
+                    toggleSubmenu(level2Item.name, e);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    (activePath && level2Item.path && activePath.startsWith(level2Item.path)) || activeSubMenu === level2Item.name
+                    ? 'text-blue-700 bg-blue-50' 
+                    : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  <span>{level2Item.name}</span>
+                  <svg 
+                    className={`w-4 h-4 transition-transform ${expandedMenus && expandedMenus[level2Item.name] ? 'transform rotate-180' : ''}`} 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24" 
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </button>
+              </div>
+              
+              {/* 三级菜单项 */}
+              {expandedMenus && expandedMenus[level2Item.name] && level2Item.children && (
+                <div className="ml-4 pl-2 space-y-1 border-l border-gray-200">
+                  {level2Item.children.map((level3Item, idx) => (
+                    <NavLink
+                      key={idx}
+                      to={level3Item.path || '#'}
+                      onClick={() => {
+                        handleNavClick();
+                        handleMenuItemClick(level2Item, level3Item);
+                      }}
+                      className={({ isActive }) => {
+                        const isPathActive = activePath && level3Item.path && activePath === level3Item.path;
+                        return `
+                          block px-3 py-2 text-sm rounded-lg ${
+                            isActive || isPathActive
+                            ? 'text-blue-700 bg-blue-50 font-medium'
+                            : 'text-gray-600 hover:bg-gray-100'
+                          }
+                        `;
+                      }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span>{level3Item.name}</span>
+                        {level3Item.isNew && (
+                          <span className="ml-1 px-1.5 text-xs text-white bg-red-500 rounded-sm font-normal leading-4">NEW</span>
+                        )}
+                      </div>
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </nav>
+      </div>
     </div>
   );
 };
