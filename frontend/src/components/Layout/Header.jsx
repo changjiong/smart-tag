@@ -1,28 +1,110 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useCallback } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useMenuContext } from './MenuContext';
 
 // 导入菜单数据
 import { menuItems } from './menuData';
 
-const Header = ({ toggleSidebar, setActiveMenu }) => {
+const Header = ({ toggleSidebar }) => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [hoveredMenu, setHoveredMenu] = useState(null);
   const location = useLocation();
-  const navigate = useNavigate();
   
-  // 根据当前路径确定活动菜单
-  useEffect(() => {
-    const path = location.pathname;
-    // 找到当前路径对应的一级菜单
-    const currentMainMenu = menuItems.find(item => 
-      path.startsWith(item.path)
-    );
-    
-    if (currentMainMenu) {
-      setActiveMenu(currentMainMenu.name);
+  // 使用Context获取菜单状态和方法
+  const { handleMenuChange, activeMenu, activePath: currentPath } = useMenuContext();
+  
+  // 使用useCallback包装菜单处理函数，防止不必要的重新渲染
+  const handleMainMenuClick = useCallback((menu) => {
+    try {
+      if (!handleMenuChange || typeof handleMenuChange !== 'function') {
+        console.error("handleMenuChange is not a function", { handleMenuChange });
+        return;
+      }
+      
+      handleMenuChange({ 
+        menuName: menu.name, 
+        path: menu.path 
+      });
+      
+      // 如果有子菜单，默认选择第一个子菜单
+      if (menu.children && menu.children.length > 0) {
+        const firstSubMenu = menu.children[0];
+        // 如果第一个子菜单还有子菜单，默认选择其第一个子项
+        if (firstSubMenu.children && firstSubMenu.children.length > 0) {
+          handleMenuChange({ 
+            menuName: menu.name, 
+            subMenuName: firstSubMenu.name,
+            path: firstSubMenu.children[0].path 
+          });
+        } else {
+          handleMenuChange({ 
+            menuName: menu.name, 
+            subMenuName: firstSubMenu.name,
+            path: firstSubMenu.path 
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error in handleMainMenuClick:", error);
     }
-  }, [location.pathname, setActiveMenu]);
+  }, [handleMenuChange]);
+
+  // 处理二级菜单点击
+  const handleSubMenuClick = useCallback((mainMenu, subMenu, event) => {
+    try {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      
+      if (!handleMenuChange || typeof handleMenuChange !== 'function') {
+        console.error("handleMenuChange is not a function in handleSubMenuClick", { handleMenuChange });
+        return;
+      }
+      
+      // 如果二级菜单有子菜单，默认选择第一个子菜单
+      if (subMenu.children && subMenu.children.length > 0) {
+        handleMenuChange({ 
+          menuName: mainMenu.name, 
+          subMenuName: subMenu.name,
+          path: subMenu.children[0].path 
+        });
+      } else {
+        handleMenuChange({ 
+          menuName: mainMenu.name, 
+          subMenuName: subMenu.name,
+          path: subMenu.path 
+        });
+      }
+    } catch (error) {
+      console.error("Error in handleSubMenuClick:", error);
+    }
+  }, [handleMenuChange]);
+
+  // 处理三级菜单点击
+  const handleThirdMenuClick = useCallback((mainMenu, subMenu, thirdMenu, event) => {
+    try {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      
+      if (!handleMenuChange || typeof handleMenuChange !== 'function') {
+        console.error("handleMenuChange is not a function in handleThirdMenuClick", { handleMenuChange });
+        return;
+      }
+      
+      handleMenuChange({ 
+        menuName: mainMenu.name, 
+        subMenuName: subMenu.name,
+        thirdMenuName: thirdMenu.name,
+        path: thirdMenu.path 
+      });
+    } catch (error) {
+      console.error("Error in handleThirdMenuClick:", error);
+    }
+  }, [handleMenuChange]);
 
   const toggleUserDropdown = () => {
     setUserDropdownOpen(!userDropdownOpen);
@@ -34,17 +116,18 @@ const Header = ({ toggleSidebar, setActiveMenu }) => {
     if (userDropdownOpen) setUserDropdownOpen(false);
   };
 
-  const handleMenuClick = (menu) => {
-    setActiveMenu(menu.name);
-    navigate(menu.path);
-  };
-
   const notifications = [
     { id: 1, message: '标签"高价值潜在客户"已创建', time: '10分钟前', read: false },
     { id: 2, message: '客群"理财达人"分析报告已生成', time: '30分钟前', read: false },
     { id: 3, message: '系统更新完成', time: '1小时前', read: true },
     { id: 4, message: '营销活动"年终理财"已启动', time: '2小时前', read: true },
   ];
+
+  // 确保菜单数据始终可用
+  if (!menuItems || menuItems.length === 0) {
+    console.error("No menu items available in Header");
+    return <div>加载中...</div>;
+  }
 
   return (
     <header className="bg-white border-b border-gray-200 z-50 shadow-sm">
@@ -69,13 +152,12 @@ const Header = ({ toggleSidebar, setActiveMenu }) => {
             {menuItems.map((menu, index) => (
               <li key={index} className="relative group" 
                   onMouseEnter={() => setHoveredMenu(menu.name)}
-
-                  
+                  onMouseLeave={() => setHoveredMenu(null)}
               >
                 <button 
-                  onClick={() => handleMenuClick(menu)}
+                  onClick={() => handleMainMenuClick(menu)}
                   className={`px-4 py-2 text-sm font-medium rounded-md flex items-center hover:bg-gray-100 transition-colors ${
-                    location.pathname.startsWith(menu.path) || hoveredMenu === menu.name
+                    (currentPath && menu.path && currentPath.startsWith(menu.path)) || hoveredMenu === menu.name
                     ? 'text-blue-600 bg-blue-50' 
                     : 'text-gray-700'
                   }`}
@@ -107,12 +189,12 @@ const Header = ({ toggleSidebar, setActiveMenu }) => {
                         <div key={subIdx} className="mb-2 px-2 py-1 rounded hover:bg-gray-50">
                           {/* 二级菜单标题 - 下划线与整个三级菜单列同宽 */}
                           <div className="mb-2 border-b border-gray-200 pb-1.5 w-full">
-                            <Link 
-                              to={submenu.path} 
-                              className="font-medium text-sm text-gray-800 hover:text-blue-600 block"
+                            <button 
+                              onClick={(e) => handleSubMenuClick(menu, submenu, e)} 
+                              className="font-medium text-sm text-gray-800 hover:text-blue-600 block w-full text-left"
                             >
                               {submenu.name}
-                            </Link>
+                            </button>
                           </div>
                           
                           {/* 该二级菜单下的三级菜单项 - 超过4行时分列显示 */}
@@ -120,53 +202,58 @@ const Header = ({ toggleSidebar, setActiveMenu }) => {
                             <div className="grid grid-cols-1 gap-x-2">
                               {/* 将三级菜单分组，每组最多4个项目 */}
                               {(() => {
-                                // 如果三级菜单超过4个，分列显示
-                                if (submenu.children.length > 4) {
-                                  // 计算需要的列数
-                                  const columns = Math.ceil(submenu.children.length / 4);
-                                  // 每列最多显示的项目数
-                                  const itemsPerColumn = 4;
-                                  
-                                  return (
-                                    <div className="flex space-x-4">
-                                      {Array.from({ length: columns }).map((_, colIndex) => (
-                                        <div key={colIndex} className="flex flex-col space-y-1.5">
-                                          {submenu.children
-                                            .slice(colIndex * itemsPerColumn, (colIndex + 1) * itemsPerColumn)
-                                            .map((item, index) => (
-                                              <Link 
-                                                key={index} 
-                                                to={item.path}
-                                                className="flex items-center py-0.5 text-sm text-gray-600 hover:text-blue-600"
-                                              >
-                                                {item.name}
-                                                {item.isNew && (
-                                                  <span className="ml-1 px-1.5 text-xs text-white bg-red-500 rounded-sm font-normal leading-4">NEW</span>
-                                                )}
-                                              </Link>
-                                            ))}
-                                        </div>
-                                      ))}
-                                    </div>
-                                  );
-                                } else {
-                                  // 4个或更少的项目，直接显示
-                                  return (
-                                    <div className="flex flex-col space-y-1.5">
-                                      {submenu.children.map((item, index) => (
-                                        <Link 
-                                          key={index} 
-                                          to={item.path}
-                                          className="flex items-center py-0.5 text-sm text-gray-600 hover:text-blue-600"
-                                        >
-                                          {item.name}
-                                          {item.isNew && (
-                                            <span className="ml-1 px-1.5 text-xs text-white bg-red-500 rounded-sm font-normal leading-4">NEW</span>
-                                          )}
-                                        </Link>
-                                      ))}
-                                    </div>
-                                  );
+                                try {
+                                  // 如果三级菜单超过4个，分列显示
+                                  if (submenu.children.length > 4) {
+                                    // 计算需要的列数
+                                    const columns = Math.ceil(submenu.children.length / 4);
+                                    // 每列最多显示的项目数
+                                    const itemsPerColumn = 4;
+                                    
+                                    return (
+                                      <div className="flex space-x-4">
+                                        {Array.from({ length: columns }).map((_, colIndex) => (
+                                          <div key={colIndex} className="flex flex-col space-y-1.5">
+                                            {submenu.children
+                                              .slice(colIndex * itemsPerColumn, (colIndex + 1) * itemsPerColumn)
+                                              .map((item, index) => (
+                                                <button 
+                                                  key={index} 
+                                                  onClick={(e) => handleThirdMenuClick(menu, submenu, item, e)}
+                                                  className="flex items-center py-0.5 text-sm text-gray-600 hover:text-blue-600 text-left w-full"
+                                                >
+                                                  {item.name}
+                                                  {item.isNew && (
+                                                    <span className="ml-1 px-1.5 text-xs text-white bg-red-500 rounded-sm font-normal leading-4">NEW</span>
+                                                  )}
+                                                </button>
+                                              ))}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    );
+                                  } else {
+                                    // 4个或更少的项目，直接显示
+                                    return (
+                                      <div className="flex flex-col space-y-1.5">
+                                        {submenu.children.map((item, index) => (
+                                          <button 
+                                            key={index} 
+                                            onClick={(e) => handleThirdMenuClick(menu, submenu, item, e)}
+                                            className="flex items-center py-0.5 text-sm text-gray-600 hover:text-blue-600 text-left w-full"
+                                          >
+                                            {item.name}
+                                            {item.isNew && (
+                                              <span className="ml-1 px-1.5 text-xs text-white bg-red-500 rounded-sm font-normal leading-4">NEW</span>
+                                            )}
+                                          </button>
+                                        ))}
+                                      </div>
+                                    );
+                                  }
+                                } catch (error) {
+                                  console.error("Error rendering third level menu:", error);
+                                  return <div>加载出错</div>;
                                 }
                               })()}
                             </div>
