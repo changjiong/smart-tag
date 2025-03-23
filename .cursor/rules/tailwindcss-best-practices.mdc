@@ -1,0 +1,15 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+name: tailwindcss-best-practices.mdc
+description: Best practices for styling with Tailwind CSS
+globs: **/*.{ts,tsx,css}
+---
+
+- Use utility classes for styling components
+- Create custom components with `@apply` directive
+- Optimize build size with `purge` configuration
+- Use responsive design utilities for different screen sizes

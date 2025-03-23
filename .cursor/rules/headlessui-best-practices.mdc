@@ -1,0 +1,15 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+name: headlessui-best-practices.mdc
+description: Best practices for accessible UI components with Headless UI
+globs: **/*.{ts,tsx,js,jsx}
+---
+
+- Use Headless UI components as building blocks for custom UI
+- Implement proper ARIA attributes for accessibility
+- Customize component styles using class names or styled components
+- Utilize transition components for smooth animations

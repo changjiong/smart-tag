@@ -1,0 +1,16 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+name: fastapi-best-practices.mdc
+description: Best practices for FastAPI applications
+globs: **/*.py
+---
+
+- Use `Depends` for dependency injection to manage resources and authentication.
+- Implement proper error handling with custom exception handlers.
+- Use `pydantic` models for request/response validation and serialization.
+- Leverage async/await for better performance with I/O-bound operations.
+- Use `BackgroundTasks` for non-blocking operations.

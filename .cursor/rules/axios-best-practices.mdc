@@ -1,0 +1,15 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+name: axios-best-practices.mdc
+description: Best practices for making HTTP requests with Axios
+globs: **/*.{ts,tsx,js,jsx}
+---
+
+- Use interceptors for global request/response handling
+- Implement proper error handling and retries
+- Utilize cancel tokens for aborting requests when necessary
+- Use Axios instances for consistent configuration across the app

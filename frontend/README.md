@@ -1,154 +1,66 @@
-# FastAPI Project - Frontend
+# 标签画像中台 (Tag Profile Platform)
 
-The frontend is built with [Vite](https://vitejs.dev/), [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/), [TanStack Query](https://tanstack.com/query), [TanStack Router](https://tanstack.com/router) and [Chakra UI](https://chakra-ui.com/).
+A comprehensive platform for tag management, customer profiling, and business applications in the banking industry.
 
-## Frontend development
+## Project Overview
 
-Before you begin, ensure that you have either the Node Version Manager (nvm) or Fast Node Manager (fnm) installed on your system.
+This platform provides a complete solution for financial institutions to manage customer data tags, create customer profiles, build business applications, and leverage scenario templates for data-driven decision making.
 
-* To install fnm follow the [official fnm guide](https://github.com/Schniz/fnm#installation). If you prefer nvm, you can install it using the [official nvm guide](https://github.com/nvm-sh/nvm#installing-and-updating).
+## Key Features
 
-* After installing either nvm or fnm, proceed to the `frontend` directory:
+- **标签中心 (Tag Center)**: Tag asset management, tag creation, approval, and quality monitoring
+- **客群画像 (Customer Profile)**: Customer view, group management, and analysis tools
+- **业务应用中心 (Business Application Center)**: Marketing and risk management applications
+- **场景模板 (Scenario Templates)**: Template management and application development
+- **开放能力 (Open Capabilities)**: API management and integration services
+- **系统管理 (System Management)**: User permissions, system settings, and data governance
 
-```bash
-cd frontend
+## Project Structure
+
 ```
-* If the Node.js version specified in the `.nvmrc` file isn't installed on your system, you can install it using the appropriate command:
-
-```bash
-# If using fnm
-fnm install
-
-# If using nvm
-nvm install
-```
-
-* Once the installation is complete, switch to the installed version:
-
-```bash
-# If using fnm
-fnm use
-
-# If using nvm
-nvm use
-```
-
-* Within the `frontend` directory, install the necessary NPM packages:
-
-```bash
-npm install
-```
-
-* And start the live server with the following `npm` script:
-
-```bash
-npm run dev
+frontend/
+├── public/              # Static assets
+├── src/
+│   ├── components/      # Reusable UI components
+│   │   ├── Layout/      # Layout components (Header, Sidebar, Footer)
+│   │   ├── Forms/       # Form components
+│   │   └── Tables/      # Table components
+│   ├── context/         # React context for state management
+│   ├── mockData/        # Mock data for development
+│   ├── pages/           # Page components organized by modules
+│   │   ├── Dashboard/   # Dashboard pages
+│   │   ├── Tags/        # Tag center pages
+│   │   ├── Portrait/    # Customer profile pages
+│   │   └── ...          # Other module pages
+│   ├── utils/           # Utility functions
+│   ├── App.jsx          # Main application component
+│   └── main.jsx         # Application entry point
+├── .gitignore           # Git ignore file
+├── package.json         # Project dependencies
+├── vite.config.js       # Vite configuration
+├── tailwind.config.js   # Tailwind CSS configuration
+└── postcss.config.js    # PostCSS configuration
 ```
 
-* Then open your browser at http://localhost:5173/.
+## Development Guidelines
 
-Notice that this live server is not running inside Docker, it's for local development, and that is the recommended workflow. Once you are happy with your frontend, you can build the frontend Docker image and start it, to test it in a production-like environment. But building the image at every change will not be as productive as running the local development server with live reload.
+- Modify `src/pages` directories to add new pages for each module
+- Use TailwindCSS utility classes for styling components
+- Add mock data to `src/mockData` folder for development
+- Follow the React best practices and component structure
 
-Check the file `package.json` to see other available options.
+## Available Scripts
 
-### Removing the frontend
+- `pnpm install` - Install dependencies
+- `pnpm run dev` - Start development server
+- `pnpm run build` - Build for production
+- `pnpm run lint` - Lint source files
+- `pnpm run preview` - Preview production build
 
-If you are developing an API-only app and want to remove the frontend, you can do it easily:
+## Tech Stack
 
-* Remove the `./frontend` directory.
-
-* In the `docker-compose.yml` file, remove the whole service / section `frontend`.
-
-* In the `docker-compose.override.yml` file, remove the whole service / section `frontend` and `playwright`.
-
-Done, you have a frontend-less (api-only) app. 🤓
-
----
-
-If you want, you can also remove the `FRONTEND` environment variables from:
-
-* `.env`
-* `./scripts/*.sh`
-
-But it would be only to clean them up, leaving them won't really have any effect either way.
-
-## Generate Client
-
-### Automatically
-
-* Activate the backend virtual environment.
-* From the top level project directory, run the script:
-
-```bash
-./scripts/generate-client.sh
-```
-
-* Commit the changes.
-
-### Manually
-
-* Start the Docker Compose stack.
-
-* Download the OpenAPI JSON file from `http://localhost/api/v1/openapi.json` and copy it to a new file `openapi.json` at the root of the `frontend` directory.
-
-* To generate the frontend client, run:
-
-```bash
-npm run generate-client
-```
-
-* Commit the changes.
-
-Notice that everytime the backend changes (changing the OpenAPI schema), you should follow these steps again to update the frontend client.
-
-## Using a Remote API
-
-If you want to use a remote API, you can set the environment variable `VITE_API_URL` to the URL of the remote API. For example, you can set it in the `frontend/.env` file:
-
-```env
-VITE_API_URL=https://api.my-domain.example.com
-```
-
-Then, when you run the frontend, it will use that URL as the base URL for the API.
-
-## Code Structure
-
-The frontend code is structured as follows:
-
-* `frontend/src` - The main frontend code.
-* `frontend/src/assets` - Static assets.
-* `frontend/src/client` - The generated OpenAPI client.
-* `frontend/src/components` -  The different components of the frontend.
-* `frontend/src/hooks` - Custom hooks.
-* `frontend/src/routes` - The different routes of the frontend which include the pages.
-* `theme.tsx` - The Chakra UI custom theme.
-
-## End-to-End Testing with Playwright
-
-The frontend includes initial end-to-end tests using Playwright. To run the tests, you need to have the Docker Compose stack running. Start the stack with the following command:
-
-```bash
-docker compose up -d --wait backend
-```
-
-Then, you can run the tests with the following command:
-
-```bash
-npx playwright test
-```
-
-You can also run your tests in UI mode to see the browser and interact with it running:
-
-```bash
-npx playwright test --ui
-```
-
-To stop and remove the Docker Compose stack and clean the data created in tests, use the following command:
-
-```bash
-docker compose down -v
-```
-
-To update the tests, navigate to the tests directory and modify the existing test files or add new ones as needed.
-
-For more information on writing and running Playwright tests, refer to the official [Playwright documentation](https://playwright.dev/docs/intro).
+- React 18
+- Vite
+- TailwindCSS
+- Headless UI
+- React Router DOM

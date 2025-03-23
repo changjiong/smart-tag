@@ -1,0 +1,15 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+name: next-themes-best-practices.mdc
+description: Best practices for managing themes with Next Themes
+globs: **/*.{ts,tsx,js,jsx}
+---
+
+- Use the `ThemeProvider` at the root of your application
+- Implement proper theme switching logic
+- Utilize the `useTheme` hook for accessing theme information
+- Ensure proper fallback for systems without theme support

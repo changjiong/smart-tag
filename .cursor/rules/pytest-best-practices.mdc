@@ -1,0 +1,16 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+name: pytest-best-practices.mdc
+description: Best practices for Pytest testing
+globs: tests/**/*
+---
+
+- Use fixtures for setup and teardown to reduce test duplication.
+- Implement parameterized tests with `@pytest.mark.parametrize`.
+- Use `pytest.raises` to test for expected exceptions.
+- Leverage `pytest.mark.asyncio` for testing async functions.
+- Use `coverage` to ensure adequate test coverage.

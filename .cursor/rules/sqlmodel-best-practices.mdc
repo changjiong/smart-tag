@@ -1,0 +1,16 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+name: sqlmodel-best-practices.mdc
+description: Best practices for SQLModel ORM usage
+globs: **/*.py
+---
+
+- Use `Session` with context managers to ensure proper transaction handling.
+- Implement migrations using Alembic for database schema changes.
+- Use `select` statements with `Session.exec()` for complex queries.
+- Leverage `relationship` for defining ORM relationships between models.
+- Use `SQLModel.metadata.create_all(engine)` to create tables automatically.

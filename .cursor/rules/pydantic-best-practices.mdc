@@ -1,0 +1,16 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+name: pydantic-best-practices.mdc
+description: Best practices for using Pydantic models
+globs: **/*.py
+---
+
+- Use `Field` to add additional validation and metadata to model fields.
+- Implement custom validators for complex validation logic.
+- Use `Config` to set model-wide configurations like `orm_mode`.
+- Leverage `pydantic.dataclasses` for simpler data classes with validation.
+- Use `BaseModel` inheritance to create reusable model structures.
