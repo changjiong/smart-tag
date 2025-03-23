@@ -87,13 +87,16 @@ const Sidebar = ({ isOpen, isMobile, closeSidebar }) => {
     <div className={`fixed inset-y-0 left-0 w-64 bg-white shadow-md overflow-y-auto transition-transform transform z-40 ${
       isOpen ? 'translate-x-0' : '-translate-x-full'
     } ${isMobile ? 'z-50' : 'z-30'}`}>
-      {/* 侧边栏头部 - 显示当前活动的菜单名称 */}
-      <div className="h-16 px-4 flex items-center justify-between border-b border-gray-200">
-        <h2 className="text-lg font-medium text-gray-800">{mainMenu.name}</h2>
+      {/* 侧边栏头部 - 显示SmartTag标识 */}
+      <div className="h-16 px-4 flex items-center justify-between border-b border-gray-200 bg-blue-600">
+        <div className="flex items-center">
+          <span className="text-xl font-bold text-white">Smart</span>
+          <span className="text-xl font-medium text-blue-200">Tag</span>
+        </div>
         {isMobile && (
           <button 
             onClick={closeSidebar}
-            className="p-1 rounded text-gray-500 hover:text-blue-600 focus:outline-none"
+            className="p-1 rounded text-white hover:text-blue-200 focus:outline-none"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -104,6 +107,9 @@ const Sidebar = ({ isOpen, isMobile, closeSidebar }) => {
       
       {/* 侧边栏内容 - 只显示当前活动一级菜单的子菜单 */}
       <nav className="px-2 pt-4">
+        {/* 一级菜单列表 */}
+
+        {/* 显示当前活动一级菜单的子菜单 */}
         {mainMenu && mainMenu.children && mainMenu.children.map((level2Item, index) => (
           <div key={index} className="mb-4">
             {/* 二级菜单项 - 可折叠 */}
