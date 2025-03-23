@@ -17,11 +17,14 @@ const Header = ({ toggleSidebar }) => {
   // 使用useCallback包装菜单处理函数，防止不必要的重新渲染
   const handleMainMenuClick = useCallback((menu) => {
     try {
+      console.log("Header: handleMainMenuClick called for menu:", menu.name);
+      
       if (!handleMenuChange || typeof handleMenuChange !== 'function') {
-        console.error("handleMenuChange is not a function", { handleMenuChange });
+        console.error("Header: handleMenuChange is not a function", { handleMenuChange });
         return;
       }
       
+      // 先导航到一级菜单
       handleMenuChange({ 
         menuName: menu.name, 
         path: menu.path 
@@ -30,14 +33,18 @@ const Header = ({ toggleSidebar }) => {
       // 如果有子菜单，默认选择第一个子菜单
       if (menu.children && menu.children.length > 0) {
         const firstSubMenu = menu.children[0];
+        console.log("Header: Selecting first submenu:", firstSubMenu.name);
+        
         // 如果第一个子菜单还有子菜单，默认选择其第一个子项
         if (firstSubMenu.children && firstSubMenu.children.length > 0) {
+          console.log("Header: Submenu has children, selecting first child item");
           handleMenuChange({ 
             menuName: menu.name, 
             subMenuName: firstSubMenu.name,
             path: firstSubMenu.children[0].path 
           });
         } else {
+          console.log("Header: Submenu has no children, selecting submenu itself");
           handleMenuChange({ 
             menuName: menu.name, 
             subMenuName: firstSubMenu.name,
@@ -46,7 +53,7 @@ const Header = ({ toggleSidebar }) => {
         }
       }
     } catch (error) {
-      console.error("Error in handleMainMenuClick:", error);
+      console.error("Header Error in handleMainMenuClick:", error, { menu });
     }
   }, [handleMenuChange]);
 

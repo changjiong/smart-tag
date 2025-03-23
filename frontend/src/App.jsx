@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import MainLayout from './components/Layout/MainLayout';
 
 // 导入错误页面组件
-import NotFound from './pages/Error/NotFound';
+import NotFoundPage from './components/ErrorPages/NotFoundPage';
 
 // 导入仪表盘页面组件
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -38,11 +38,14 @@ import RequirementsReview from './pages/Tags/TagManagement/Requirements/Review';
 import RequirementsTrack from './pages/Tags/TagManagement/Requirements/Track';
 
 // 导入客群分析页面组件
-import PortraitAnalysis from './pages/PortraitAnalysis/PortraitAnalysis';
-import CustomerPortrait from './pages/PortraitAnalysis/CustomerPortrait';
-import GroupCharacteristics from './pages/PortraitAnalysis/GroupCharacteristics';
-import PortraitComparison from './pages/PortraitAnalysis/PortraitComparison';
-import TagDistribution from './pages/PortraitAnalysis/TagDistribution';
+import PortraitRouter from './pages/Portrait/PortraitRouter';
+import GroupsPage from './pages/Portrait/GroupsPage';
+import AnalysisPage from './pages/Portrait/AnalysisPage';
+
+// 导入系统管理页面组件
+import SystemRouter from './pages/System/SystemRouter';
+import UserPage from './pages/System/UserPage';
+import SettingsPage from './pages/System/SettingsPage';
 
 // 导入AI实验室页面组件
 import AILaboratory from './pages/AILaboratory/AILaboratory';
@@ -77,89 +80,99 @@ function App() {
             <Route path="overview" element={<DataOverview />} />
             <Route path="personal/todos" element={<TodoList />} />
             <Route path="assistant/qa" element={<AIAssistant />} />
+            <Route path="workspace/*" element={<div>工作台</div>} />
+            <Route path="recommend/*" element={<div>个性化推荐</div>} />
+            <Route path="assistant/*" element={<div>全局智能助手</div>} />
           </Route>
           
           {/* 标签中心路由 */}
           <Route path="tags" element={<TagsRouter />}>
             <Route index element={<Navigate to="/tags/market" replace />} />
             
-            {/* 标签系统/标签体系 */}
+            {/* 标签管理 */}
+            <Route path="management" element={<div>标签管理</div>}>
+              <Route index element={<Navigate to="/tags/management/market" replace />} />
+              <Route path="market" element={<div>标签超市</div>} />
+              <Route path="categories" element={<div>标签分类管理</div>} />
+              <Route path="info" element={<div>标签信息管理</div>} />
+              <Route path="metadata" element={<div>标签元数据管理</div>} />
+              <Route path="uninstall" element={<div>标签体系批量卸载</div>} />
+              <Route path="batch-update" element={<div>标签信息批量更新</div>} />
+            </Route>
+            
+            {/* 标签创建 */}
+            <Route path="creation" element={<div>标签创建</div>}>
+              <Route index element={<Navigate to="/tags/creation/requirements" replace />} />
+              <Route path="requirements" element={<div>标签需求</div>} />
+              <Route path="registration" element={<div>标签注册</div>} />
+              <Route path="factory" element={<div>标签工厂</div>} />
+              <Route path="ai" element={<div>智能生成</div>} />
+            </Route>
+            
+            {/* 标签质量 */}
+            <Route path="quality" element={<div>标签质量</div>}>
+              <Route index element={<Navigate to="/tags/quality/dashboard" replace />} />
+              <Route path="dashboard" element={<div>标签质量看板</div>} />
+              <Route path="health" element={<div>标签健康</div>} />
+              <Route path="alerts" element={<div>异常预警</div>} />
+              <Route path="alert-config" element={<div>预警配置</div>} />
+              <Route path="rule-alerts" element={<div>规则预警</div>} />
+              <Route path="history" element={<div>任务与历史</div>} />
+            </Route>
+            
+            {/* 标签价值 */}
+            <Route path="value" element={<div>标签价值</div>}>
+              <Route index element={<Navigate to="/tags/value/usage" replace />} />
+              <Route path="usage" element={<div>标签使用分析</div>} />
+              <Route path="tracking" element={<div>价值追踪</div>} />
+              <Route path="business-mapping" element={<div>业务映射</div>} />
+            </Route>
+            
+            {/* 旧的路由结构，保留向后兼容性 */}
             <Route path="market" element={<Market />} />
             <Route path="market/apply" element={<MarketApply />} />
             <Route path="market/detail" element={<MarketDetail />} />
             <Route path="library" element={<Library />} />
             <Route path="library/versions" element={<LibraryVersions />} />
             
-            {/* 标签管理 */}
-            <Route path="management">
-              {/* 默认重定向到需求页面 */}
-              <Route index element={<Navigate to="/tags/management/requirements" replace />} />
-              
-              {/* 标签需求 */}
-              <Route path="requirements" element={<RequirementsIndex />}>
-                <Route index element={<Navigate to="/tags/management/requirements/submit" replace />} />
-                <Route path="submit" element={<RequirementsSubmit />} />
-                <Route path="review" element={<RequirementsReview />} />
-                <Route path="track" element={<RequirementsTrack />} />
-              </Route>
-              
-              {/* 标签生成 */}
-              <Route path="generation">
-                <Route index element={<div>标签生成首页</div>} />
-                <Route path="rules" element={<div>规则配置</div>} />
-                <Route path="ai" element={<div>智能生成</div>} />
-                <Route path="sql" element={<div>SQL编辑</div>} />
-                <Route path="import" element={<div>批量导入</div>} />
-              </Route>
-              
-              {/* 标签注册 */}
-              <Route path="registration">
-                <Route index element={<div>标签注册首页</div>} />
-                <Route path="apply" element={<div>注册申请</div>} />
-                <Route path="workflow" element={<div>注册流程</div>} />
-                <Route path="review" element={<div>流程审批</div>} />
-              </Route>
-              
-              {/* 标签维护 */}
-              <Route path="maintenance">
-                <Route index element={<div>标签维护首页</div>} />
-                <Route path="info" element={<div>标签信息</div>} />
-                <Route path="categories" element={<div>分类管理</div>} />
-                <Route path="metadata" element={<div>元数据管理</div>} />
-                <Route path="batch" element={<div>批量更新</div>} />
-                <Route path="uninstall" element={<div>标签卸载</div>} />
-              </Route>
-            </Route>
-            
-            {/* 标签监控 */}
             <Route path="monitor">
-              {/* 默认重定向到质量监控页面 */}
-              <Route index element={<Navigate to="/tags/monitor/quality" replace />} />
-              
-              {/* 质量监控 */}
+              <Route index element={<Navigate to="/tags/quality/dashboard" replace />} />
               <Route path="quality" element={<Quality />} />
               <Route path="quality/rules" element={<QualityRules />} />
-              
-              {/* 异常预警 */}
               <Route path="alerts" element={<Alerts />} />
               <Route path="alerts/rules" element={<AlertRules />} />
-              
-              {/* 标签健康 */}
               <Route path="health" element={<Health />} />
               <Route path="health/diagnostics" element={<HealthDiagnostics />} />
             </Route>
+            
+            {/* 原先的management路由重定向到新结构 */}
+            <Route path="management/*" element={<Navigate to="/tags/management" replace />} />
           </Route>
           
           {/* 个人资料路由 */}
           <Route path="profile" element={<Profile />} />
           
-          {/* 客群分析路由 */}
-          <Route path="portrait" element={<PortraitAnalysis />}>
-            <Route index element={<Navigate to="/portrait/customer" replace />} />
-            <Route path="customer" element={<CustomerPortrait />} />
-            <Route path="group" element={<GroupCharacteristics />} />
-            <Route path="comparison" element={<PortraitComparison />} />
-            <Route path="distribution" element={<TagDistribution />} />
+          {/* 客群画像路由 */}
+          <Route path="portrait" element={<PortraitRouter />}>
+            <Route index element={<Navigate to="/portrait/groups" replace />} />
+            <Route path="groups" element={<GroupsPage />}>
+              <Route index element={<div>客群创建列表</div>} />
+              <Route path="create" element={<div>创建新客群</div>} />
+              <Route path="ai" element={<div>智能分群</div>} />
+              <Route path="similar" element={<div>相似客群发现</div>} />
+              <Route path="insights" element={<div>客群洞察库</div>} />
+            </Route>
+            <Route path="analysis" element={<AnalysisPage />}>
+              <Route index element={<div>画像分析首页</div>} />
+              <Route path="customer" element={<div>单客户视图</div>} />
+              <Route path="behavior" element={<div>行为序列分析</div>} />
+              <Route path="group-insights" element={<div>群体洞察</div>} />
+              <Route path="group-portrait" element={<div>群体画像</div>} />
+              <Route path="funnel" element={<div>漏斗分析</div>} />
+              <Route path="comparison" element={<div>客群对比</div>} />
+              <Route path="yrfm" element={<div>YRFM分析</div>} />
+            </Route>
+            <Route path="applications/*" element={<div>画像应用</div>} />
           </Route>
           
           {/* AI实验室路由 */}
@@ -169,10 +182,35 @@ function App() {
             <Route path="knowledge" element={<KnowledgeBase />} />
             <Route path="interactions" element={<AIAssistant />} />
           </Route>
+          
+          {/* 添加新的路由以匹配menuData.js */}
+          <Route path="applications/*" element={<div>业务应用中心</div>} />
+          <Route path="templates/*" element={<div>场景模板</div>} />
+          <Route path="open-api/*" element={<div>开放能力</div>} />
+          
+          {/* 系统管理路由 */}
+          <Route path="system" element={<SystemRouter />}>
+            <Route index element={<Navigate to="/system/users" replace />} />
+            <Route path="users" element={<UserPage />}>
+              <Route index element={<div>用户管理首页</div>} />
+              <Route path="organizations" element={<div>机构管理</div>} />
+              <Route path="accounts" element={<div>用户管理</div>} />
+              <Route path="roles" element={<div>角色管理</div>} />
+              <Route path="workflows" element={<div>流程管理</div>} />
+            </Route>
+            <Route path="settings" element={<SettingsPage />}>
+              <Route index element={<div>系统设置首页</div>} />
+              <Route path="schedules" element={<div>调度任务</div>} />
+              <Route path="parameters" element={<div>参数设置</div>} />
+              <Route path="announcements" element={<div>公告管理</div>} />
+            </Route>
+            <Route path="ai/*" element={<div>大模型配置</div>} />
+            <Route path="monitoring/*" element={<div>运行监控</div>} />
+          </Route>
         </Route>
         
         {/* 404页面 */}
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );
