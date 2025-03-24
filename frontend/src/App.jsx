@@ -16,27 +16,6 @@ import AIAssistant from './pages/Dashboard/AIAssistant';
 // 导入标签中心路由组件
 import TagsRouter from './pages/Tags/TagsRouter';
 
-// 导入标签系统页面组件
-import Library from './pages/Tags/TagSystem/Library';
-import LibraryVersions from './pages/Tags/TagSystem/LibraryVersions';
-import Market from './pages/Tags/TagSystem/Market';
-import MarketApply from './pages/Tags/TagSystem/MarketApply';
-import MarketDetail from './pages/Tags/TagSystem/MarketDetail';
-
-// 导入标签监控页面组件
-import Quality from './pages/Tags/TagMonitoring/Quality';
-import QualityRules from './pages/Tags/TagMonitoring/QualityRules';
-import Alerts from './pages/Tags/TagMonitoring/Alerts';
-import AlertRules from './pages/Tags/TagMonitoring/AlertRules';
-import Health from './pages/Tags/TagMonitoring/Health';
-import HealthDiagnostics from './pages/Tags/TagMonitoring/HealthDiagnostics';
-
-// 导入标签需求管理页面组件
-import RequirementsIndex from './pages/Tags/TagManagement/Requirements/index';
-import RequirementsSubmit from './pages/Tags/TagManagement/Requirements/Submit';
-import RequirementsReview from './pages/Tags/TagManagement/Requirements/Review';
-import RequirementsTrack from './pages/Tags/TagManagement/Requirements/Track';
-
 // 导入客群分析页面组件
 import PortraitRouter from './pages/Portrait/PortraitRouter';
 import GroupsPage from './pages/Portrait/GroupsPage';
@@ -59,16 +38,73 @@ import * as TemplatePages from './pages/Templates/TemplatePages';
 import OpenAPIRouter from './pages/OpenAPI/OpenAPIRouter';
 import * as OpenAPIPages from './pages/OpenAPI/OpenAPIPages';
 
-// 导入AI实验室页面组件
-import AILaboratory from './pages/AILaboratory/AILaboratory';
-import ModelManager from './pages/AILaboratory/ModelManager';
-import KnowledgeBase from './pages/AILaboratory/KnowledgeBase';
-
 // 导入个人资料页面组件
 import Profile from './pages/Profile/Profile';
 
 // 导入登录页面组件
 import Login from './pages/Login/Login';
+
+// 导入工作台页面组件
+import Tasks from './pages/Dashboard/Workspace/Tasks';
+import Insights from './pages/Dashboard/Workspace/Insights';
+import GuideWorkspace from './pages/Dashboard/Workspace/Guide';
+import Achievements from './pages/Dashboard/Workspace/Achievements';
+
+// 导入个性化推荐页面组件
+import Features from './pages/Dashboard/Recommend/Features';
+import Tools from './pages/Dashboard/Recommend/Tools';
+import Learning from './pages/Dashboard/Recommend/Learning';
+
+// 导入智能助手页面组件
+import Conversation from './pages/Dashboard/Assistant/Conversation';
+import QA from './pages/Dashboard/Assistant/QA';
+import Analysis from './pages/Dashboard/Assistant/Analysis';
+import GuideAssistant from './pages/Dashboard/Assistant/Guide';
+
+// 导入系统AI模块组件
+import Models from './pages/System/AI/Models';
+import Knowledge from './pages/System/AI/Knowledge';
+import Prompts from './pages/System/AI/Prompts';
+
+// 导入系统监控模块组件
+import Traffic from './pages/System/Monitoring/Traffic';
+import Logs from './pages/System/Monitoring/Logs';
+import Platform from './pages/System/Monitoring/Platform';
+import Services from './pages/System/Monitoring/Services';
+
+// 导入系统用户与权限组件
+import OrganizationManagement from './pages/System/Users/OrganizationManagement';
+import UserList from './pages/System/Users/UserList';
+import RoleManagement from './pages/System/Users/RoleManagement';
+import WorkflowManagement from './pages/System/Users/WorkflowManagement';
+
+// 导入系统设置组件
+import Schedules from './pages/System/Settings/Schedules';
+import Parameters from './pages/System/Settings/Parameters';
+import Announcements from './pages/System/Settings/Announcements';
+
+// 导入财富管理应用组件
+import Advisor from './pages/Applications/WealthManagement/Advisor';
+import Investor from './pages/Applications/WealthManagement/Investor';
+import Product from './pages/Applications/WealthManagement/Product';
+import Pension from './pages/Applications/WealthManagement/Pension';
+
+// 导入风险管控组件
+import Alert from './pages/Applications/RiskManagement/Alert';
+import Fraud from './pages/Applications/RiskManagement/Fraud';
+import Credit from './pages/Applications/RiskManagement/Credit';
+import Transaction from './pages/Applications/RiskManagement/Transaction';
+
+// 导入对公业务组件
+import CorporatePortrait from './pages/Applications/Corporate/Portrait';
+import SupplyChain from './pages/Applications/Corporate/SupplyChain';
+import Relationship from './pages/Applications/Corporate/Relationship';
+import Industry from './pages/Applications/Corporate/Industry';
+
+// 导入应用管理组件
+import Categories from './pages/Applications/Management/Management';
+import AppPermissions from './pages/Applications/Management/Permissions';
+import AppStatistics from './pages/Applications/Management/Statistics';
 
 /**
  * 应用程序主组件
@@ -92,9 +128,29 @@ function App() {
             <Route path="overview" element={<DataOverview />} />
             <Route path="personal/todos" element={<TodoList />} />
             <Route path="assistant/qa" element={<AIAssistant />} />
-            <Route path="workspace/*" element={<div>工作台</div>} />
-            <Route path="recommend/*" element={<div>个性化推荐</div>} />
-            <Route path="assistant/*" element={<div>全局智能助手</div>} />
+            
+            <Route path="workspace" element={<div>工作台</div>}>
+              <Route index element={<Navigate to="/dashboard/workspace/tasks" replace />} />
+              <Route path="tasks" element={<Tasks />} />
+              <Route path="insights" element={<Insights />} />
+              <Route path="guide" element={<GuideWorkspace />} />
+              <Route path="achievements" element={<Achievements />} />
+            </Route>
+            
+            <Route path="recommend" element={<div>个性化推荐</div>}>
+              <Route index element={<Navigate to="/dashboard/recommend/features" replace />} />
+              <Route path="features" element={<Features />} />
+              <Route path="tools" element={<Tools />} />
+              <Route path="learning" element={<Learning />} />
+            </Route>
+            
+            <Route path="assistant" element={<div>全局智能助手</div>}>
+              <Route index element={<Navigate to="/dashboard/assistant/conversation" replace />} />
+              <Route path="conversation" element={<Conversation />} />
+              <Route path="qa" element={<QA />} />
+              <Route path="analysis" element={<Analysis />} />
+              <Route path="guide" element={<GuideAssistant />} />
+            </Route>
           </Route>
           
           {/* 标签中心路由 */}
@@ -140,24 +196,10 @@ function App() {
               <Route path="business-mapping" element={<div>业务映射</div>} />
             </Route>
             
-            {/* 旧的路由结构，保留向后兼容性 */}
-            <Route path="market" element={<Market />} />
-            <Route path="market/apply" element={<MarketApply />} />
-            <Route path="market/detail" element={<MarketDetail />} />
-            <Route path="library" element={<Library />} />
-            <Route path="library/versions" element={<LibraryVersions />} />
-            
-            <Route path="monitor">
-              <Route index element={<Navigate to="/tags/quality/dashboard" replace />} />
-              <Route path="quality" element={<Quality />} />
-              <Route path="quality/rules" element={<QualityRules />} />
-              <Route path="alerts" element={<Alerts />} />
-              <Route path="alerts/rules" element={<AlertRules />} />
-              <Route path="health" element={<Health />} />
-              <Route path="health/diagnostics" element={<HealthDiagnostics />} />
-            </Route>
-            
-            {/* 原先的management路由重定向到新结构 */}
+            {/* 旧路由重定向 */}
+            <Route path="market" element={<Navigate to="/tags/management/market" replace />} />
+            <Route path="library" element={<Navigate to="/tags/management" replace />} />
+            <Route path="monitor" element={<Navigate to="/tags/quality" replace />} />
             <Route path="management/*" element={<Navigate to="/tags/management" replace />} />
           </Route>
           
@@ -184,15 +226,12 @@ function App() {
               <Route path="comparison" element={<div>客群对比</div>} />
               <Route path="yrfm" element={<div>YRFM分析</div>} />
             </Route>
-            <Route path="applications/*" element={<div>画像应用</div>} />
-          </Route>
-          
-          {/* AI实验室路由 */}
-          <Route path="ai-laboratory" element={<AILaboratory />}>
-            <Route index element={<Navigate to="/ai-laboratory/models" replace />} />
-            <Route path="models" element={<ModelManager />} />
-            <Route path="knowledge" element={<KnowledgeBase />} />
-            <Route path="interactions" element={<AIAssistant />} />
+            <Route path="applications" element={<div>画像应用</div>}>
+              <Route index element={<Navigate to="/portrait/applications/contact-plans" replace />} />
+              <Route path="contact-plans" element={<div>联系计划</div>} />
+              <Route path="scripts" element={<div>话术脚本</div>} />
+              <Route path="contact-records" element={<div>联系记录</div>} />
+            </Route>
           </Route>
           
           {/* 业务应用中心路由 */}
@@ -218,16 +257,39 @@ function App() {
             </Route>
             
             {/* 财富管理应用 */}
-            <Route path="wealth-management" element={<AppPages.WealthManagementPage />} />
+            <Route path="wealth-management" element={<AppPages.WealthManagementPage />}>
+              <Route index element={<Navigate to="/applications/wealth-management/advisor" replace />} />
+              <Route path="advisor" element={<Advisor />} />
+              <Route path="investor" element={<Investor />} />
+              <Route path="product" element={<Product />} />
+              <Route path="pension" element={<Pension />} />
+            </Route>
             
             {/* 风险管控应用 */}
-            <Route path="risk-management" element={<AppPages.RiskManagementPage />} />
+            <Route path="risk-management" element={<AppPages.RiskManagementPage />}>
+              <Route index element={<Navigate to="/applications/risk-management/alert" replace />} />
+              <Route path="alert" element={<Alert />} />
+              <Route path="fraud" element={<Fraud />} />
+              <Route path="credit" element={<Credit />} />
+              <Route path="transaction" element={<Transaction />} />
+            </Route>
             
             {/* 对公业务应用 */}
-            <Route path="corporate" element={<AppPages.CorporatePage />} />
+            <Route path="corporate" element={<AppPages.CorporatePage />}>
+              <Route index element={<Navigate to="/applications/corporate/portrait" replace />} />
+              <Route path="portrait" element={<CorporatePortrait />} />
+              <Route path="supply-chain" element={<SupplyChain />} />
+              <Route path="relationship" element={<Relationship />} />
+              <Route path="industry" element={<Industry />} />
+            </Route>
             
             {/* 应用分类管理 */}
-            <Route path="management" element={<AppPages.ApplicationManagementPage />} />
+            <Route path="management" element={<AppPages.ApplicationManagementPage />}>
+              <Route index element={<Navigate to="/applications/management/categories" replace />} />
+              <Route path="categories" element={<Categories />} />
+              <Route path="permissions" element={<AppPermissions />} />
+              <Route path="statistics" element={<AppStatistics />} />
+            </Route>
           </Route>
           
           {/* 场景模板路由 */}
@@ -294,20 +356,31 @@ function App() {
           <Route path="system" element={<SystemRouter />}>
             <Route index element={<Navigate to="/system/users" replace />} />
             <Route path="users" element={<UserPage />}>
-              <Route index element={<div>用户管理首页</div>} />
-              <Route path="organizations" element={<div>机构管理</div>} />
-              <Route path="accounts" element={<div>用户管理</div>} />
-              <Route path="roles" element={<div>角色管理</div>} />
-              <Route path="workflows" element={<div>流程管理</div>} />
+              <Route index element={<Navigate to="/system/users/accounts" replace />} />
+              <Route path="organizations" element={<OrganizationManagement />} />
+              <Route path="accounts" element={<UserList />} />
+              <Route path="roles" element={<RoleManagement />} />
+              <Route path="workflows" element={<WorkflowManagement />} />
             </Route>
             <Route path="settings" element={<SettingsPage />}>
               <Route index element={<div>系统设置首页</div>} />
-              <Route path="schedules" element={<div>调度任务</div>} />
-              <Route path="parameters" element={<div>参数设置</div>} />
-              <Route path="announcements" element={<div>公告管理</div>} />
+              <Route path="schedules" element={<Schedules />} />
+              <Route path="parameters" element={<Parameters />} />
+              <Route path="announcements" element={<Announcements />} />
             </Route>
-            <Route path="ai/*" element={<div>大模型配置</div>} />
-            <Route path="monitoring/*" element={<div>运行监控</div>} />
+            <Route path="ai" element={<div>大模型配置</div>}>
+              <Route index element={<Navigate to="/system/ai/models" replace />} />
+              <Route path="models" element={<Models />} />
+              <Route path="knowledge" element={<Knowledge />} />
+              <Route path="prompts" element={<Prompts />} />
+            </Route>
+            <Route path="monitoring" element={<div>运行监控</div>}>
+              <Route index element={<Navigate to="/system/monitoring/traffic" replace />} />
+              <Route path="traffic" element={<Traffic />} />
+              <Route path="logs" element={<Logs />} />
+              <Route path="platform" element={<Platform />} />
+              <Route path="services" element={<Services />} />
+            </Route>
           </Route>
         </Route>
         
