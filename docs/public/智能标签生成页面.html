@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能标签生成</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#6366F1'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        .fade-enter { opacity: 0; }
+        .fade-enter-active { opacity: 1; transition: opacity 200ms ease-in; }
+        .fade-exit { opacity: 1; }
+        .fade-exit-active { opacity: 0; transition: opacity 200ms ease-in; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-6">
+        <nav class="flex items-center text-sm mb-6">
+            <a href="#" class="text-gray-500">标签中心</a>
+            <i class="ri-arrow-right-s-line mx-2 text-gray-400"></i>
+            <a href="#" class="text-gray-500">标签管理</a>
+            <i class="ri-arrow-right-s-line mx-2 text-gray-400"></i>
+            <a href="#" class="text-gray-500">标签生成</a>
+            <i class="ri-arrow-right-s-line mx-2 text-gray-400"></i>
+            <span class="text-gray-900">智能生成</span>
+        </nav>
+
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex space-x-4">
+                <button id="quickMode" class="px-4 py-2 text-primary bg-primary/10 !rounded-button font-medium">快速创建</button>
+                <button id="expertMode" class="px-4 py-2 text-gray-600 hover:bg-gray-100 !rounded-button">专家模式</button>
+            </div>
+            <div class="flex space-x-3">
+                <button class="flex items-center px-4 py-2 text-gray-700 bg-white border border-gray-200 !rounded-button hover:bg-gray-50">
+                    <i class="ri-add-line mr-2"></i>新建
+                </button>
+                <button class="flex items-center px-4 py-2 text-gray-700 bg-white border border-gray-200 !rounded-button hover:bg-gray-50">
+                    <i class="ri-upload-line mr-2"></i>导入
+                </button>
+                <button class="flex items-center px-4 py-2 text-gray-700 bg-white border border-gray-200 !rounded-button hover:bg-gray-50">
+                    <i class="ri-download-line mr-2"></i>导出
+                </button>
+                <button class="flex items-center px-4 py-2 text-gray-700 bg-white border border-gray-200 !rounded-button hover:bg-gray-50">
+                    <i class="ri-more-line"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex gap-6">
+            <div class="w-8/12 bg-white rounded-lg shadow-sm p-6">
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">自然语言描述</label>
+                    <div class="relative">
+                        <textarea id="nlInput" class="w-full h-32 p-4 border border-gray-200 rounded resize-none focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="请输入您想要创建的标签描述，例如：'我想创建一个标识30天内购买3次以上高价值商品的用户'"></textarea>
+                        <button id="generateBtn" class="absolute bottom-4 right-4 bg-primary text-white px-4 py-2 !rounded-button hover:bg-primary/90">
+                            开始生成
+                        </button>
+                    </div>
+                </div>
+
+                <div id="ruleEditor" class="mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-sm font-medium text-gray-700">规则编辑器</h3>
+                        <div class="flex space-x-2">
+                            <button class="text-gray-500 hover:text-gray-700">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                            <button class="text-gray-500 hover:text-gray-700">
+                                <i class="ri-file-copy-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="border border-gray-200 rounded p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-sm text-gray-600">满足以下</span>
+                            <select class="border border-gray-200 rounded px-2 py-1 text-sm">
+                                <option>所有</option>
+                                <option>任一</option>
+                            </select>
+                            <span class="text-sm text-gray-600">条件</span>
+                        </div>
+                        <div id="ruleContainer" class="space-y-3">
+                        </div>
+                        <button class="mt-3 text-primary text-sm hover:text-primary/80">
+                            <i class="ri-add-line mr-1"></i>添加条件
+                        </button>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-100 pt-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-700">对话历史</h3>
+                        <button class="text-sm text-gray-500 hover:text-gray-700">清空历史</button>
+                    </div>
+                    <div id="chatHistory" class="space-y-4 max-h-64 overflow-y-auto">
+                    </div>
+                    <div class="mt-4 flex gap-2">
+                        <input type="text" class="flex-1 border border-gray-200 rounded px-4 py-2 text-sm" placeholder="输入修改建议...">
+                        <button class="bg-primary text-white px-4 py-2 !rounded-button hover:bg-primary/90">发送</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-4/12 space-y-6">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-sm font-medium text-gray-700 mb-4">标签预览</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1">标签名称</label>
+                            <p class="text-sm text-gray-900">高价值用户（近30天）</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1">覆盖人群</label>
+                            <p class="text-sm text-gray-900">预计 2,453 人</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1">更新频率</label>
+                            <p class="text-sm text-gray-900">每日更新</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1">SQL 规则</label>
+                            <pre class="text-xs bg-gray-50 p-3 rounded overflow-x-auto"><code>SELECT user_id
+FROM user_orders
+WHERE created_at >= DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY)
+AND order_amount >= 1000
+GROUP BY user_id
+HAVING COUNT(*) >= 3;</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-sm font-medium text-gray-700 mb-4">相关推荐</h3>
+                    <div class="space-y-3">
+                        <div class="p-3 border border-gray-100 rounded hover:bg-gray-50 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-900">高频消费用户</span>
+                                <i class="ri-add-line text-primary"></i>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">90天内消费次数≥5次的用户</p>
+                        </div>
+                        <div class="p-3 border border-gray-100 rounded hover:bg-gray-50 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-900">奢侈品偏好用户</span>
+                                <i class="ri-add-line text-primary"></i>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">购买过单价≥5000元商品的用户</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed top-4 right-4 transform transition-all duration-300 opacity-0 translate-x-full">
+        <div class="bg-white border border-gray-100 shadow-lg rounded-lg p-4 flex items-center">
+            <i class="ri-check-line text-green-500 mr-2"></i>
+            <span class="text-sm text-gray-700">操作成功</span>
+        </div>
+    </div>
+
+    <script>
+        const mockRules = [
+            {
+                field: '购买金额',
+                operator: '>=',
+                value: 1000
+            },
+            {
+                field: '购买次数',
+                operator: '>=',
+                value: 3
+            },
+            {
+                field: '时间范围',
+                operator: '最近',
+                value: 30,
+                unit: '天'
+            }
+        ];
+
+        const mockChatHistory = [
+            {
+                role: 'user',
+                content: '我想创建一个标识30天内购买3次以上高价值商品的用户'
+            },
+            {
+                role: 'assistant',
+                content: '已生成规则：\n1. 时间范围：最近30天\n2. 购买次数 >= 3次\n3. 单次购买金额 >= 1000元'
+            },
+            {
+                role: 'user',
+                content: '请添加年龄大于30岁的条件'
+            }
+        ];
+
+        function renderRules() {
+            const container = document.getElementById('ruleContainer');
+            container.innerHTML = mockRules.map(rule => `
+                <div class="flex items-center gap-3 bg-gray-50 p-3 rounded">
+                    <select class="border border-gray-200 rounded px-2 py-1 text-sm">
+                        <option>${rule.field}</option>
+                    </select>
+                    <select class="border border-gray-200 rounded px-2 py-1 text-sm">
+                        <option>${rule.operator}</option>
+                    </select>
+                    <input type="text" value="${rule.value}" class="border border-gray-200 rounded px-2 py-1 text-sm w-20">
+                    ${rule.unit ? `<span class="text-sm text-gray-600">${rule.unit}</span>` : ''}
+                    <button class="ml-auto text-gray-400 hover:text-gray-600">
+                        <i class="ri-delete-bin-line"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderChatHistory() {
+            const container = document.getElementById('chatHistory');
+            container.innerHTML = mockChatHistory.map(msg => `
+                <div class="flex gap-3">
+                    <div class="w-8 h-8 flex items-center justify-center rounded-full ${msg.role === 'user' ? 'bg-primary/10 text-primary' : 'bg-gray-100 text-gray-600'}">
+                        <i class="${msg.role === 'user' ? 'ri-user-line' : 'ri-robot-line'}"></i>
+                    </div>
+                    <div class="flex-1">
+                        <pre class="text-sm text-gray-700 whitespace-pre-wrap">${msg.content}</pre>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.querySelector('span').textContent = message;
+            toast.classList.remove('opacity-0', 'translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-full');
+            }, 3000);
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            const input = document.getElementById('nlInput');
+            if (input.value.trim()) {
+                showToast('规则生成成功');
+                renderRules();
+                mockChatHistory.push({
+                    role: 'user',
+                    content: input.value
+                });
+                renderChatHistory();
+                input.value = '';
+            }
+        });
+
+        document.getElementById('quickMode').addEventListener('click', function() {
+            this.classList.add('text-primary', 'bg-primary/10');
+            this.classList.remove('text-gray-600');
+            document.getElementById('expertMode').classList.remove('text-primary', 'bg-primary/10');
+            document.getElementById('expertMode').classList.add('text-gray-600');
+        });
+
+        document.getElementById('expertMode').addEventListener('click', function() {
+            this.classList.add('text-primary', 'bg-primary/10');
+            this.classList.remove('text-gray-600');
+            document.getElementById('quickMode').classList.remove('text-primary', 'bg-primary/10');
+            document.getElementById('quickMode').classList.add('text-gray-600');
+        });
+
+        renderRules();
+        renderChatHistory();
+    </script>
+</body>
+</html>

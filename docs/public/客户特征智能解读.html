@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能客户画像解读</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#6366F1'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #4F46E5;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="flex h-screen">
+        <div class="w-80 bg-white shadow-lg p-6 flex flex-col gap-6">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="font-['Pacifico'] text-2xl text-primary">logo</span>
+                <span class="text-gray-700 font-medium">智能画像</span>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm text-gray-600 mb-2 block">选择客群</label>
+                    <div class="relative">
+                        <button id="groupSelect" class="w-full px-4 py-2 text-left border rounded-button bg-white text-gray-700 cursor-pointer flex items-center justify-between">
+                            <span>高价值客户 (2,345)</span>
+                            <i class="ri-arrow-down-s-line"></i>
+                        </button>
+                        <div id="groupDropdown" class="hidden absolute top-full left-0 w-full mt-1 bg-white border rounded shadow-lg z-10">
+                            <div class="p-2 hover:bg-gray-50 cursor-pointer">高价值客户 (2,345)</div>
+                            <div class="p-2 hover:bg-gray-50 cursor-pointer">潜力客户 (1,234)</div>
+                            <div class="p-2 hover:bg-gray-50 cursor-pointer">流失风险客户 (567)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-sm text-gray-600 mb-2 block">解读深度</label>
+                    <input type="range" min="1" max="5" value="3" class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer">
+                    <div class="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>基础</span>
+                        <span>深入</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-sm text-gray-600 mb-2 block">业务关注点</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-primary rounded" checked>
+                            <span class="text-sm text-gray-700">消费行为</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-primary rounded" checked>
+                            <span class="text-sm text-gray-700">人口属性</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-primary rounded">
+                            <span class="text-sm text-gray-700">兴趣偏好</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-primary rounded">
+                            <span class="text-sm text-gray-700">渠道触达</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-auto space-y-3">
+                <button class="w-full bg-primary text-white py-2 rounded-button flex items-center justify-center gap-2">
+                    <i class="ri-file-text-line"></i>
+                    <span>生成报告</span>
+                </button>
+                <button class="w-full border border-gray-200 py-2 rounded-button flex items-center justify-center gap-2 text-gray-700">
+                    <i class="ri-share-line"></i>
+                    <span>分享</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex-1 p-8 overflow-auto">
+            <div class="max-w-6xl mx-auto space-y-6">
+                <div class="bg-white rounded-lg p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h1 class="text-2xl font-semibold text-gray-900">高价值客户群体画像</h1>
+                            <p class="text-gray-500 mt-1">更新时间: 2025-03-17 10:30</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button class="px-4 py-2 text-gray-700 border rounded-button flex items-center gap-2">
+                                <i class="ri-edit-line"></i>
+                                <span>编辑</span>
+                            </button>
+                            <button class="px-4 py-2 text-gray-700 border rounded-button flex items-center gap-2">
+                                <i class="ri-download-line"></i>
+                                <span>导出</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-4 mb-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="text-sm text-gray-500">客群规模</div>
+                            <div class="text-2xl font-semibold mt-1">2,345</div>
+                            <div class="text-green-500 text-sm mt-1">
+                                <i class="ri-arrow-up-line"></i>
+                                较上月 +12.5%
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="text-sm text-gray-500">平均客单价</div>
+                            <div class="text-2xl font-semibold mt-1">¥ 3,280</div>
+                            <div class="text-green-500 text-sm mt-1">
+                                <i class="ri-arrow-up-line"></i>
+                                较上月 +8.3%
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="text-sm text-gray-500">复购率</div>
+                            <div class="text-2xl font-semibold mt-1">68.5%</div>
+                            <div class="text-red-500 text-sm mt-1">
+                                <i class="ri-arrow-down-line"></i>
+                                较上月 -2.1%
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="text-sm text-gray-500">客户活跃度</div>
+                            <div class="text-2xl font-semibold mt-1">85.2%</div>
+                            <div class="text-green-500 text-sm mt-1">
+                                <i class="ri-arrow-up-line"></i>
+                                较上月 +5.7%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-b pb-4 mb-6">
+                        <div class="text-lg font-medium mb-4">核心洞察</div>
+                        <div class="prose max-w-none text-gray-700">
+                            <p>该客群主要由25-40岁的都市白领构成，具有较高的消费能力和品质追求。他们偏好线上购物，对新品和促销活动反应敏感。近期数据显示，该群体在美妆护肤和数码产品类目的消费明显提升，但在奢侈品类目有所下降。建议加强以下方面：</p>
+                            <ul class="list-disc pl-5 mt-2">
+                                <li>针对性开展高端美妆和数码产品的营销活动</li>
+                                <li>优化会员权益体系，提升客户忠诚度</li>
+                                <li>加强社交媒体营销，提升品牌影响力</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-white rounded-lg">
+                            <div class="text-lg font-medium mb-4">消费能力分布</div>
+                            <div id="consumptionChart" class="h-80"></div>
+                        </div>
+                        <div class="bg-white rounded-lg">
+                            <div class="text-lg font-medium mb-4">年龄分布</div>
+                            <div id="ageChart" class="h-80"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg p-6 shadow-sm">
+                    <div class="text-lg font-medium mb-6">行为特征</div>
+                    <div class="grid grid-cols-3 gap-6">
+                        <div>
+                            <div class="text-gray-500 mb-2">购物时段分布</div>
+                            <div id="timeChart" class="h-60"></div>
+                        </div>
+                        <div>
+                            <div class="text-gray-500 mb-2">支付方式偏好</div>
+                            <div id="paymentChart" class="h-60"></div>
+                        </div>
+                        <div>
+                            <div class="text-gray-500 mb-2">品类偏好</div>
+                            <div id="categoryChart" class="h-60"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const mockData = {
+            consumption: {
+                categories: ['1000以下', '1000-3000', '3000-5000', '5000-10000', '10000以上'],
+                data: [5, 15, 35, 30, 15]
+            },
+            age: {
+                categories: ['18-24岁', '25-30岁', '31-35岁', '36-40岁', '41岁以上'],
+                data: [10, 30, 35, 20, 5]
+            },
+            time: {
+                categories: ['早晨', '上午', '中午', '下午', '晚上', '深夜'],
+                data: [5, 15, 25, 20, 30, 5]
+            },
+            payment: {
+                data: [
+                    {value: 45, name: '支付宝'},
+                    {value: 35, name: '微信支付'},
+                    {value: 15, name: '银行卡'},
+                    {value: 5, name: '其他'}
+                ]
+            },
+            category: {
+                categories: ['美妆护肤', '数码产品', '服饰鞋包', '食品饮料', '家居日用'],
+                data: [35, 25, 20, 15, 5]
+            }
+        };
+
+        const consumptionChart = echarts.init(document.getElementById('consumptionChart'));
+        consumptionChart.setOption({
+            animation: false,
+            tooltip: {
+                trigger: 'axis',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                textStyle: {color: '#1f2937'}
+            },
+            xAxis: {
+                type: 'category',
+                data: mockData.consumption.categories,
+                axisLabel: {color: '#1f2937'}
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {color: '#1f2937'}
+            },
+            series: [{
+                data: mockData.consumption.data,
+                type: 'bar',
+                itemStyle: {
+                    color: 'rgba(87, 181, 231, 1)',
+                    borderRadius: [4, 4, 0, 0]
+                }
+            }],
+            grid: {top: 30, right: 30, bottom: 30, left: 30}
+        });
+
+        const ageChart = echarts.init(document.getElementById('ageChart'));
+        ageChart.setOption({
+            animation: false,
+            tooltip: {
+                trigger: 'axis',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                textStyle: {color: '#1f2937'}
+            },
+            xAxis: {
+                type: 'category',
+                data: mockData.age.categories,
+                axisLabel: {color: '#1f2937'}
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {color: '#1f2937'}
+            },
+            series: [{
+                data: mockData.age.data,
+                type: 'line',
+                smooth: true,
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(87, 181, 231, 0.3)'
+                    }, {
+                        offset: 1,
+                        color: 'rgba(87, 181, 231, 0.1)'
+                    }])
+                },
+                itemStyle: {color: 'rgba(87, 181, 231, 1)'},
+                lineStyle: {color: 'rgba(87, 181, 231, 1)'},
+                showSymbol: false
+            }],
+            grid: {top: 30, right: 30, bottom: 30, left: 30}
+        });
+
+        const timeChart = echarts.init(document.getElementById('timeChart'));
+        timeChart.setOption({
+            animation: false,
+            tooltip: {
+                trigger: 'axis',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                textStyle: {color: '#1f2937'}
+            },
+            xAxis: {
+                type: 'category',
+                data: mockData.time.categories,
+                axisLabel: {color: '#1f2937'}
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {color: '#1f2937'}
+            },
+            series: [{
+                data: mockData.time.data,
+                type: 'bar',
+                itemStyle: {
+                    color: 'rgba(141, 211, 199, 1)',
+                    borderRadius: [4, 4, 0, 0]
+                }
+            }],
+            grid: {top: 30, right: 30, bottom: 30, left: 30}
+        });
+
+        const paymentChart = echarts.init(document.getElementById('paymentChart'));
+        paymentChart.setOption({
+            animation: false,
+            tooltip: {
+                trigger: 'item',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                textStyle: {color: '#1f2937'}
+            },
+            series: [{
+                type: 'pie',
+                radius: '70%',
+                data: mockData.payment.data,
+                itemStyle: {
+                    borderRadius: 4,
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                },
+                label: {
+                    formatter: '{b}: {d}%',
+                    color: '#1f2937'
+                },
+                color: ['rgba(87, 181, 231, 1)', 'rgba(141, 211, 199, 1)', 'rgba(251, 191, 114, 1)', 'rgba(252, 141, 98, 1)']
+            }]
+        });
+
+        const categoryChart = echarts.init(document.getElementById('categoryChart'));
+        categoryChart.setOption({
+            animation: false,
+            tooltip: {
+                trigger: 'axis',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                textStyle: {color: '#1f2937'}
+            },
+            xAxis: {
+                type: 'value',
+                axisLabel: {color: '#1f2937'}
+            },
+            yAxis: {
+                type: 'category',
+                data: mockData.category.categories,
+                axisLabel: {color: '#1f2937'}
+            },
+            series: [{
+                data: mockData.category.data,
+                type: 'bar',
+                itemStyle: {
+                    color: 'rgba(251, 191, 114, 1)',
+                    borderRadius: [0, 4, 4, 0]
+                }
+            }],
+            grid: {top: 30, right: 30, bottom: 30, left: 100}
+        });
+
+        window.addEventListener('resize', () => {
+            consumptionChart.resize();
+            ageChart.resize();
+            timeChart.resize();
+            paymentChart.resize();
+            categoryChart.resize();
+        });
+
+        const groupSelect = document.getElementById('groupSelect');
+        const groupDropdown = document.getElementById('groupDropdown');
+        groupSelect.addEventListener('click', () => {
+            groupDropdown.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!groupSelect.contains(e.target)) {
+                groupDropdown.classList.add('hidden');
+            }
+        });
+        groupDropdown.querySelectorAll('div').forEach(item => {
+            item.addEventListener('click', () => {
+                groupSelect.querySelector('span').textContent = item.textContent;
+                groupDropdown.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

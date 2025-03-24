@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标签画像中台 - 场景模板创建</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; color: #333; }
+        .header { background-color: #1e88e5; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .breadcrumb { padding: 10px 20px; color: #666; font-size: 14px; }
+        .breadcrumb a { color: #1e88e5; text-decoration: none; }
+        .container { padding: 20px; }
+        .page-header { margin-bottom: 20px; }
+        .section { margin-bottom: 30px; }
+        .section-title { border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px; }
+        .form-panel { background-color: #f9f9f9; padding: 20px; border-radius: 6px; margin-bottom: 20px; }
+        .form-row { margin-bottom: 15px; display: flex; align-items: center; }
+        .form-label { width: 120px; text-align: right; padding-right: 15px; }
+        .form-input { flex-grow: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .form-textarea { flex-grow: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 80px; }
+        .param-table { width: 100%; border-collapse: collapse; }
+        .param-table th { background-color: #f5f5f5; padding: 10px; text-align: left; border-bottom: 2px solid #ddd; }
+        .param-table td { padding: 10px; border-bottom: 1px solid #ddd; }
+        .btn-add { background-color: #f5f5f5; color: #666; border: 1px solid #ddd; padding: 6px 12px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; }
+        .btn-edit { color: #1e88e5; background: none; border: none; cursor: pointer; text-decoration: underline; }
+        .tag-search { display: flex; margin-bottom: 15px; }
+        .tag-input { flex-grow: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .tag-list { margin-top: 15px; }
+        .tag-group { margin-bottom: 10px; }
+        .tag-group-title { font-weight: bold; margin-bottom: 5px; }
+        .tag-items { padding-left: 15px; }
+        .tab-navigation { display: flex; border-bottom: 1px solid #ddd; margin-bottom: 15px; }
+        .tab { padding: 10px 20px; cursor: pointer; }
+        .tab.active { color: #1e88e5; border-bottom: 2px solid #1e88e5; }
+        .code-editor { width: 100%; min-height: 200px; font-family: monospace; padding: 10px; border: 1px solid #ddd; border-radius: 4px; background-color: #f5f5f5; }
+        .output-options { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px; }
+        .output-option { display: flex; align-items: center; }
+        .output-option input { margin-right: 5px; }
+        .output-format { margin-top: 15px; display: flex; }
+        .output-format label { margin-right: 15px; display: flex; align-items: center; }
+        .output-format input { margin-right: 5px; }
+        .action-buttons { display: flex; gap: 15px; margin-top: 30px; }
+        .btn-primary { background-color: #1e88e5; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        .btn-secondary { background-color: #f5f5f5; color: #666; border: 1px solid #ddd; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        .output-field-config { margin-top: 20px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 20px; }
+        .output-field-header { background-color: #f5f5f5; padding: 10px 15px; font-weight: bold; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .output-field-content { padding: 15px; display: block; }
+        .field-config-row { margin-bottom: 12px; display: flex; align-items: center; }
+        .field-config-label { width: 140px; text-align: right; padding-right: 15px; }
+        .weight-item { display: flex; align-items: center; margin-bottom: 8px; }
+        .weight-label { width: 120px; }
+        .source-options { display: flex; flex-wrap: wrap; gap: 10px; }
+        .collapsible-section { margin-top: 15px; }
+        .collapsible-header { background-color: #f0f0f0; padding: 8px 12px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; }
+        .rule-template-item { margin-bottom: 8px; padding: 5px; border: 1px solid #eee; }
+        .tag { display: inline-block; background: #e1f5fe; color: #0277bd; padding: 3px 8px; border-radius: 3px; margin-right: 5px; margin-bottom: 5px; font-size: 12px; }
+        .badge { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 10px; font-size: 12px; margin-left: 8px; }
+        .role-switch { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .role-btn { padding: 5px 12px; border: 1px solid #ddd; border-radius: 15px; background: #f5f5f5; cursor: pointer; }
+        .role-btn.active { background: #1e88e5; color: white; border-color: #1e88e5; }
+        .generator-option { cursor: pointer; padding: 10px 15px; border: 1px solid #ddd; border-radius: 4px; display: flex; align-items: center; margin-bottom: 10px; }
+        .generator-option:hover { background-color: #f0f0f0; }
+        .generator-option.selected { border-color: #1e88e5; background-color: #e3f2fd; }
+        .generator-option input { margin-right: 10px; }
+        .info-icon { display: inline-block; width: 16px; height: 16px; background: #1e88e5; color: white; border-radius: 50%; text-align: center; line-height: 16px; font-size: 12px; margin-left: 5px; cursor: help; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .method-selector { display: flex; margin-bottom: 15px; border-bottom: 1px solid #ddd; }
+        .method-option { padding: 8px 15px; cursor: pointer; }
+        .method-option.active { color: #1e88e5; border-bottom: 2px solid #1e88e5; }
+        .computation-method { display: none; }
+        .computation-method.active { display: block; }
+        .step-navigation { display: flex; margin-bottom: 20px; }
+        .step { flex: 1; text-align: center; padding: 10px; background: #f5f5f5; border: 1px solid #ddd; position: relative; }
+        .step.active { background: #e3f2fd; font-weight: bold; }
+        .step.completed { background: #e8f5e9; }
+        .step::after { content: ""; position: absolute; right: -15px; top: 50%; transform: translateY(-50%); border: 8px solid transparent; border-left-color: #ddd; z-index: 1; }
+        .step:last-child::after { display: none; }       
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>标签画像中台</h2>
+        <div>
+            <span>管理员</span> | <a href="#" style="color: white;">退出</a>
+        </div>
+    </div>
+
+    <div class="breadcrumb">
+        <a href="#">标签画像中台</a> > <a href="#">场景模板</a> > 创建模板
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>创建场景模板</h2>
+        </div>
+
+        <div class="step-navigation">
+            <div class="step completed">1. 基本信息</div>
+            <div class="step completed">2. 参数配置</div>
+            <div class="step completed">3. 标签关联</div>
+            <div class="step completed">4. 计算逻辑</div>
+            <div class="step active">5. 输出配置</div>
+            <div class="step">6. 测试发布</div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">模板基本信息</h3>
+            <div class="form-panel">
+                <div class="form-row">
+                    <div class="form-label">模板名称:</div>
+                    <input type="text" class="form-input" value="信用卡目标客群模板">
+                </div>
+                <div class="form-row">
+                    <div class="form-label">业务分类:</div>
+                    <select class="form-input" style="width: 200px;">
+                        <option>零售金融</option>
+                        <option>对公业务</option>
+                        <option>风控合规</option>
+                    </select>
+                    <span style="margin: 0 10px;">></span>
+                    <select class="form-input" style="width: 200px;">
+                        <option>信用卡营销</option>
+                        <option>存款产品</option>
+                        <option>理财产品</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">模板描述:</div>
+                    <textarea class="form-textarea">该模板用于识别潜在信用卡目标客户，支持多维度参数配置</textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">标签版本:</div>
+                    <select class="form-input" style="width: 150px;">
+                        <option>v2.0</option>
+                        <option>v1.9</option>
+                        <option>v1.8</option>
+                    </select>
+                    <span style="margin: 0 20px;">发布状态:</span>
+                    <select class="form-input" style="width: 150px;">
+                        <option>测试</option>
+                        <option>生产</option>
+                        <option>草稿</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">参数配置</h3>
+            <div class="form-panel">
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>参数名称</th>
+                            <th>数据类型</th>
+                            <th>默认值</th>
+                            <th>取值范围</th>
+                            <th>是否必填</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>年龄范围</td>
+                            <td>区间</td>
+                            <td>25-45</td>
+                            <td>18-65</td>
+                            <td>是</td>
+                            <td><button class="btn-edit">编辑</button></td>
+                        </tr>
+                        <tr>
+                            <td>收入水平</td>
+                            <td>数值</td>
+                            <td>10000</td>
+                            <td>5000-50000</td>
+                            <td>是</td>
+                            <td><button class="btn-edit">编辑</button></td>
+                        </tr>
+                        <tr>
+                            <td>信用评分</td>
+                            <td>数值</td>
+                            <td>650</td>
+                            <td>580-800</td>
+                            <td>是</td>
+                            <td><button class="btn-edit">编辑</button></td>
+                        </tr>
+                        <tr>
+                            <td>消费类型</td>
+                            <td>多选</td>
+                            <td>餐饮,旅游</td>
+                            <td>全部消费类型</td>
+                            <td>否</td>
+                            <td><button class="btn-edit">编辑</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="margin-top: 15px;">
+                    <button class="btn-add">+ 添加参数</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">标签关联</h3>
+            <div class="form-panel">
+                <div class="tag-search">
+                    <input type="text" class="tag-input" placeholder="搜索标签...">
+                    <button class="btn-primary" style="margin-left: 10px;">🔍</button>
+                </div>
+                <div class="tag-list">
+                    <div>已选标签:</div>
+                    <div class="tag-group">
+                        <div class="tag-group-title">- 基础人口标签:</div>
+                        <div class="tag-items">年龄, 性别, 婚姻状况, 学历, 职业</div>
+                    </div>
+                    <div class="tag-group">
+                        <div class="tag-group-title">- 资产标签:</div>
+                        <div class="tag-items">月收入, AUM, 存款余额, 理财产品持有</div>
+                    </div>
+                    <div class="tag-group">
+                        <div class="tag-group-title">- 行为标签:</div>
+                        <div class="tag-items">消费频次, 消费金额, 消费场景, 信用卡使用频率</div>
+                    </div>
+                    <div class="tag-group">
+                        <div class="tag-group-title">- 风险标签:</div>
+                        <div class="tag-items">信用评分, 逾期历史, 信用卡额度使用率</div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="btn-add">+ 添加更多标签</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">计算逻辑配置</h3>
+            <div class="form-panel">
+                <div class="tab-navigation">
+                    <div class="tab active">规则配置</div>
+                    <div class="tab">SQL配置</div>
+                    <div class="tab">可视化配置</div>
+                </div>
+                <div>
+                    <div>标签条件组合:</div>
+                    <textarea class="code-editor">IF (年龄 BETWEEN {年龄范围.最小值} AND {年龄范围.最大值})
+AND (月收入 >= {收入水平})
+AND (信用评分 >= {信用评分})
+AND (3个月内消费频次 >= 5)
+THEN
+  输出客群
+  计算匹配度得分 = 0.3*收入得分 + 0.4*消费行为得分 + 0.3*信用得分</textarea>
+                </div>
+                <div style="margin-top: 15px; display: flex; gap: 10px;">
+                    <button class="btn-add">+ 添加条件</button>
+                    <button class="btn-secondary">验证语法</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">输出配置</h3>
+            
+            <!-- 角色切换 -->
+            <div class="role-switch">
+                <span>界面模式:</span>
+                <button class="role-btn active">业务视图</button>
+                <button class="role-btn">技术视图</button>
+                <button class="role-btn">专家视图</button>
+            </div>
+
+            <div class="form-panel">
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h4 style="margin: 0;">输出字段选择</h4>
+                        <button class="btn-add">+ 添加自定义字段</button>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <div style="font-weight: bold; margin-bottom: 8px;">标准字段</div>
+                        <div class="output-options">
+                            <label class="output-option"><input type="checkbox" checked> 客户ID <span class="badge">必选</span></label>
+                            <label class="output-option"><input type="checkbox" checked> 客户姓名</label>
+                            <label class="output-option"><input type="checkbox" checked> 联系电话</label>
+                            <label class="output-option"><input type="checkbox"> 电子邮箱</label>
+                            <label class="output-option"><input type="checkbox"> 客户等级</label>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <div style="font-weight: bold; margin-bottom: 8px;">营销领域标准字段</div>
+                        <div class="output-options">
+                            <label class="output-option"><input type="checkbox" checked> 匹配度分数</label>
+                            <label class="output-option"><input type="checkbox" checked> 推荐理由</label>
+                            <label class="output-option"><input type="checkbox" checked> 最适合产品</label>
+                            <label class="output-option"><input type="checkbox" checked> 最佳联系时间</label>
+                            <label class="output-option"><input type="checkbox" checked> 偏好渠道</label>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <div style="font-weight: bold; margin-bottom: 8px;">自定义字段</div>
+                        <div class="output-options">
+                            <label class="output-option"><input type="checkbox" checked> 转化概率 <span class="tag">ML</span></label>
+                            <label class="output-option"><input type="checkbox" checked> 产品匹配说明 <span class="tag">LLM</span></label>
+                            <label class="output-option"><input type="checkbox"> 推荐额度 <span class="tag">规则</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 添加自定义字段表单 -->
+                <div class="output-field-config" style="display: none;" id="custom-field-form">
+                    <div class="output-field-header">
+                        <div>添加自定义输出字段</div>
+                        <div>▼</div>
+                    </div>
+                    <div class="output-field-content">
+                        <div class="field-config-row">
+                            <div class="field-config-label">字段名称:</div>
+                            <input type="text" class="form-input" placeholder="例：客户潜力指数">
+                        </div>
+                        <div class="field-config-row">
+                            <div class="field-config-label">数据类型:</div>
+                            <select class="form-input">
+                                <option>数值型</option>
+                                <option>字符串</option>
+                                <option>日期时间</option>
+                                <option>布尔值</option>
+                                <option>枚举值</option>
+                                <option>JSON</option>
+                            </select>
+                        </div>
+                        <div class="field-config-row">
+                            <div class="field-config-label">字段描述:</div>
+                            <textarea class="form-textarea" placeholder="请描述该字段的业务含义和用途"></textarea>
+                        </div>
+                        <div class="field-config-row">
+                            <div class="field-config-label">所属领域:</div>
+                            <select class="form-input">
+                                <option>营销</option>
+                                <option>风控</option>
+                                <option>运营</option>
+                                <option>服务</option>
+                                <option>通用</option>
+                            </select>
+                        </div>
+                        <div class="field-config-row">
+                            <div class="field-config-label">是否加入字段库:</div>
+                            <label style="margin-right: 20px;"><input type="radio" name="add-to-library" checked> 是</label>
+                            <label><input type="radio" name="add-to-library"> 否 (仅用于当前模板)</label>
+                        </div>
+                        <div style="margin-top: 15px; display: flex; justify-content: center;">
+                            <button class="btn-primary" style="margin-right: 10px;">确认添加</button>
+                            <button class="btn-secondary">取消</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 匹配度分数配置 -->
+                <div class="output-field-config">
+                    <div class="output-field-header">
+                        <div>匹配度分数 - 生成配置</div>
+                        <div>▼</div>
+                    </div>
+                    <div class="output-field-content">
+                        <!-- 计算方法选择器 -->
+                        <div class="method-selector">
+                            <div class="method-option active" data-method="rule">规则计算</div>
+                            <div class="method-option" data-method="ml">机器学习模型</div>
+                            <div class="method-option" data-method="external">外部服务调用</div>
+                        </div>
+                        
+                        <!-- 规则计算方法 -->
+                        <div class="computation-method active" id="rule-method">
+                            <div class="field-config-row">
+                                <div class="field-config-label">计算方法:</div>
+                                <select class="form-input">
+                                    <option>加权求和</option>
+                                    <option>条件评分</option>
+                                    <option>公式计算</option>
+                                </select>
+                            </div>
+                            <div class="collapsible-section">
+                                <div class="collapsible-header">权重配置 ▼</div>
+                                <div style="padding: 10px; border: 1px solid #eee;">
+                                    <div class="weight-item">
+                                        <div class="weight-label">消费行为权重:</div>
+                                        <input type="range" min="0" max="100" value="40" style="width: 200px;"> 
+                                        <span style="margin-left: 10px;">40%</span>
+                                    </div>
+                                    <div class="weight-item">
+                                        <div class="weight-label">信用评分权重:</div>
+                                        <input type="range" min="0" max="100" value="30" style="width: 200px;"> 
+                                        <span style="margin-left: 10px;">30%</span>
+                                    </div>
+                                    <div class="weight-item">
+                                        <div class="weight-label">收入水平权重:</div>
+                                        <input type="range" min="0" max="100" value="30" style="width: 200px;"> 
+                                        <span style="margin-left: 10px;">30%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">分数归一化:</div>
+                                <select class="form-input">
+                                    <option>0-100区间</option>
+                                    <option>0-1区间</option>
+                                    <option>分位数</option>
+                                </select>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">执行位置:</div>
+                                <select class="form-input">
+                                    <option>模板内部执行</option>
+                                    <option>数据库内执行</option>
+                                    <option>规则引擎执行</option>
+                                </select>
+                                <span class="info-icon" title="选择规则执行的位置，不同位置有不同的性能和扩展特性">?</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 机器学习方法 -->
+                        <div class="computation-method" id="ml-method" style="display: none;">
+                            <div class="field-config-row">
+                                <div class="field-config-label">选择模型:</div>
+                                <select class="form-input">
+                                    <option>信用卡偏好预测 v2.1</option>
+                                    <option>客户价值评分 v1.5</option>
+                                    <option>消费能力预测 v3.0</option>
+                                </select>
+                                <button class="btn-secondary" style="margin-left: 10px;">查看模型详情</button>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">输入映射:</div>
+                                <button class="btn-secondary">配置映射关系</button>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">模型参数:</div>
+                                <table class="param-table" style="width: 80%">
+                                    <tr>
+                                        <th>参数名</th>
+                                        <th>值</th>
+                                    </tr>
+                                    <tr>
+                                        <td>confidence_threshold</td>
+                                        <td><input type="text" value="0.7" style="width: 80px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>score_multiplier</td>
+                                        <td><input type="text" value="100" style="width: 80px"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">模型版本策略:</div>
+                                <select class="form-input">
+                                    <option>固定使用当前版本</option>
+                                    <option>自动使用最新稳定版</option>
+                                    <option>根据生产环境自动切换</option>
+                                </select>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">调用方式:</div>
+                                <select class="form-input">
+                                    <option>在线实时调用</option>
+                                    <option>批量预计算</option>
+                                    <option>结果缓存策略</option>
+                                </select>
+                                <span class="info-icon" title="选择适合业务场景的调用策略，平衡效率与实时性">?</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 外部服务调用方法 -->
+                        <div class="computation-method" id="external-method" style="display: none;">
+                            <div class="field-config-row">
+                                <div class="field-config-label">服务类型:</div>
+                                <select class="form-input">
+                                    <option>REST API</option>
+                                    <option>微服务</option>
+                                    <option>远程过程调用</option>
+                                </select>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">服务地址:</div>
+                                <input type="text" class="form-input" value="http://modelservice.internal/score">
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">认证信息:</div>
+                                <select class="form-input">
+                                    <option>默认服务账户</option>
+                                    <option>OAuth 2.0</option>
+                                    <option>API密钥</option>
+                                </select>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">请求模板:</div>
+                                <textarea class="form-textarea">
+{
+  "customerId": "{{客户ID}}",
+  "features": {
+    "age": "{{客户.年龄}}",
+    "income": "{{客户.月收入}}",
+    "creditScore": "{{客户.信用评分}}",
+    "consumptionAmount": "{{客户.消费金额}}"
+  }
+}
+                                </textarea>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">响应映射:</div>
+                                <input type="text" class="form-input" value="$.result.score">
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">故障策略:</div>
+                                <select class="form-input">
+                                    <option>使用默认值</option>
+                                    <option>重试3次</option>
+                                    <option>降级到简单规则</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 推荐理由配置 -->
+                <div class="output-field-config">
+                    <div class="output-field-header">
+                        <div>推荐理由 - 生成配置</div>
+                        <div>▼</div>
+                    </div>
+                    <div class="output-field-content">
+                        <div class="method-selector">
+                            <div class="method-option" data-method="rule">规则模板</div>
+                            <div class="method-option active" data-method="llm">大模型生成</div>
+                            <div class="method-option" data-method="hybrid">混合模式</div>
+                        </div>
+                        
+                        <!-- 大模型生成配置 -->
+                        <div class="computation-method active" id="llm-method">
+                            <div class="field-config-row">
+                                <div class="field-config-label">选择大模型:</div>
+                                <select class="form-input">
+                                    <option>内部金融大模型</option>
+                                    <option>Azure OpenAI GPT-4</option>
+                                    <option>智谱GLM-4</option>
+                                </select>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">提示词模板:</div>
+                                <textarea class="form-textarea" style="min-height: 100px;">
+基于以下客户信息：
+- 年龄: {{客户.年龄}}
+- 职业: {{客户.职业}}
+- 月收入: {{客户.月收入}}
+- 消费偏好: {{客户.主要消费场景}}
+- 信用评分: {{客户.信用评分}}
+
+生成一段不超过50字的个性化推荐理由，说明为何该客户适合信用卡产品。
+                                </textarea>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">参数设置:</div>
+                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                    <div>
+                                        <label>温度: </label>
+                                        <input type="range" min="0" max="1" step="0.1" value="0.7" style="width: 200px;">
+                                        <span>0.7</span>
+                                    </div>
+                                    <div>
+                                        <label>最大输出长度: </label>
+                                        <input type="number" value="100" style="width: 80px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">结果后处理:</div>
+                                <select class="form-input">
+                                    <option>直接使用</option>
+                                    <option>提取JSON格式</option>
+                                    <option>应用正则提取</option>
+                                </select>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">调用优化:</div>
+                                <div style="display: flex; flex-direction: column; gap: 5px;">
+                                    <label><input type="checkbox" checked> 启用结果缓存</label>
+                                    <label><input type="checkbox" checked> 相似客户共享结果</label>
+                                    <label><input type="checkbox"> 批量生成模式</label>
+                                </div>
+                            </div>
+                            <div class="field-config-row">
+                                <div class="field-config-label">大模型调用方式:</div>
+                                <select class="form-input">
+                                    <option>模板执行期间调用</option>
+                                    <option>业务应用使用时调用</option>
+                                    <option>离线批量生成</option>
+                                </select>
+                                <span class="info-icon" title="选择调用时机会影响系统性能和用户体验">?</span>
+                            </div>
+                        </div>
+                        
+                        <div class="field-config-row">
+                            <div class="field-config-label">关键标签:</div>
+                            <select class="form-input" multiple style="height: 80px;">
+                                <option selected>消费频次</option>
+                                <option selected>消费金额</option>
+                                <option selected>消费场景</option>
+                                <option selected>信用评分</option>
+                                <option>月收入</option>
+                                <option>职业</option>
+                                <option>年龄</option>
+                            </select>
+                        </div>
+                        <div class="field-config-row">
+                            <div class="field-config-label">输出字数限制:</div>
+                            <input type="number" class="form-input" value="50">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 最佳联系时间配置 -->
+                <div class="output-field-config">
+                    <div class="output-field-header">
+                        <div>最佳联系时间 - 生成配置</div>
+                        <div>▼</div>
+                    </div>
+                    <div class="output-field-content">
+                        <div class="field-config-row">
+                            <div class="field-config-label">计算架构选择:</div>
+                            <select class="form-input" onchange="showArchitectureInfo(this.value)">
+                                <option value="integrated">集成式架构 (模板内全部计算)</option>
+                                <option value="layered" selected>分层架构 (调用专门的预测服务)</option>
+                                <option value="microservice">微服务架构 (多服务协同计算)</option>
+                            </select>
+                        </div>
+                        
+                        <div id="architecture-info" style="margin: 15px 0; padding: 10px; background: #e3f2fd; border-radius: 4px;">
+                            <div style="font-weight: bold; margin-bottom: 5px;">分层架构信息</div>
+                            <p style="margin: 0;">该模式下，最佳联系时间由"客户行为分析服务"计算，通过API调用获取结果。优点是可复用专业算法，缺点是增加了系统间依赖。</p>
+                        </div>
+                        
+                        <div class="field-config-row">
+                            <div class="field-config-label">预测方法:</div>
+                            <select class="form-input">
+                                <option>历史响应时间分析</option>
+                                <option selected>行为模式预测</option>
+                                <option>固定规则</option>
+                            </select>
+                        </div>
+                        <div class="field-config-row">
+                            <div class="field-config-label">分析窗口期:</div>
+                            <select class="form-input">
+                                <option>近30天</option>
+                                <option selected>近90天</option>
+                                <option>近180天</option>
+                            </select>
+                        </div>
+                        <div class="field-config-row">
+                            <div class="field-config-label">数据来源:</div>
+                            <div class="source-options">
+                                <label><input type="checkbox" checked> APP登录时间</label>
+                                <label><input type="checkbox" checked> 交易时间</label>
+                                <label><input type="checkbox"> 客服联系记录</label>
+                                <label><input type="checkbox" checked> 短信阅读时间</label>
+                            </div>
+                        </div>
+                        <div class="field-config-row">
+                            <div class="field-config-label">服务配置:</div>
+                            <button class="btn-secondary">配置服务参数</button>
+                            <span style="margin-left: 10px; color: #2e7d32;">✓ 服务连接正常</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 输出数据加工规则 -->
+                <div style="margin-top: 20px;">
+                    <div style="font-weight: bold; margin-bottom: 10px;">输出数据加工规则</div>
+                    
+                    <div class="field-config-row">
+                        <div class="field-config-label">匹配度分数筛选:</div>
+                        <select class="form-input" style="width: 200px;">
+                            <option>保留所有结果</option>
+                            <option selected>仅保留前N名</option>
+                            <option>仅保留分数大于阈值结果</option>
+                        </select>
+                        <input type="number" class="form-input" value="1000" style="width: 100px; margin-left: 10px;" placeholder="N或阈值">
+                    </div>
+                    
+                    <div class="field-config-row">
+                        <div class="field-config-label">输出排序:</div>
+                        <select class="form-input">
+                            <option selected>按匹配度评分降序</option>
+                            <option>按客户价值降序</option>
+                            <option>按最近交易时间</option>
+                        </select>
+                    </div>
+                    
+                    <div class="field-config-row">
+                        <div class="field-config-label">输出限制:</div>
+                        <input type="number" class="form-input" value="10000" style="width: 100px;"> 
+                        <span style="margin-left: 10px;">条记录</span>
+                    </div>
+                    
+                    <div class="field-config-row">
+                        <div class="field-config-label">计算执行策略:</div>
+                        <select class="form-input">
+                            <option>完全实时计算</option>
+                            <option selected>混合计算 (基础规则实时+复杂模型离线)</option>
+                            <option>完全预计算</option>
+                        </select>
+                        <span class="info-icon" title="选择合适的执行策略可以平衡计算效率与结果时效性">?</span>
+                    </div>
+                </div>
+
+                <div class="output-format" style="margin-top: 20px;">
+                    <div style="margin-right: 20px;">输出格式:</div>
+                    <label><input type="radio" name="format"> 数据表</label>
+                    <label><input type="radio" name="format" checked> API</label>
+                    <label><input type="radio" name="format"> 文件</label>
+                </div>
+                
+                <!-- 技术视图中的执行配置 (默认隐藏) -->
+                <div id="tech-view-options" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px; display: none;">
+                    <div style="font-weight: bold; margin-bottom: 10px;">高级执行配置</div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">计算引擎:</div>
+                        <select class="form-input">
+                            <option>Spark</option>
+                            <option selected>Flink</option>
+                            <option>本地计算引擎</option>
+                        </select>
+                    </div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">资源配置:</div>
+                        <select class="form-input">
+                            <option>小型 (2核8G)</option>
+                            <option selected>中型 (4核16G)</option>
+                            <option>大型 (8核32G)</option>
+                        </select>
+                    </div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">计算并行度:</div>
+                        <input type="number" class="form-input" value="4" style="width: 100px;">
+                    </div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">计算超时时间:</div>
+                        <input type="number" class="form-input" value="300" style="width: 100px;">
+                        <span style="margin-left: 10px;">秒</span>
+                    </div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">异常处理策略:</div>
+                        <select class="form-input">
+                            <option>失败中止</option>
+                            <option selected>记录错误并继续</option>
+                            <option>使用默认值替代</option>
+                        </select>
+                    </div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">数据缓存策略:</div>
+                        <select class="form-input">
+                            <option>不缓存</option>
+                            <option selected>缓存中间结果</option>
+                            <option>缓存全部结果</option>
+                        </select>
+                    </div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">日志记录级别:</div>
+                        <select class="form-input">
+                            <option>DEBUG</option>
+                            <option selected>INFO</option>
+                            <option>WARNING</option>
+                            <option>ERROR</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- 专家视图中的系统集成配置 (默认隐藏) -->
+                <div id="expert-view-options" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px; display: none;">
+                    <div style="font-weight: bold; margin-bottom: 10px;">系统集成配置</div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">服务注册:</div>
+                        <div>
+                            <label><input type="checkbox" checked> 注册为数据服务</label>
+                            <select class="form-input" style="width: 150px; margin-left: 10px;">
+                                <option>实时API</option>
+                                <option>批量API</option>
+                                <option selected>两者都支持</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">服务授权:</div>
+                        <table class="param-table" style="width: 80%">
+                            <tr>
+                                <th>用户组</th>
+                                <th>权限类型</th>
+                            </tr>
+                            <tr>
+                                <td>营销部门</td>
+                                <td>
+                                    <select>
+                                        <option>只读</option>
+                                        <option selected>读写</option>
+                                        <option>管理</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>数据分析团队</td>
+                                <td>
+                                    <select>
+                                        <option>只读</option>
+                                        <option>读写</option>
+                                        <option selected>管理</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>IT运维</td>
+                                <td>
+                                    <select>
+                                        <option selected>只读</option>
+                                        <option>读写</option>
+                                        <option>管理</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">监控配置:</div>
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                            <label><input type="checkbox" checked> 性能监控</label>
+                            <label><input type="checkbox" checked> 调用统计</label>
+                            <label><input type="checkbox" checked> 错误告警</label>
+                            <label><input type="checkbox"> 数据质量监控</label>
+                        </div>
+                    </div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">服务级别协议:</div>
+                        <select class="form-input">
+                            <option>基础级 (99.5%可用性)</option>
+                            <option selected>标准级 (99.9%可用性)</option>
+                            <option>高级 (99.99%可用性)</option>
+                        </select>
+                    </div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">数据治理:</div>
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                            <label><input type="checkbox" checked> 记录数据血缘</label>
+                            <label><input type="checkbox" checked> 应用数据脱敏</label>
+                            <label><input type="checkbox"> 数据生命周期管理</label>
+                        </div>
+                    </div>
+                    <div class="field-config-row">
+                        <div class="field-config-label">API文档:</div>
+                        <select class="form-input">
+                            <option>自动生成</option>
+                            <option selected>手动编辑</option>
+                            <option>不生成</option>
+                        </select>
+                        <button class="btn-secondary" style="margin-left: 10px;">编辑API文档</button>
+                    </div>
+                </div>
+                
+                <!-- 输出字段间依赖关系配置 (高级功能) -->
+                <div style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-weight: bold;">输出字段依赖关系 <span class="badge">高级</span></div>
+                        <button class="btn-secondary">配置依赖关系</button>
+                    </div>
+                    <div style="margin-top: 10px; color: #666; font-size: 14px;">
+                        通过配置字段间的依赖关系，可以控制计算顺序和条件计算逻辑。例如，只有在"匹配度分数"高于阈值时才计算"推荐理由"。
+                    </div>
+                </div>
+                
+                <!-- 场景模板执行调试 -->
+                <div style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-weight: bold;">输出结果预览</div>
+                        <button class="btn-primary">运行测试</button>
+                    </div>
+                    <div style="margin-top: 10px; padding: 15px; background: #f5f5f5; border-radius: 4px; min-height: 100px; font-family: monospace; font-size: 14px;">
+                        测试结果将显示在这里...
+                        <br>
+                        可以查看计算逻辑是否正确，输出字段格式是否符合预期。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-primary">下一步：测试发布</button>
+            <button class="btn-primary">保存配置</button>
+            <button class="btn-secondary">返回上一步</button>
+            <button class="btn-secondary">取消</button>
+        </div>
+        
+        <!-- 添加脚本处理交互逻辑 -->
+        <script>
+            // 用于处理计算方法的切换
+            document.querySelectorAll('.method-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // 获取所在区块
+                    const parent = this.closest('.output-field-content');
+                    
+                    // 更新选中状态
+                    parent.querySelectorAll('.method-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // 显示对应的计算方法内容
+                    const methodToShow = this.getAttribute('data-method');
+                    parent.querySelectorAll('.computation-method').forEach(method => {
+                        method.style.display = 'none';
+                    });
+                    
+                    const targetMethod = parent.querySelector(`#${methodToShow}-method`);
+                    if (targetMethod) {
+                        targetMethod.style.display = 'block';
+                    }
+                });
+            });
+            
+            // 角色视图切换
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.role-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // 处理不同视图的显示
+                    const viewText = this.innerText;
+                    document.getElementById('tech-view-options').style.display = 
+                        (viewText.includes('技术') || viewText.includes('专家')) ? 'block' : 'none';
+                    document.getElementById('expert-view-options').style.display = 
+                        viewText.includes('专家') ? 'block' : 'none';
+                });
+            });
+            
+            // 架构信息显示
+            function showArchitectureInfo(value) {
+                const infoDiv = document.getElementById('architecture-info');
+                
+                if (value === 'integrated') {
+                    infoDiv.innerHTML = `
+                        <div style="font-weight: bold; margin-bottom: 5px;">集成式架构信息</div>
+                        <p style="margin: 0;">该模式下，所有计算都在模板执行引擎内完成。优点是部署简单，依赖少；缺点是算法复用性低，资源消耗较大。</p>
+                    `;
+                } else if (value === 'layered') {
+                    infoDiv.innerHTML = `
+                        <div style="font-weight: bold; margin-bottom: 5px;">分层架构信息</div>
+                        <p style="margin: 0;">该模式下，最佳联系时间由"客户行为分析服务"计算，通过API调用获取结果。优点是可复用专业算法，缺点是增加了系统间依赖。</p>
+                    `;
+                } else if (value === 'microservice') {
+                    infoDiv.innerHTML = `
+                        <div style="font-weight: bold; margin-bottom: 5px;">微服务架构信息</div>
+                        <p style="margin: 0;">该模式下，计算分散在多个专业微服务中协同完成。优点是高度模块化和可扩展，缺点是架构复杂，需要处理服务编排。</p>
+                    `;
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>

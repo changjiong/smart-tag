@@ -1,13 +1,9 @@
 ---
 description: 
-globs: 
+globs: **/*.js,**/*.jsx
 alwaysApply: false
 ---
----
-name: react-router-best-practices.mdc
-description: Best practices for routing and navigation with React Router
-globs: **/*.{ts,tsx,js,jsx}
----
+
 
 - Use declarative routing with `<Route>` components
 - Implement proper error boundaries for route components

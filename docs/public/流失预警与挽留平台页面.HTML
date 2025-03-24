@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标签画像中台 - 流失预警与挽留平台</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; color: #333; }
+        .header { background-color: #1e88e5; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .breadcrumb { padding: 10px 20px; color: #666; font-size: 14px; }
+        .breadcrumb a { color: #1e88e5; text-decoration: none; }
+        .container { padding: 20px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .tab-navigation { margin-bottom: 20px; display: flex; border-bottom: 1px solid #ddd; }
+        .tab { padding: 10px 20px; cursor: pointer; }
+        .tab.active { color: #1e88e5; border-bottom: 2px solid #1e88e5; }
+        .overview-panel { background-color: #f9f9f9; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+        .overview-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
+        .overview-item { font-weight: bold; }
+        .overview-value { font-size: 18px; color: #1e88e5; }
+        .trend-chart { height: 150px; background-color: #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+        .warning-list { margin-bottom: 30px; }
+        .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .list-tools { display: flex; gap: 10px; }
+        .btn-export { background-color: #f5f5f5; color: #666; border: 1px solid #ddd; padding: 6px 12px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; }
+        .btn-filter { background-color: #f5f5f5; color: #666; border: 1px solid #ddd; padding: 6px 12px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; }
+        .icon { margin-right: 5px; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th { background-color: #f5f5f5; padding: 10px; text-align: left; border-bottom: 2px solid #ddd; }
+        .data-table td { padding: 10px; border-bottom: 1px solid #ddd; }
+        .priority-high { color: #f44336; }
+        .priority-medium { color: #ff9800; }
+        .priority-low { color: #4caf50; }
+        .unassigned { background-color: #ffebee; }
+        .customer-details { display: flex; gap: 20px; margin-bottom: 30px; }
+        .detail-column { flex: 1; }
+        .detail-panel { background-color: #f9f9f9; padding: 15px; border-radius: 6px; margin-bottom: 15px; }
+        .detail-header { font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+        .detail-row { display: flex; margin-bottom: 8px; }
+        .detail-label { width: 140px; color: #666; }
+        .detail-value { font-weight: 500; }
+        .timeline { margin-top: 15px; }
+        .timeline-title { font-weight: bold; margin-bottom: 10px; }
+        .timeline-item { padding-left: 20px; position: relative; margin-bottom: 8px; }
+        .timeline-item:before { content: ""; position: absolute; left: 0; top: 8px; width: 8px; height: 8px; background-color: #1e88e5; border-radius: 50%; }
+        .timeline-item:after { content: ""; position: absolute; left: 3px; top: 16px; width: 2px; height: calc(100% + 4px); background-color: #ddd; }
+        .timeline-item:last-child:after { display: none; }
+        .ai-panel { background-color: #e3f2fd; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #1e88e5; }
+        .ai-header { display: flex; align-items: center; margin-bottom: 10px; font-weight: bold; }
+        .ai-icon { margin-right: 10px; font-size: 20px; }
+        .solution-card { background-color: white; border: 1px solid #ddd; border-radius: 6px; padding: 15px; margin-bottom: 15px; }
+        .solution-title { font-weight: bold; margin-bottom: 10px; }
+        .solution-desc { margin-bottom: 10px; }
+        .solution-rating { color: #ff9800; margin-bottom: 10px; }
+        .btn-outline { background-color: white; color: #1e88e5; border: 1px solid #1e88e5; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+        .execution-panel { background-color: #f9f9f9; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+        .form-row { margin-bottom: 10px; display: flex; align-items: center; }
+        .form-label { width: 120px; text-align: right; padding-right: 15px; }
+        .form-input { flex-grow: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .form-textarea { flex-grow: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 80px; }
+        .form-radio { margin-right: 15px; }
+        .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
+        .btn-primary { background-color: #1e88e5; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        .btn-secondary { background-color: #f5f5f5; color: #666; border: 1px solid #ddd; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>标签画像中台</h2>
+        <div>
+            <span>赵主管</span> | <a href="#" style="color: white;">退出</a>
+        </div>
+    </div>
+
+    <div class="breadcrumb">
+        <a href="#">标签画像中台</a> > <a href="#">业务应用中心</a> > 流失预警与挽留平台
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>流失预警与挽留平台</h2>
+            <div class="tab-navigation">
+                <div class="tab active">预警中心</div>
+                <div class="tab">挽留方案</div>
+                <div class="tab">效果分析</div>
+            </div>
+        </div>
+
+        <div class="overview-panel">
+            <h3>预警概览 (今日更新)</h3>
+            <div class="overview-stats">
+                <div class="overview-item">
+                    <div>预警总数</div>
+                    <div class="overview-value">89 <span style="color: #4caf50; font-size: 14px;">(+12)</span></div>
+                </div>
+                <div class="overview-item">
+                    <div>紧急预警</div>
+                    <div class="overview-value">23 <span style="color: #f44336; font-size: 14px;">(+5)</span></div>
+                </div>
+                <div class="overview-item">
+                    <div>新增预警</div>
+                    <div class="overview-value">41</div>
+                </div>
+                <div class="overview-item">
+                    <div>高价值客户预警</div>
+                    <div class="overview-value">35</div>
+                </div>
+                <div class="overview-item">
+                    <div>中价值客户预警</div>
+                    <div class="overview-value">42</div>
+                </div>
+                <div class="overview-item">
+                    <div>普通客户预警</div>
+                    <div class="overview-value">12</div>
+                </div>
+            </div>
+            <div class="trend-chart">
+                [图表: 显示近30天预警数量趋势线]
+            </div>
+        </div>
+
+        <div class="warning-list">
+            <div class="list-header">
+                <h3>客户流失风险列表</h3>
+                <div class="list-tools">
+                    <button class="btn-export"><span class="icon">📋</span> 导出</button>
+                    <button class="btn-filter"><span class="icon">🔍</span> 高级筛选</button>
+                </div>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>优先级</th>
+                        <th>客户姓名</th>
+                        <th>客户等级</th>
+                        <th>风险分</th>
+                        <th>预测流失时间</th>
+                        <th>已分配</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="priority-high">⚠️⚠️⚠️</span></td>
+                        <td>张明</td>
+                        <td>私银</td>
+                        <td>92</td>
+                        <td>7天内</td>
+                        <td>王经理</td>
+                        <td>处理中</td>
+                    </tr>
+                    <tr class="unassigned">
+                        <td><span class="priority-high">⚠️⚠️⚠️</span></td>
+                        <td><a href="#" style="color: #1e88e5; text-decoration: none;">李华</a></td>
+                        <td>钻石</td>
+                        <td>87</td>
+                        <td>15天内</td>
+                        <td>未分配</td>
+                        <td>新预警</td>
+                    </tr>
+                    <tr>
+                        <td><span class="priority-medium">⚠️⚠️</span></td>
+                        <td>刘芳</td>
+                        <td>金卡</td>
+                        <td>75</td>
+                        <td>30天内</td>
+                        <td>陈经理</td>
+                        <td>已联系</td>
+                    </tr>
+                    <tr>
+                        <td><span class="priority-medium">⚠️⚠️</span></td>
+                        <td>王强</td>
+                        <td>私银</td>
+                        <td>72</td>
+                        <td>30天内</td>
+                        <td>李经理</td>
+                        <td>已挽留</td>
+                    </tr>
+                    <tr class="unassigned">
+                        <td><span class="priority-low">⚠️</span></td>
+                        <td>赵敏</td>
+                        <td>白金</td>
+                        <td>65</td>
+                        <td>60天内</td>
+                        <td>未分配</td>
+                        <td>新预警</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>客户详情: 李华 (钻石客户)</h3>
+        <div class="customer-details">
+            <div class="detail-column">
+                <div class="detail-panel">
+                    <div class="detail-header">基本信息</div>
+                    <div class="detail-row">
+                        <div class="detail-label">客户号:</div>
+                        <div class="detail-value">1089745</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">年龄:</div>
+                        <div class="detail-value">42岁</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">客户等级:</div>
+                        <div class="detail-value">钻石</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">入行时间:</div>
+                        <div class="detail-value">2015-05-18</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">AUM:</div>
+                        <div class="detail-value">487万元</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">主要产品:</div>
+                        <div class="detail-value">理财、基金、贷款</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">近30天交易:</div>
+                        <div class="detail-value">9笔</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">偏好渠道:</div>
+                        <div class="detail-value">手机银行、网点</div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <button class="btn-outline">查看完整画像</button>
+                    </div>
+                </div>
+                <div class="detail-panel">
+                    <div class="detail-header">关键行为时间线</div>
+                    <div class="timeline">
+                        <div class="timeline-item">10-15: 登录手机银行查询大额转账限额</div>
+                        <div class="timeline-item">10-18: 到期理财产品资金转入活期账户 (150万)</div>
+                        <div class="timeline-item">10-22: 查询我行最新理财产品，未购买</div>
+                        <div class="timeline-item">10-25: 手机银行登录频率降低50%</div>
+                        <div class="timeline-item">11-02: 小额资金转出 (5万)，疑似测试</div>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-column">
+                <div class="detail-panel">
+                    <div class="detail-header">流失风险分析</div>
+                    <div class="detail-row">
+                        <div class="detail-label">风险评分:</div>
+                        <div class="detail-value">87分 (高风险)</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">预测流失时间:</div>
+                        <div class="detail-value">15天内</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">置信度:</div>
+                        <div class="detail-value">92%</div>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <div class="ai-header">
+                            <span class="ai-icon">🤖</span> 大模型流失原因分析:
+                        </div>
+                        <div style="margin-left: 30px;">
+                            <p>1. 近3个月AUM减少12%，资金逐步转出</p>
+                            <p>2. 近期查询过竞品银行理财产品信息</p>
+                            <p>3. 重要性变量:</p>
+                            <ul style="margin-top: 5px;">
+                                <li>竞品银行同期推出高收益产品</li>
+                                <li>客户近期查询过转账限额</li>
+                                <li>上次理财产品到期未再购买</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-panel">
+            <div class="ai-header">
+                <span class="ai-icon">🤖</span> 根据客户画像和流失原因，智能推荐以下挽留方案:
+            </div>
+            <div class="solution-card">
+                <div class="solution-title">【方案1】专属理财产品推荐 <span class="solution-rating">(推荐指数: ★★★★★)</span></div>
+                <div class="solution-desc">
+                    <p>- 提供比市场高0.3%收益的专属理财产品</p>
+                    <p>- 专人服务，提供投资组合建议</p>
+                    <p>- 预计挽留成功率: 75%</p>
+                </div>
+                <button class="btn-outline">应用此方案</button>
+            </div>
+            <div class="solution-card">
+                <div class="solution-title">【方案2】增值服务礼包 <span class="solution-rating">(推荐指数: ★★★★)</span></div>
+                <div class="solution-desc">
+                    <p>- 提供免费家族财富规划服务</p>
+                    <p>- 赠送钻石客户专属增值权益</p>
+                    <p>- 预计挽留成功率: 60%</p>
+                </div>
+                <button class="btn-outline">应用此方案</button>
+            </div>
+            <div class="solution-card">
+                <div class="solution-title">【方案3】专属客户经理对接 <span class="solution-rating">(推荐指数: ★★★)</span></div>
+                <div class="solution-desc">
+                    <p>- 更换更资深的专属客户经理</p>
+                    <p>- 提供一对一咨询服务</p>
+                    <p>- 预计挽留成功率: 45%</p>
+                </div>
+                <button class="btn-outline">应用此方案</button>
+            </div>
+            <div style="text-align: center;">
+                <button class="btn-outline">自定义方案</button>
+            </div>
+        </div>
+
+        <div class="execution-panel">
+            <h3>执行与跟踪</h3>
+            <div class="form-row">
+                <div class="form-label">挽留方案分配:</div>
+                <select class="form-input">
+                    <option>李经理</option>
+                    <option>王经理</option>
+                    <option>赵经理</option>
+                </select>
+                <span style="margin: 0 20px;">预计完成时间:</span>
+                <input type="date" class="form-input" value="2023-11-18">
+            </div>
+            <div class="form-row">
+                <div class="form-label">联系方式:</div>
+                <div>
+                    <label class="form-radio"><input type="radio" name="contact" checked> 电话</label>
+                    <label class="form-radio"><input type="radio" name="contact"> 短信</label>
+                    <label class="form-radio"><input type="radio" name="contact"> 微信</label>
+                    <label class="form-radio"><input type="radio" name="contact"> 网点预约</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-label">执行说明:</div>
+                <textarea class="form-textarea">请优先电话联系客户，根据客户反馈调整产品方案
+务必在本周内完成沟通，避免客户资金进一步流出</textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-label">注意事项:</div>
+                <input type="text" class="form-input" value="客户曾反映对市场行情担忧，沟通时注重风险管理和资产保全">
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-primary">分配任务</button>
+            <button class="btn-primary">设置提醒</button>
+            <button class="btn-secondary">查看历史挽留</button>
+            <button class="btn-secondary">返回列表</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,13 +1,9 @@
 ---
 description: 
-globs: 
+globs: **/*.js,**/*.jsx
 alwaysApply: false
 ---
----
-name: react-hook-form-best-practices.mdc
-description: Best practices for form handling and validation with React Hook Form
-globs: **/*.{ts,tsx,js,jsx}
----
+
 
 - Use controlled components for better performance
 - Implement custom validation rules using `register`

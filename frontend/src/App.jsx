@@ -15,6 +15,9 @@ import AIAssistant from './pages/Dashboard/AIAssistant';
 
 // 导入标签中心路由组件
 import TagsRouter from './pages/Tags/TagsRouter';
+import AI from './pages/Tags/Creation/AI';
+import CreationRouter from './pages/Tags/Creation/CreationRouter';
+console.log('AI组件已导入:', AI);
 
 // 导入客群分析页面组件
 import PortraitRouter from './pages/Portrait/PortraitRouter';
@@ -169,12 +172,12 @@ function App() {
             </Route>
             
             {/* 标签创建 */}
-            <Route path="creation" element={<div>标签创建</div>}>
+            <Route path="creation" element={<CreationRouter />}>
               <Route index element={<Navigate to="/tags/creation/requirements" replace />} />
               <Route path="requirements" element={<div>标签需求</div>} />
               <Route path="registration" element={<div>标签注册</div>} />
               <Route path="factory" element={<div>标签工厂</div>} />
-              <Route path="ai" element={<div>智能生成</div>} />
+              <Route path="ai" element={<AI />} />
             </Route>
             
             {/* 标签质量 */}

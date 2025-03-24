@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标签画像中台 - 场景模板库</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; color: #333; }
+        .header { background-color: #1e88e5; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .nav { background-color: #f5f5f5; padding: 10px 20px; border-bottom: 1px solid #ddd; }
+        .nav-item { display: inline-block; margin-right: 20px; font-weight: bold; color: #666; text-decoration: none; }
+        .nav-item.active { color: #1e88e5; border-bottom: 2px solid #1e88e5; }
+        .container { padding: 20px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-primary { background-color: #1e88e5; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+        .filter-bar { background-color: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; display: flex; }
+        .filter-select { margin-right: 15px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .search-box { flex-grow: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-left: auto; max-width: 250px; }
+        .template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .template-card { border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer; } /* Make card clickable */
+        .template-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #1e88e5; }
+        .template-info { margin-bottom: 5px; color: #666; }
+        .template-stars { color: #ff9800; }
+        .btn-secondary { background-color: #f5f5f5; color: #666; border: 1px solid #ddd; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+        .pagination { text-align: center; margin-top: 20px; }
+        .page-link { display: inline-block; padding: 5px 10px; margin: 0 5px; border: 1px solid #ddd; border-radius: 3px; text-decoration: none; color: #666; }
+        .page-link.active { background-color: #1e88e5; color: white; }
+
+        /* Style for template detail page - initially hidden */
+        .template-detail-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 1000; /* Ensure it's on top */
+            overflow-y: auto; /* Enable scroll if content is long */
+        }
+
+        .template-detail-container {
+            background-color: white;
+            margin: 50px auto; /* Center the container */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 80%; /* Adjust width as needed */
+            max-width: 900px;
+            position: relative; /* For close button positioning */
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .detail-title {
+            font-size: 24px;
+            color: #1e88e5;
+            margin: 0;
+        }
+
+        .detail-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-section-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .detail-info-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .detail-info-label {
+            width: 150px;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .detail-info-value {
+            flex-grow: 1;
+            color: #333;
+        }
+
+        .detail-actions {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>标签画像中台</h2>
+        <div>
+            <span>管理员</span> | <a href="#" style="color: white;">退出</a>
+        </div>
+    </div>
+
+    <div class="nav">
+        <a href="#" class="nav-item">首页</a>
+        <a href="#" class="nav-item">标签中心</a>
+        <a href="#" class="nav-item">客群画像</a>
+        <a href="#" class="nav-item">业务应用中心</a>
+        <a href="#" class="nav-item active">场景模板</a>
+        <a href="#" class="nav-item">系统管理</a>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>场景模板库</h2>
+            <button class="btn-primary">+ 创建模板</button>
+        </div>
+
+        <div class="filter-bar">
+            <select class="filter-select">
+                <option>全部</option>
+                <option>零售金融</option>
+                <option>对公业务</option>
+                <option>风控合规</option>
+            </select>
+            <select class="filter-select">
+                <option>最近更新</option>
+                <option>使用最多</option>
+                <option>评分最高</option>
+            </select>
+            <input type="text" class="search-box" placeholder="搜索模板...">
+        </div>
+
+        <div class="template-grid">
+            <!-- Template cards will be dynamically generated here -->
+            <div class="template-card" data-template-id="1"> <!-- Added data-template-id -->
+                <div class="template-title">客户流失预测模板</div>
+                <div class="template-info">版本: v2.3</div>
+                <div class="template-info">更新: 2023-10-15</div>
+                <div class="template-info">应用: 8个</div>
+                <div class="template-info">评分: <span class="template-stars">★★★★☆</span></div>
+                <button class="btn-secondary view-detail-btn">查看详情</button> <!-- Added class for JS -->
+            </div>
+            <div class="template-card" data-template-id="2"> <!-- Added data-template-id -->
+                <div class="template-title">信用评分模板</div>
+                <div class="template-info">版本: v1.5</div>
+                <div class="template-info">更新: 2023-09-28</div>
+                <div class="template-info">应用: 12个</div>
+                <div class="template-info">评分: <span class="template-stars">★★★★★</span></div>
+                <button class="btn-secondary view-detail-btn">查看详情</button> <!-- Added class for JS -->
+            </div>
+            <div class="template-card" data-template-id="3"> <!-- Added data-template-id -->
+                <div class="template-title">交叉销售模板</div>
+                <div class="template-info">版本: v3.1</div>
+                <div class="template-info">更新: 2023-11-02</div>
+                <div class="template-info">应用: 5个</div>
+                <div class="template-info">评分: <span class="template-stars">★★★★☆</span></div>
+                <button class="btn-secondary view-detail-btn">查看详情</button> <!-- Added class for JS -->
+            </div>
+            <div class="template-card" data-template-id="4"> <!-- Added data-template-id -->
+                <div class="template-title">投资组合优化模板</div>
+                <div class="template-info">版本: v1.2</div>
+                <div class="template-info">更新: 2023-10-30</div>
+                <div class="template-info">应用: 3个</div>
+                <div class="template-info">评分: <span class="template-stars">★★★★☆</span></div>
+                <button class="btn-secondary view-detail-btn">查看详情</button> <!-- Added class for JS -->
+            </div>
+            <div class="template-card" data-template-id="5"> <!-- Added data-template-id -->
+                <div class="template-title">企业关联分析模板</div>
+                <div class="template-info">版本: v2.0</div>
+                <div class="template-info">更新: 2023-11-10</div>
+                <div class="template-info">应用: 6个</div>
+                <div class="template-info">评分: <span class="template-stars">★★★☆☆</span></div>
+                <button class="btn-secondary view-detail-btn">查看详情</button> <!-- Added class for JS -->
+            </div>
+            <div class="template-card" data-template-id="6"> <!-- Added data-template-id -->
+                <div class="template-title">营销活动模板</div>
+                <div class="template-info">版本: v4.3</div>
+                <div class="template-info">更新: 2023-10-05</div>
+                <div class="template-info">应用: 10个</div>
+                <div class="template-info">评分: <span class="template-stars">★★★★★</span></div>
+                <button class="btn-secondary view-detail-btn">查看详情</button> <!-- Added class for JS -->
+            </div>
+        </div>
+
+        <div class="pagination">
+            <a href="#" class="page-link">&lt;</a>
+            <a href="#" class="page-link active">1</a>
+            <a href="#" class="page-link">2</a>
+            <a href="#" class="page-link">3</a>
+            <a href="#" class="page-link">4</a>
+            <a href="#" class="page-link">5</a>
+            <a href="#" class="page-link">&gt;</a>
+        </div>
+
+        <!-- Template Detail Overlay - Hidden by default -->
+        <div id="templateDetailOverlay" class="template-detail-overlay">
+            <div class="template-detail-container">
+                <div class="detail-header">
+                    <h3 id="templateDetailTitle" class="detail-title">模板详情</h3>
+                    <button id="closeDetailBtn" class="detail-close-btn">×</button>
+                </div>
+
+                <div class="detail-section">
+                    <h4 class="detail-section-title">基本信息</h4>
+                    <div class="detail-info-row">
+                        <div class="detail-info-label">模板名称:</div>
+                        <div id="detailTemplateName" class="detail-info-value"></div>
+                    </div>
+                    <div class="detail-info-row">
+                        <div class="detail-info-label">版本:</div>
+                        <div id="detailTemplateVersion" class="detail-info-value"></div>
+                    </div>
+                    <div class="detail-info-row">
+                        <div class="detail-info-label">业务分类:</div>
+                        <div id="detailTemplateCategory" class="detail-info-value"></div>
+                    </div>
+                    <div class="detail-info-row">
+                        <div class="detail-info-label">描述:</div>
+                        <div id="detailTemplateDescription" class="detail-info-value"></div>
+                    </div>
+                    <div class="detail-info-row">
+                        <div class="detail-info-label">更新日期:</div>
+                        <div id="detailTemplateUpdateDate" class="detail-info-value"></div>
+                    </div>
+                    <div class="detail-info-row">
+                        <div class="detail-info-label">应用数量:</div>
+                        <div id="detailTemplateApplicationCount" class="detail-info-value"></div>
+                    </div>
+                    <div class="detail-info-row">
+                        <div class="detail-info-label">评分:</div>
+                        <div id="detailTemplateRating" class="detail-info-value"></div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h4 class="detail-section-title">核心配置</h4>
+                    <div class="detail-info-row">
+                        <div class="detail-info-label">参数:</div>
+                        <div id="detailTemplateParameters" class="detail-info-value"></div>
+                    </div>
+                    <div class="detail-info-row">
+                        <div class="detail-info-label">关联标签:</div>
+                        <div id="detailTemplateTags" class="detail-info-value"></div>
+                    </div>
+                    <div class="detail-info-row">
+                        <div class="detail-info-label">输出字段:</div>
+                        <div id="detailTemplateOutputFields" class="detail-info-value"></div>
+                    </div>
+                    <div class="detail-info-row">
+                        <div class="detail-info-label">计算逻辑:</div>
+                        <div id="detailTemplateLogic" class="detail-info-value"></div>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <button class="btn-primary">使用模板</button>
+                    <button class="btn-secondary">编辑模板</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const templateCards = document.querySelectorAll('.template-card');
+            const detailOverlay = document.getElementById('templateDetailOverlay');
+            const closeDetailBtn = document.getElementById('closeDetailBtn');
+
+            // Function to display template details
+            function showTemplateDetails(templateId) {
+                // In a real application, fetch template details based on templateId
+                // For now, using hardcoded data for demonstration
+                let templateDetails = getTemplateDetails(templateId);
+
+                if (templateDetails) {
+                    document.getElementById('detailTemplateName').textContent = templateDetails.name;
+                    document.getElementById('detailTemplateVersion').textContent = templateDetails.version;
+                    document.getElementById('detailTemplateCategory').textContent = templateDetails.category;
+                    document.getElementById('detailTemplateDescription').textContent = templateDetails.description;
+                    document.getElementById('detailTemplateUpdateDate').textContent = templateDetails.updateDate;
+                    document.getElementById('detailTemplateApplicationCount').textContent = templateDetails.applicationCount;
+                    document.getElementById('detailTemplateRating').textContent = templateDetails.rating;
+                    document.getElementById('detailTemplateParameters').textContent = templateDetails.parameters.join(', ');
+                    document.getElementById('detailTemplateTags').textContent = templateDetails.tags.join(', ');
+                    document.getElementById('detailTemplateOutputFields').textContent = templateDetails.outputFields.join(', ');
+                    document.getElementById('detailTemplateLogic').textContent = templateDetails.logicSummary;
+                    document.getElementById('templateDetailTitle').textContent = templateDetails.name + " 详情"; // Set detail page title
+
+                    detailOverlay.style.display = 'block'; // Show the overlay
+                }
+            }
+
+            // Event listeners for "View Detail" buttons
+            templateCards.forEach(card => {
+                const detailButton = card.querySelector('.view-detail-btn');
+                detailButton.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Prevent card click from also triggering
+                    const templateId = card.dataset.templateId;
+                    showTemplateDetails(templateId);
+                });
+
+                // Make the entire card clickable to also open details
+                card.addEventListener('click', function() {
+                    const templateId = card.dataset.templateId;
+                    showTemplateDetails(templateId);
+                });
+            });
+
+
+            // Event listener to close detail overlay
+            closeDetailBtn.addEventListener('click', function() {
+                detailOverlay.style.display = 'none'; // Hide the overlay
+            });
+
+            // Close overlay if clicked outside the detail container
+            detailOverlay.addEventListener('click', function(event) {
+                if (event.target === detailOverlay) {
+                    detailOverlay.style.display = 'none';
+                }
+            });
+
+            // --- Dummy data for template details ---
+            function getTemplateDetails(templateId) {
+                const templates = {
+                    "1": {
+                        id: "1",
+                        name: "客户流失预测模板",
+                        version: "v2.3",
+                        category: "零售金融",
+                        description: "预测客户未来3个月的流失风险，用于提前干预和客户挽留。",
+                        updateDate: "2023-10-15",
+                        applicationCount: "8",
+                        rating: "★★★★☆",
+                        parameters: ["预测周期", "风险阈值", "干预策略"],
+                        tags: ["流失预测", "风险管理", "客户挽留"],
+                        outputFields: ["客户ID", "流失风险评分", "预测概率", "高风险原因", "建议挽留措施"],
+                        logicSummary: "基于客户行为、交易记录和 demographics 特征，使用机器学习模型预测流失风险。"
+                    },
+                    "2": {
+                        id: "2",
+                        name: "信用评分模板",
+                        version: "v1.5",
+                        category: "零售金融",
+                        description: "基于多维度数据评估客户的信用风险等级，用于信贷审批和风险定价。",
+                        updateDate: "2023-09-28",
+                        applicationCount: "12",
+                        rating: "★★★★★",
+                        parameters: ["评分模型版本", "数据来源", "风险等级划分"],
+                        tags: ["信用评分", "风险评估", "信贷审批"],
+                        outputFields: ["客户ID", "信用评分", "风险等级", "主要风险因素", "评分明细"],
+                        logicSummary: "采用评分卡模型，综合考虑客户的信用历史、还款能力和稳定性等因素。"
+                    },
+                    "3": {
+                        id: "3",
+                        name: "交叉销售模板",
+                        version: "v3.1",
+                        category: "零售金融",
+                        description: "识别适合交叉销售特定金融产品的目标客户群体，提升产品渗透率。",
+                        updateDate: "2023-11-02",
+                        applicationCount: "5",
+                        rating: "★★★★☆",
+                        parameters: ["目标产品", "客群筛选条件", "营销渠道"],
+                        tags: ["交叉销售", "产品营销", "客群拓展"],
+                        outputFields: ["客户ID", "产品匹配度", "推荐理由", "最佳营销渠道", "潜在购买概率"],
+                        logicSummary: "分析客户现有产品持有情况和交易行为，预测对新产品的潜在需求和偏好。"
+                    },
+                    "4": {
+                        id: "4",
+                        name: "投资组合优化模板",
+                        version: "v1.2",
+                        category: "零售金融",
+                        description: "为客户提供个性化的投资组合建议，根据风险偏好和财务目标优化资产配置。",
+                        updateDate: "2023-10-30",
+                        applicationCount: "3",
+                        rating: "★★★★☆",
+                        parameters: ["风险偏好等级", "投资期限", "目标收益率"],
+                        tags: ["投资组合", "资产配置", "财富管理"],
+                        outputFields: ["客户ID", "推荐组合方案", "预期收益", "风险评估", "产品配置明细"],
+                        logicSummary: "基于客户风险承受能力和市场行情，构建最优化的投资产品组合。"
+                    },
+                    "5": {
+                        id: "5",
+                        name: "企业关联分析模板",
+                        version: "v2.0",
+                        category: "对公业务",
+                        description: "分析企业客户之间的关联关系，用于风险识别、集团客户管理和业务拓展。",
+                        updateDate: "2023-11-10",
+                        applicationCount: "6",
+                        rating: "★★★☆☆",
+                        parameters: ["关联维度", "分析深度", "风险阈值"],
+                        tags: ["企业客户", "关联分析", "风险识别", "集团管理"],
+                        outputFields: ["企业ID", "关联企业列表", "关联强度", "潜在风险", "集团关系图谱"],
+                        logicSummary: "通过股权关系、交易网络和人员关系等多维度数据，挖掘企业间的潜在关联。"
+                    },
+                    "6": {
+                        id: "6",
+                        name: "营销活动模板",
+                        version: "v4.3",
+                        category: "零售金融",
+                        description: "快速创建和配置营销活动，实现精准客户触达和营销效果最大化。",
+                        updateDate: "2023-10-05",
+                        applicationCount: "10",
+                        rating: "★★★★★",
+                        parameters: ["活动目标", "目标客群", "营销预算", "渠道配置"],
+                        tags: ["营销活动", "精准营销", "客户触达", "活动管理"],
+                        outputFields: ["活动ID", "目标客群包", "营销物料", "渠道配置", "效果预测"],
+                        logicSummary: "提供可视化配置界面，支持灵活定义营销活动的目标、客群和执行策略。"
+                    }
+                };
+                return templates[templateId];
+            }
+
+        });
+    </script>
+</body>
+</html>

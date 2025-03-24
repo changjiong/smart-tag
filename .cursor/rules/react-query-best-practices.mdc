@@ -1,13 +1,9 @@
 ---
 description: 
-globs: 
+globs: **/*.js,**/*.jsx
 alwaysApply: false
 ---
----
-name: react-query-best-practices.mdc
-description: Best practices for managing data fetching and caching with React Query
-globs: **/*.{ts,tsx,js,jsx}
----
+
 
 - Use `useQuery` for fetching data and `useMutation` for side effects
 - Implement proper error handling and loading states

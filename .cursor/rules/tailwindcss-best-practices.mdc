@@ -1,13 +1,9 @@
 ---
 description: 
-globs: 
+globs: **/*.js,**/*.jsx,**/*.css
 alwaysApply: false
 ---
----
-name: tailwindcss-best-practices.mdc
-description: Best practices for styling with Tailwind CSS
-globs: **/*.{ts,tsx,css}
----
+
 
 - Use utility classes for styling components
 - Create custom components with `@apply` directive

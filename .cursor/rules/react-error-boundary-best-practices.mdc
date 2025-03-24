@@ -1,13 +1,9 @@
 ---
 description: 
-globs: 
+globs: **/*.js,**/*.jsx
 alwaysApply: false
 ---
----
-name: react-error-boundary-best-practices.mdc
-description: Best practices for error handling with React Error Boundary
-globs: **/*.{ts,tsx,js,jsx}
----
+
 
 - Wrap critical components with `<ErrorBoundary>` for graceful error handling
 - Implement custom error fallbacks for user-friendly error messages

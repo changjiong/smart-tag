@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标签画像中台 - 优化菜单结构</title>
+    <style>
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            background-color: #f5f7fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #1e88e5;
+            border-bottom: 2px solid #1e88e5;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h2 {
+            color: #0d47a1;
+            margin-top: 30px;
+            border-left: 4px solid #1e88e5;
+            padding-left: 10px;
+        }
+        .menu-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .menu-column {
+            flex: 1;
+            min-width: 300px;
+        }
+        .menu-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        .menu-header {
+            background-color: #1e88e5;
+            color: white;
+            padding: 12px 15px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .menu-content {
+            padding: 0;
+        }
+        .menu-item {
+            border-bottom: 1px solid #eee;
+            padding: 0;
+        }
+        .menu-item-header {
+            padding: 10px 15px;
+            background-color: #e3f2fd;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .menu-item-content {
+            padding: 0;
+            display: none;
+        }
+        .menu-sub-item {
+            padding: 8px 15px 8px 30px;
+            border-bottom: 1px dashed #eee;
+        }
+        .menu-sub-item:last-child {
+            border-bottom: none;
+        }
+        .menu-sub-sub-item {
+            padding: 6px 15px 6px 50px;
+            color: #666;
+            font-size: 14px;
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: normal;
+            margin-left: 6px;
+        }
+        .tag-new {
+            background-color: #4caf50;
+            color: white;
+        }
+        .tag-ai {
+            background-color: #9c27b0;
+            color: white;
+        }
+        .tag-updated {
+            background-color: #ff9800;
+            color: white;
+        }
+        .toggle-icon {
+            transition: transform 0.3s;
+        }
+        .description {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .highlight {
+            background-color: #fffde7;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .implementation-notes {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f1f8e9;
+            border-radius: 8px;
+        }
+        .global-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #1e88e5;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .global-assistant:hover {
+            background-color: #1565c0;
+        }
+        .assistant-tooltip {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background-color: #333;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+        .global-assistant:hover .assistant-tooltip {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>标签画像中台 - 优化菜单结构</h1>
+        
+        <div class="description">
+            <p>根据业务需求和用户体验考量，对菜单结构进行了全面优化，主要增强点包括：</p>
+            <ul>
+                <li><strong>业务导向强化</strong>：业务应用中心按照业务领域清晰划分</li>
+                <li><strong>价值维度突出</strong>：增加标签价值和业务价值中心</li>
+                <li><strong>全局智能助手</strong>：引入随时可用的AI助手，提升用户体验</li>
+                <li><strong>用户引导增强</strong>：各模块增加快速入门/使用指南</li>
+                <li><strong>能力生态构建</strong>：开放能力独立为一级菜单，促进生态构建</li>
+            </ul>
+        </div>
+
+        <div class="menu-container">
+            <div class="menu-column">
+                <div class="menu-section">
+                    <div class="menu-header" onclick="toggleSection(this)">
+                        一、首页 <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                1. 工作台 <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">业务任务看板</div>
+                                <div class="menu-sub-item">数据洞察快报</div>
+                                <div class="menu-sub-item">系统使用指南 <span class="tag tag-new">新</span></div>
+                                <div class="menu-sub-item">价值成果展示 <span class="tag tag-new">新</span></div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                2. 个性化推荐 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">推荐功能</div>
+                                <div class="menu-sub-item">常用工具</div>
+                                <div class="menu-sub-item">学习资源</div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                3. 全局智能助手 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">对话式分析 <span class="tag tag-ai">大模型</span></div>
+                                <div class="menu-sub-item">业务问题解答 <span class="tag tag-ai">大模型</span></div>
+                                <div class="menu-sub-item">智能解读 <span class="tag tag-ai">大模型</span></div>
+                                <div class="menu-sub-item">操作引导</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-section">
+                    <div class="menu-header" onclick="toggleSection(this)">
+                        二、业务应用中心 <span class="tag tag-new">全新模块</span> <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                1. 零售营销应用 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item" onclick="toggleSubItem(this)">
+                                    精准营销工作站 <span class="toggle-icon">▼</span>
+                                </div>
+                                <div class="menu-sub-sub-item">智能客群推荐 <span class="tag tag-ai">大模型</span></div>
+                                <div class="menu-sub-sub-item">个性化话术生成 <span class="tag tag-ai">大模型</span></div>
+                                <div class="menu-sub-sub-item">营销ROI分析</div>
+                                <div class="menu-sub-item">新客获取平台</div>
+                                <div class="menu-sub-item">交叉销售助手</div>
+                                <div class="menu-sub-item">数字营销平台</div>
+                                <div class="menu-sub-item">快速入门 <span class="tag tag-new">新</span></div>
+                                <div class="menu-sub-item">数据来源配置 <span class="tag tag-new">新</span></div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                2. 客户经营应用 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item" onclick="toggleSubItem(this)">
+                                    流失预警与挽留平台 <span class="toggle-icon">▼</span>
+                                </div>
+                                <div class="menu-sub-sub-item">流失风险预测</div>
+                                <div class="menu-sub-sub-item">流失原因诊断 <span class="tag tag-ai">大模型</span></div>
+                                <div class="menu-sub-sub-item">客户挽留方案</div>
+                                <div class="menu-sub-item">客户价值提升</div>
+                                <div class="menu-sub-item">客户生命周期管理</div>
+                                <div class="menu-sub-item">忠诚度计划管理</div>
+                                <div class="menu-sub-item">快速入门 <span class="tag tag-new">新</span></div>
+                                <div class="menu-sub-item">数据来源配置 <span class="tag tag-new">新</span></div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                3. 财富管理应用 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <!-- 财富管理应用子菜单内容 -->
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                4. 风险管控应用 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <!-- 风险管控应用子菜单内容 -->
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                5. 对公业务应用 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <!-- 对公业务应用子菜单内容 -->
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                6. 业务价值中心 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">应用价值看板</div>
+                                <div class="menu-sub-item">标签ROI分析</div>
+                                <div class="menu-sub-item">成功案例库</div>
+                                <div class="menu-sub-item">价值评估工具 <span class="tag tag-new">新</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-column">
+                <div class="menu-section">
+                    <div class="menu-header" onclick="toggleSection(this)">
+                        三、标签中心 <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                1. 标签管理 <span class="tag tag-updated">整合</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">标签超市</div>
+                                <div class="menu-sub-item">标签分类管理</div>
+                                <div class="menu-sub-item">标签信息管理</div>
+                                <div class="menu-sub-item">标签元数据管理</div>
+                                <div class="menu-sub-item">标签体系批量卸载</div>
+                                <div class="menu-sub-item">标签信息批量更新</div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                2. 标签创建 <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">标签需求</div>
+                                <div class="menu-sub-item">标签注册</div>
+                                <div class="menu-sub-item">标签工厂</div>
+                                <div class="menu-sub-item">智能生成 <span class="tag tag-ai">大模型</span> <span class="tag tag-new">新</span></div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                3. 标签质量 <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">标签质量看板</div>
+                                <div class="menu-sub-item">标签健康 <span class="tag tag-ai">大模型</span> <span class="tag tag-new">新</span></div>
+                                <div class="menu-sub-item">异常预警</div>
+                                <div class="menu-sub-item">预警配置</div>
+                                <div class="menu-sub-item">规则预警</div>
+                                <div class="menu-sub-item">任务与历史</div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                4. 标签价值 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">标签使用分析</div>
+                                <div class="menu-sub-item">价值追踪</div>
+                                <div class="menu-sub-item">业务映射</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-section">
+                    <div class="menu-header" onclick="toggleSection(this)">
+                        四、客群画像 <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                1. 客群管理 <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">客群创建</div>
+                                <div class="menu-sub-item">智能分群 <span class="tag tag-ai">大模型</span> <span class="tag tag-new">新</span></div>
+                                <div class="menu-sub-item">相似客群发现 <span class="tag tag-new">新</span></div>
+                                <div class="menu-sub-item">客群洞察库 <span class="tag tag-new">新</span></div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                2. 画像分析 <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">单客户视图</div>
+                                <div class="menu-sub-item">行为序列分析 <span class="tag tag-new">新</span></div>
+                                <div class="menu-sub-item">群体洞察</div>
+                                <div class="menu-sub-item">群体画像</div>
+                                <div class="menu-sub-item">漏斗分析</div>
+                                <div class="menu-sub-item">客群对比</div>
+                                <div class="menu-sub-item">YRFM分析</div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                3. 画像应用 <span class="tag tag-updated">整合</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">触达计划</div>
+                                <div class="menu-sub-item">话术模板</div>
+                                <div class="menu-sub-item">触达记录</div>
+                                <div class="menu-sub-item">应用对接 <span class="tag tag-new">新</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-column">
+                <div class="menu-section">
+                    <div class="menu-header" onclick="toggleSection(this)">
+                        五、场景模板 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                1. 模板库 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">零售金融场景包</div>
+                                <div class="menu-sub-item">对公业务场景包</div>
+                                <div class="menu-sub-item">风控合规场景包</div>
+                                <div class="menu-sub-item">客户经营场景包</div>
+                                <div class="menu-sub-item">模板详情 <span class="tag tag-new">新</span></div>
+                                <div class="menu-sub-item">模板市场 <span class="tag tag-new">新</span></div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                2. 模板应用 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">模板业务映射</div>
+                                <div class="menu-sub-item">模板实例化配置</div>
+                                <div class="menu-sub-item">模板应用监控</div>
+                                <div class="menu-sub-item">应用创建向导 <span class="tag tag-new">新</span></div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                3. 模板管理 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">模板创建</div>
+                                <div class="menu-sub-item">模板参数化配置</div>
+                                <div class="menu-sub-item">模板版本管理</div>
+                                <div class="menu-sub-item">模板效果评估</div>
+                                <div class="menu-sub-item">模板共享 <span class="tag tag-new">新</span></div>
+                                <div class="menu-sub-item">使用指南 <span class="tag tag-new">新</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-section">
+                    <div class="menu-header" onclick="toggleSection(this)">
+                        六、开放能力 <span class="tag tag-updated">位置提升</span> <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                1. API服务 <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">标签快递（API）</div>
+                                <div class="menu-sub-item">画像输出 <span class="tag tag-new">新</span></div>
+                                <div class="menu-sub-item">客群输出 <span class="tag tag-new">新</span></div>
+                                <div class="menu-sub-item">模板能力接口 <span class="tag tag-new">新</span></div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                2. 数据服务 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">数据资产目录</div>
+                                <div class="menu-sub-item">数据订阅</div>
+                                <div class="menu-sub-item">数据推送配置</div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                3. 开放能力文档中心 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">API使用指南</div>
+                                <div class="menu-sub-item">示例代码</div>
+                                <div class="menu-sub-item">最佳实践</div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                4. 接入申请与审批 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">申请管理</div>
+                                <div class="menu-sub-item">权限审批</div>
+                                <div class="menu-sub-item">接入系统管理</div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                5. 服务监控 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">调用统计</div>
+                                <div class="menu-sub-item">性能监控</div>
+                                <div class="menu-sub-item">告警管理</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-section">
+                    <div class="menu-header" onclick="toggleSection(this)">
+                        七、系统管理 <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                1. 用户权限 <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">机构管理</div>
+                                <div class="menu-sub-item">用户管理</div>
+                                <div class="menu-sub-item">角色管理</div>
+                                <div class="menu-sub-item">流程管理</div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                2. 系统配置 <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">调度任务</div>
+                                <div class="menu-sub-item">参数设置</div>
+                                <div class="menu-sub-item">公告管理</div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                3. 大模型配置 <span class="tag tag-new">新</span> <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">模型服务</div>
+                                <div class="menu-sub-item">知识库</div>
+                                <div class="menu-sub-item">提示词管理</div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header" onclick="toggleItem(this)">
+                                4. 运行监控 <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="menu-item-content">
+                                <div class="menu-sub-item">流量监控</div>
+                                <div class="menu-sub-item">日志监控</div>
+                                <div class="menu-sub-item">平台监控</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="implementation-notes">
+            <h2>微调实施说明</h2>
+            <p>针对前面的微调建议，本次调整主要包含以下几个方面：</p>
+            <ol>
+                <li><strong>全局智能助手</strong>：将智能助手从首页子模块升级为全局悬浮组件，并在首页菜单中保留入口设置</li>
+                <li><strong>应用中心增强</strong>：为每个应用模块增加"快速入门"和"数据来源配置"选项</li>
+                <li><strong>场景模板完善</strong>：增加"模板详情"、"模板市场"、"模板共享"和"使用指南"功能</li>
+                <li><strong>开放能力扩展</strong>：新增"开放能力文档中心"和"接入申请与审批"模块</li>
+                <li><strong>业务导航优化</strong>：增加应用创建向导，帮助快速构建基于场景模板的业务应用</li>
+            </ol>
+            <p>这些调整进一步增强了系统的易用性和业务价值，使各模块之间的联系更加紧密，功能定位更加清晰。</p>
+        </div>
+    </div>
+
+    <!-- 全局智能助手悬浮按钮 -->
+    <div class="global-assistant">
+        <div class="assistant-tooltip">智能助手</div>
+        <i>AI</i>
+    </div>
+
+    <script>
+        function toggleSection(element) {
+            const content = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.display = 'none';
+                icon.style.transform = 'rotate(-90deg)';
+            }
+        }
+
+        function toggleItem(element) {
+            const content = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                icon.style.transform = 'rotate(-90deg)';
+            } else {
+                content.style.display = 'block';
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function toggleSubItem(element) {
+            const subItems = element.parentElement.querySelectorAll('.menu-sub-sub-item');
+            const icon = element.querySelector('.toggle-icon');
+            
+            let anyVisible = false;
+            subItems.forEach(item => {
+                if (item.style.display !== 'none') anyVisible = true;
+            });
+            
+            subItems.forEach(item => {
+                item.style.display = anyVisible ? 'none' : 'block';
+            });
+            
+            if (icon) {
+                icon.style.transform = anyVisible ? 'rotate(-90deg)' : 'rotate(0deg)';
+            }
+        }
+
+        // 初始化：展开所有顶级菜单，但折叠子菜单
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.menu-content').forEach(content => {
+                content.style.display = 'block';
+            });
+            
+            document.querySelectorAll('.menu-item-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            document.querySelectorAll('.menu-item-header .toggle-icon').forEach(icon => {
+                icon.style.transform = 'rotate(-90deg)';
+            });
+        });
+    </script>
+</body>
+</html>

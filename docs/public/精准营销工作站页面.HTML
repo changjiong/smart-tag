@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标签画像中台 - 精准营销工作站</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; color: #333; }
+        .header { background-color: #1e88e5; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .nav { background-color: #f5f5f5; padding: 10px 20px; border-bottom: 1px solid #ddd; }
+        .breadcrumb { padding: 10px 20px; color: #666; font-size: 14px; }
+        .breadcrumb a { color: #1e88e5; text-decoration: none; }
+        .container { padding: 20px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .tab-navigation { margin-bottom: 20px; display: flex; border-bottom: 1px solid #ddd; }
+        .tab { padding: 10px 20px; cursor: pointer; }
+        .tab.active { color: #1e88e5; border-bottom: 2px solid #1e88e5; }
+        .section { margin-bottom: 25px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; }
+        .btn-new { background-color: #1e88e5; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+        .form-panel { background-color: #f9f9f9; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+        .form-row { margin-bottom: 10px; display: flex; align-items: center; }
+        .form-label { width: 120px; text-align: right; padding-right: 15px; }
+        .form-input { flex-grow: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .form-radio { margin-right: 15px; }
+        .ai-panel { background-color: #e3f2fd; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #1e88e5; }
+        .ai-header { display: flex; align-items: center; margin-bottom: 10px; font-weight: bold; }
+        .ai-icon { margin-right: 10px; font-size: 20px; }
+        .audience-card { background-color: white; border: 1px solid #ddd; border-radius: 6px; padding: 15px; margin-bottom: 15px; }
+        .audience-title { font-weight: bold; margin-bottom: 10px; }
+        .audience-desc { margin-bottom: 10px; }
+        .audience-meta { color: #666; margin-bottom: 10px; }
+        .audience-actions { display: flex; gap: 10px; }
+        .btn-outline { background-color: white; color: #1e88e5; border: 1px solid #1e88e5; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+        .btn-link { background: none; border: none; color: #1e88e5; cursor: pointer; text-decoration: underline; }
+        .strategy-panel { background-color: #f9f9f9; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+        .strategy-section { margin-bottom: 15px; }
+        .strategy-title { font-weight: bold; margin-bottom: 5px; }
+        .strategy-content { padding-left: 20px; }
+        .speech-panel { background-color: #f9f9f9; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+        .speech-title { font-weight: bold; margin-bottom: 10px; }
+        .speech-content { background-color: white; padding: 10px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px; }
+        .speech-actions { display: flex; gap: 10px; }
+        .estimate-panel { background-color: #f9f9f9; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+        .estimate-row { display: flex; margin-bottom: 5px; }
+        .estimate-label { width: 150px; }
+        .estimate-value { font-weight: bold; }
+        .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
+        .btn-primary { background-color: #1e88e5; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        .btn-secondary { background-color: #f5f5f5; color: #666; border: 1px solid #ddd; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>标签画像中台</h2>
+        <div>
+            <span>李经理</span> | <a href="#" style="color: white;">退出</a>
+        </div>
+    </div>
+
+    <div class="breadcrumb">
+        <a href="#">标签画像中台</a> > <a href="#">业务应用中心</a> > 精准营销工作站
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>精准营销工作站</h2>
+            <div class="tab-navigation">
+                <div class="tab active">我的活动</div>
+                <div class="tab">团队活动</div>
+                <div class="tab">活动模板</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h3>快速创建营销活动</h3>
+                <button class="btn-new">+ 新建活动</button>
+            </div>
+            <div class="form-panel">
+                <div class="form-row">
+                    <div class="form-label">活动名称:</div>
+                    <input type="text" class="form-input" value="夏季信用卡促销活动">
+                </div>
+                <div class="form-row">
+                    <div class="form-label">活动目标:</div>
+                    <div>
+                        <label class="form-radio"><input type="radio" name="goal"> 新客获取</label>
+                        <label class="form-radio"><input type="radio" name="goal" checked> 产品交叉销售</label>
+                        <label class="form-radio"><input type="radio" name="goal"> 客户激活</label>
+                        <label class="form-radio"><input type="radio" name="goal"> 客户挽留</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">目标产品:</div>
+                    <select class="form-input">
+                        <option>信用卡-白金卡</option>
+                        <option>信用卡-金卡</option>
+                        <option>信用卡-标准卡</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">活动时间:</div>
+                    <input type="date" class="form-input" style="width: 150px;" value="2023-11-25"> 至 
+                    <input type="date" class="form-input" style="width: 150px;" value="2023-12-25">
+                </div>
+                <div class="form-row">
+                    <div class="form-label">目标客群:</div>
+                    <div>
+                        <label class="form-radio"><input type="radio" name="audience"> 新建客群</label>
+                        <label class="form-radio"><input type="radio" name="audience"> 选择已有客群</label>
+                        <label class="form-radio"><input type="radio" name="audience" checked> 智能推荐客群</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>智能客群推荐</h3>
+            <div class="ai-panel">
+                <div class="ai-header">
+                    <span class="ai-icon">🤖</span> 大模型已为您分析了历史营销数据，结合您的活动目标，推荐以下客群:
+                </div>
+                <div class="audience-card">
+                    <div class="audience-title">【推荐客群1】信用良好的消费活跃用户 - 预计转化率: 12.6%</div>
+                    <div class="audience-desc">人群特征: 25-40岁，近3个月月均消费1万以上，未持有信用卡的借记卡客户</div>
+                    <div class="audience-meta">人群规模: 约5,240人</div>
+                    <div class="audience-actions">
+                        <button class="btn-outline">选择此客群</button>
+                        <button class="btn-outline">调整参数</button>
+                    </div>
+                </div>
+                <div class="audience-card">
+                    <div class="audience-title">【推荐客群2】高收入低信用卡使用率客户 - 预计转化率: 8.9%</div>
+                    <div class="audience-desc">人群特征: 月收入2万以上，持有我行信用卡但3个月使用频率低于3次的客户</div>
+                    <div class="audience-meta">人群规模: 约3,820人</div>
+                    <div class="audience-actions">
+                        <button class="btn-outline">选择此客群</button>
+                        <button class="btn-outline">调整参数</button>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <button class="btn-link">查看更多推荐客群</button>
+                    <button class="btn-link">自定义客群条件</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>营销策略建议</h3>
+            <div class="strategy-panel">
+                <div>针对所选客群，系统推荐以下营销策略:</div>
+                <div class="strategy-section">
+                    <div class="strategy-title">渠道策略:</div>
+                    <div class="strategy-content">
+                        主要渠道 - 手机银行App通知 (覆盖率92%)<br>
+                        辅助渠道 - 短信提醒 (提升8%触达率)
+                    </div>
+                </div>
+                <div class="strategy-section">
+                    <div class="strategy-title">激励策略:</div>
+                    <div class="strategy-content">
+                        "首刷有礼" - 首次消费送200元电子购物券<br>
+                        "消费满额减" - 单月累计消费满5000返现100元
+                    </div>
+                </div>
+                <div class="strategy-section">
+                    <div class="strategy-title">时间策略:</div>
+                    <div class="strategy-content">
+                        优先在周五发送营销信息 (响应率高18%)
+                    </div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="btn-outline">应用推荐策略</button>
+                    <button class="btn-outline" style="margin-left: 10px;">自定义策略</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>智能话术生成</h3>
+            <div class="ai-panel">
+                <div class="ai-header">
+                    <span class="ai-icon">🤖</span> 为您的营销活动智能生成差异化话术:
+                </div>
+                <div class="speech-title">主标题: "尊享白金 随心所享 - 专属您的信用卡礼遇"</div>
+                <div class="speech-title">App推送文案:</div>
+                <div class="speech-content">
+                    李先生，根据您的消费习惯，我行白金信用卡特别适合您！首刷即送200元电子购物券，单月消费满5000再返现100元。年费首年免收！限时申请中
+                </div>
+                <div class="speech-title">短信文案:</div>
+                <div class="speech-content">
+                    尊敬的客户，您的专属白金卡礼遇已备好！首刷有礼，满额即返，详情请登录手机银行查看。回T退订。
+                </div>
+                <div class="speech-actions">
+                    <button class="btn-outline">重新生成</button>
+                    <button class="btn-outline">编辑话术</button>
+                    <button class="btn-link">话术模板库</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>活动效果预估</h3>
+            <div class="estimate-panel">
+                <div style="margin-bottom: 10px;">基于历史数据分析，本次活动预估效果:</div>
+                <div class="estimate-row">
+                    <div class="estimate-label">目标客群:</div>
+                    <div class="estimate-value">5,240人</div>
+                </div>
+                <div class="estimate-row">
+                    <div class="estimate-label">预计触达率:</div>
+                    <div class="estimate-value">85% (约4,454人)</div>
+                </div>
+                <div class="estimate-row">
+                    <div class="estimate-label">预计响应率:</div>
+                    <div class="estimate-value">25% (约1,114人)</div>
+                </div>
+                <div class="estimate-row">
+                    <div class="estimate-label">预计转化率:</div>
+                    <div class="estimate-value">12.6% (约660人)</div>
+                </div>
+                <div class="estimate-row">
+                    <div class="estimate-label">预计新增信用卡:</div>
+                    <div class="estimate-value">660张</div>
+                </div>
+                <div class="estimate-row">
+                    <div class="estimate-label">预计年均贡献:</div>
+                    <div class="estimate-value">约132万元</div>
+                </div>
+                <div class="estimate-row">
+                    <div class="estimate-label">预计ROI:</div>
+                    <div class="estimate-value">8.8倍</div>
+                </div>
+                <div style="text-align: right; margin-top: 10px;">
+                    <button class="btn-link">查看详细预估</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-primary">提交审批</button>
+            <button class="btn-primary">安排执行</button>
+            <button class="btn-secondary">保存草稿</button>
+            <button class="btn-secondary">取消</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -106,3 +106,16 @@ body {
     @apply inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium rounded bg-gray-100 text-gray-800;
   }
 }
+
+/* 智能标签生成页面的样式 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(100%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* 添加 Remix Icon 字体修复 */
+:where([class^="ri-"])::before { content: "\f3c2"; }
