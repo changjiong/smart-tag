@@ -47,6 +47,18 @@ import SystemRouter from './pages/System/SystemRouter';
 import UserPage from './pages/System/UserPage';
 import SettingsPage from './pages/System/SettingsPage';
 
+// 导入业务应用中心组件
+import ApplicationsRouter from './pages/Applications/ApplicationsRouter';
+import * as AppPages from './pages/Applications/ApplicationPages';
+
+// 导入场景模板组件
+import TemplatesRouter from './pages/Templates/TemplatesRouter';
+import * as TemplatePages from './pages/Templates/TemplatePages';
+
+// 导入开放能力组件
+import OpenAPIRouter from './pages/OpenAPI/OpenAPIRouter';
+import * as OpenAPIPages from './pages/OpenAPI/OpenAPIPages';
+
 // 导入AI实验室页面组件
 import AILaboratory from './pages/AILaboratory/AILaboratory';
 import ModelManager from './pages/AILaboratory/ModelManager';
@@ -183,10 +195,100 @@ function App() {
             <Route path="interactions" element={<AIAssistant />} />
           </Route>
           
-          {/* 添加新的路由以匹配menuData.js */}
-          <Route path="applications/*" element={<div>业务应用中心</div>} />
-          <Route path="templates/*" element={<div>场景模板</div>} />
-          <Route path="open-api/*" element={<div>开放能力</div>} />
+          {/* 业务应用中心路由 */}
+          <Route path="applications" element={<ApplicationsRouter />}>
+            <Route index element={<Navigate to="/applications/retail-marketing" replace />} />
+            
+            {/* 零售营销应用 */}
+            <Route path="retail-marketing" element={<AppPages.RetailMarketingPage />}>
+              <Route index element={<Navigate to="/applications/retail-marketing/precision" replace />} />
+              <Route path="precision" element={<AppPages.PrecisionMarketing />} />
+              <Route path="acquisition" element={<AppPages.CustomerAcquisition />} />
+              <Route path="cross-selling" element={<AppPages.CrossSelling />} />
+              <Route path="digital" element={<AppPages.DigitalMarketing />} />
+            </Route>
+            
+            {/* 客户经营应用 */}
+            <Route path="customer-management" element={<AppPages.CustomerManagementPage />}>
+              <Route index element={<Navigate to="/applications/customer-management/churn" replace />} />
+              <Route path="churn" element={<AppPages.ChurnPrevention />} />
+              <Route path="value" element={<AppPages.ValueEnhancement />} />
+              <Route path="lifecycle" element={<AppPages.LifecycleManagement />} />
+              <Route path="loyalty" element={<AppPages.LoyaltyProgram />} />
+            </Route>
+            
+            {/* 财富管理应用 */}
+            <Route path="wealth-management" element={<AppPages.WealthManagementPage />} />
+            
+            {/* 风险管控应用 */}
+            <Route path="risk-management" element={<AppPages.RiskManagementPage />} />
+            
+            {/* 对公业务应用 */}
+            <Route path="corporate" element={<AppPages.CorporatePage />} />
+            
+            {/* 应用分类管理 */}
+            <Route path="management" element={<AppPages.ApplicationManagementPage />} />
+          </Route>
+          
+          {/* 场景模板路由 */}
+          <Route path="templates" element={<TemplatesRouter />}>
+            <Route index element={<Navigate to="/templates/library" replace />} />
+            
+            {/* 模板库 */}
+            <Route path="library" element={<TemplatePages.TemplateLibraryPage />}>
+              <Route index element={<Navigate to="/templates/library/retail" replace />} />
+              <Route path="retail" element={<TemplatePages.RetailTemplate />} />
+              <Route path="corporate" element={<TemplatePages.CorporateTemplate />} />
+              <Route path="risk" element={<TemplatePages.RiskTemplate />} />
+              <Route path="customer" element={<TemplatePages.CustomerTemplate />} />
+            </Route>
+            
+            {/* 模板应用 */}
+            <Route path="applications" element={<TemplatePages.TemplateApplicationsPage />}>
+              <Route index element={<Navigate to="/templates/applications/mapping" replace />} />
+              <Route path="mapping" element={<TemplatePages.TemplateMapping />} />
+              <Route path="configuration" element={<TemplatePages.TemplateConfiguration />} />
+              <Route path="monitoring" element={<TemplatePages.TemplateMonitoring />} />
+            </Route>
+            
+            {/* 模板管理 */}
+            <Route path="management" element={<TemplatePages.TemplateManagementPage />}>
+              <Route index element={<Navigate to="/templates/management/create" replace />} />
+              <Route path="create" element={<TemplatePages.TemplateCreation />} />
+              <Route path="parameters" element={<TemplatePages.TemplateParameters />} />
+              <Route path="versions" element={<TemplatePages.TemplateVersions />} />
+              <Route path="evaluation" element={<TemplatePages.TemplateEvaluation />} />
+            </Route>
+          </Route>
+          
+          {/* 开放能力路由 */}
+          <Route path="open-api" element={<OpenAPIRouter />}>
+            <Route index element={<Navigate to="/open-api/services" replace />} />
+            
+            {/* API服务 */}
+            <Route path="services" element={<OpenAPIPages.APIServicesPage />}>
+              <Route index element={<Navigate to="/open-api/services/tags" replace />} />
+              <Route path="tags" element={<OpenAPIPages.TagsAPI />} />
+              <Route path="portraits" element={<OpenAPIPages.PortraitsAPI />} />
+              <Route path="groups" element={<OpenAPIPages.GroupsAPI />} />
+            </Route>
+            
+            {/* 数据服务 */}
+            <Route path="data" element={<OpenAPIPages.DataServicesPage />}>
+              <Route index element={<Navigate to="/open-api/data/catalog" replace />} />
+              <Route path="catalog" element={<OpenAPIPages.DataCatalog />} />
+              <Route path="subscription" element={<OpenAPIPages.DataSubscription />} />
+              <Route path="push" element={<OpenAPIPages.DataPush />} />
+            </Route>
+            
+            {/* 服务监控 */}
+            <Route path="monitoring" element={<OpenAPIPages.MonitoringPage />}>
+              <Route index element={<Navigate to="/open-api/monitoring/statistics" replace />} />
+              <Route path="statistics" element={<OpenAPIPages.APIStatistics />} />
+              <Route path="performance" element={<OpenAPIPages.PerformanceMonitoring />} />
+              <Route path="alerts" element={<OpenAPIPages.AlertManagement />} />
+            </Route>
+          </Route>
           
           {/* 系统管理路由 */}
           <Route path="system" element={<SystemRouter />}>

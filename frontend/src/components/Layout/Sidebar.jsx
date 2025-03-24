@@ -88,10 +88,10 @@ const Sidebar = ({ isOpen, isMobile, closeSidebar }) => {
       isOpen ? 'translate-x-0' : '-translate-x-full'
     } ${isMobile ? 'z-50' : 'z-30'} transition-transform`}>
       {/* 侧边栏头部 - 显示SmartTag标识 - 固定不滚动 */}
-      <div className="h-16 px-6 flex items-center justify-between border-b border-gray-200 bg-blue-600 flex-shrink-0">
+      <div className="h-16 px-6 flex items-center justify-between bg-blue-600 flex-shrink-0">
         <div className="flex items-center">
-          <span className="text-xl font-bold text-white">Smart</span>
-          <span className="text-xl font-medium text-blue-200">Tag</span>
+          <span className="text-2xl font-bold text-white">Smart</span>
+          <span className="text-2xl font-bold text-white">Tag</span>
         </div>
         {isMobile && (
           <button 
