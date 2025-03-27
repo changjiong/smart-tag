@@ -3,29 +3,24 @@ export const menuItems = [
   {
     name: '首页',
     path: '/dashboard',
+    isNew: true,
     children: [
       {
-        name: '工作台',
-        path: '/dashboard/workspace',
+        name: '驾驶舱',
+        path: '/dashboard/cockpit',
+        isNew: true,
         children: [
-          { name: '业务任务看板', path: '/dashboard/workspace/tasks' },
-          { name: '数据洞察快报', path: '/dashboard/workspace/insights' },
+          { name: '业务任务看板', path: '/dashboard/cockpit/tasks', isNew: true },
+          { name: '数据洞察快报', path: '/dashboard/cockpit/insights', isNew: true },
         ]
       },
       {
-        name: '个性化推荐',
-        path: '/dashboard/recommend',
-        children: [
-          { name: '推荐功能', path: '/dashboard/recommend/features' },
-          { name: '常用工具', path: '/dashboard/recommend/tools' },
-        ]
-      },
-      {
-        name: '全局智能助手',
+        name: '智能助手',
         path: '/dashboard/assistant',
+        isNew: true,
         children: [
-          { name: '对话式分析', path: '/dashboard/assistant/conversation' },
-          { name: '操作引导', path: '/dashboard/assistant/guide' }
+          { name: '对话式分析', path: '/dashboard/assistant/conversation', isNew: true },
+          { name: '操作引导', path: '/dashboard/assistant/guide', isNew: true }
         ]
       }
     ]
@@ -54,15 +49,14 @@ export const menuItems = [
           { name: '标签需求', path: '/tags/creation/requirements' },
           { name: '标签注册', path: '/tags/creation/registration' },
           { name: '标签工厂', path: '/tags/creation/factory' },
-          { name: '智能生成', path: '/tags/creation/ai', isNew: true }
+          { name: '智能标签生成', path: '/tags/creation/ai', isNew: true }
         ]
       },
       {
-        name: '标签质量',
+        name: '标签质量监控',
         path: '/tags/quality',
         children: [
           { name: '标签质量看板', path: '/tags/quality/dashboard' },
-          { name: '标签健康', path: '/tags/quality/health', isNew: true },
           { name: '异常预警', path: '/tags/quality/alerts' },
           { name: '预警配置', path: '/tags/quality/alert-config' },
           { name: '规则预警', path: '/tags/quality/rule-alerts' },
@@ -74,9 +68,7 @@ export const menuItems = [
         path: '/tags/value',
         isNew: true,
         children: [
-          { name: '标签使用分析', path: '/tags/value/usage', isNew: true },
-          { name: '价值追踪', path: '/tags/value/tracking', isNew: true },
-          { name: '业务映射', path: '/tags/value/business-mapping', isNew: true }
+          { name: '标签价值洞察', path: '/tags/value/insights', isNew: true }
         ]
       }
     ]
@@ -90,9 +82,7 @@ export const menuItems = [
         path: '/portrait/groups',
         children: [
           { name: '客群创建', path: '/portrait/groups/create' },
-          { name: '智能分群', path: '/portrait/groups/ai', isNew: true },
-          { name: '相似客群发现', path: '/portrait/groups/similar', isNew: true },
-          { name: '客群洞察库', path: '/portrait/groups/insights' }
+          { name: '智能分群', path: '/portrait/groups/ai', isNew: true }
         ]
       },
       {
@@ -100,7 +90,6 @@ export const menuItems = [
         path: '/portrait/analysis',
         children: [
           { name: '单客户视图', path: '/portrait/analysis/customer' },
-          { name: '行为序列分析', path: '/portrait/analysis/behavior', isNew: true },
           { name: '群体洞察', path: '/portrait/analysis/group-insights' },
           { name: '群体画像', path: '/portrait/analysis/group-portrait' },
           { name: '漏斗分析', path: '/portrait/analysis/funnel' },
@@ -121,49 +110,11 @@ export const menuItems = [
         path: '/applications/business',
         isNew: true,
         children: [
-          {
-            name: '零售营销应用',
-            path: '/applications/business/retail-marketing',
-            isNew: true,
-            children: [
-              { name: '精准营销工作站', path: '/applications/business/retail-marketing/precision', isNew: true },
-              { name: '触达计划', path: '/applications/business/retail-marketing/contact-plans' },
-              { name: '话术模板', path: '/applications/business/retail-marketing/scripts' },
-              { name: '触达记录', path: '/applications/business/retail-marketing/contact-records' }
-            ]
-          },
-          {
-            name: '客户经营应用',
-            path: '/applications/business/customer-management',
-            isNew: true,
-            children: [
-              { name: '流失预警与挽留', path: '/applications/business/customer-management/churn', isNew: true }
-            ]
-          },
-          {
-            name: '财富管理应用',
-            path: '/applications/business/wealth-management',
-            isNew: true,
-            children: [
-              { name: '智能财富顾问', path: '/applications/business/wealth-management/advisor', isNew: true }
-            ]
-          },
-          {
-            name: '风险管控应用',
-            path: '/applications/business/risk-management',
-            isNew: true,
-            children: [
-              { name: '风险预警平台', path: '/applications/business/risk-management/alert', isNew: true }
-            ]
-          },
-          {
-            name: '对公业务应用',
-            path: '/applications/business/corporate',
-            isNew: true,
-            children: [
-              { name: '企业客户画像', path: '/applications/business/corporate/portrait', isNew: true }
-            ]
-          }
+          { name: '精准营销引擎', path: '/applications/business/marketing-engine', isNew: true },
+          { name: '客户挽留助手', path: '/applications/business/retention-assistant', isNew: true },
+          { name: '财富增值顾问', path: '/applications/business/wealth-advisor', isNew: true },
+          { name: '风险预警监控', path: '/applications/business/risk-monitor', isNew: true },
+          { name: '企业客户画像', path: '/applications/business/corporate-portrait', isNew: true }
         ]
       },
       {
@@ -171,23 +122,8 @@ export const menuItems = [
         path: '/applications/templates',
         isNew: true,
         children: [
-          {
-            name: '模板库',
-            path: '/applications/templates/library',
-            isNew: true,
-            children: [
-              { name: '零售金融场景包', path: '/applications/templates/library/retail', isNew: true },
-              { name: '对公业务场景包', path: '/applications/templates/library/corporate', isNew: true }
-            ]
-          },
-          {
-            name: '模板应用',
-            path: '/applications/templates/usage',
-            isNew: true,
-            children: [
-              { name: '模板实例化配置', path: '/applications/templates/usage/configuration', isNew: true }
-            ]
-          }
+          { name: '应用模板', path: '/applications/templates/application', isNew: true },
+          { name: '数据看板', path: '/applications/templates/dashboard', isNew: true }
         ]
       }
     ]
@@ -221,8 +157,8 @@ export const menuItems = [
         isNew: true,
         children: [
           { name: '模型服务', path: '/system/ai/models', isNew: true },
-          { name: '知识库', path: '/system/ai/knowledge', isNew: true },
-          { name: '提示词管理', path: '/system/ai/prompts', isNew: true }
+          { name: '提示词管理', path: '/system/ai/prompts', isNew: true },
+          { name: '知识库', path: '/system/ai/knowledge', isNew: true }
         ]
       },
       {
@@ -231,8 +167,7 @@ export const menuItems = [
         children: [
           { name: '流量监控', path: '/system/monitoring/traffic' },
           { name: '日志监控', path: '/system/monitoring/logs' },
-          { name: '平台监控', path: '/system/monitoring/platform' },
-          { name: '服务监控', path: '/system/monitoring/services' }
+          { name: '平台监控', path: '/system/monitoring/platform' }
         ]
       },
       {
@@ -243,24 +178,15 @@ export const menuItems = [
             name: 'API服务',
             path: '/system/open-api/services',
             children: [
-              { name: '标签快递（API）', path: '/system/open-api/services/tags' },
-              { name: '画像输出', path: '/system/open-api/services/portraits', isNew: true }
+              { name: '标签快递（API）', path: '/system/open-api/services/tags' }
             ]
           },
           {
-            name: '数据服务',
-            path: '/system/open-api/data',
+            name: '数据输出',
+            path: '/system/open-api/data-output',
             isNew: true,
             children: [
-              { name: '数据资产目录', path: '/system/open-api/data/catalog', isNew: true }
-            ]
-          },
-          {
-            name: '服务监控',
-            path: '/system/open-api/monitoring',
-            isNew: true,
-            children: [
-              { name: '调用统计', path: '/system/open-api/monitoring/statistics', isNew: true }
+              { name: '数据资产目录', path: '/system/open-api/data-output/catalog', isNew: true }
             ]
           }
         ]
