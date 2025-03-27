@@ -1,6 +1,8 @@
 import React from 'react';
-import { createPlaceholderPage } from '../../../components/Common/PageFactory';
+import RetentionAssistant from './RetentionAssistant';
 
-const Churn = createPlaceholderPage('流失预警与挽留平台', '客户流失风险预警和干预');
+const Churn = () => {
+  return <RetentionAssistant />;
+};
 
 export default Churn; 

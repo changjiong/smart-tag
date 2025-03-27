@@ -32,6 +32,7 @@ import SettingsPage from './pages/System/SettingsPage';
 // 导入业务应用中心组件
 import ApplicationsRouter from './pages/Applications/ApplicationsRouter';
 import * as AppPages from './pages/Applications/ApplicationPages';
+import BusinessRouter from './pages/Applications/business/BusinessRouter';
 
 // 导入场景模板组件
 import TemplatesRouter from './pages/Templates/TemplatesRouter';
@@ -250,10 +251,20 @@ function App() {
               <Route path="digital" element={<AppPages.DigitalMarketing />} />
             </Route>
             
+            {/* 业务应用路由 */}
+            <Route path="business" element={<BusinessRouter />}>
+              <Route index element={<Navigate to="/applications/business/retention-assistant" replace />} />
+              <Route path="retention-assistant" element={<AppPages.RetentionAssistantRedirect />} />
+              <Route path="marketing-engine" element={<Navigate to="/applications/retail-marketing/precision" replace />} />
+              <Route path="wealth-advisor" element={<div>财富增值顾问</div>} />
+              <Route path="risk-monitor" element={<div>风险预警监控</div>} />
+              <Route path="corporate-portrait" element={<div>企业客户画像</div>} />
+            </Route>
+            
             {/* 客户经营应用 */}
             <Route path="customer-management" element={<AppPages.CustomerManagementPage />}>
               <Route index element={<Navigate to="/applications/customer-management/churn" replace />} />
-              <Route path="churn" element={<AppPages.ChurnPrevention />} />
+              <Route path="churn" element={<AppPages.RetentionAssistant />} />
               <Route path="value" element={<AppPages.ValueEnhancement />} />
               <Route path="lifecycle" element={<AppPages.LifecycleManagement />} />
               <Route path="loyalty" element={<AppPages.LoyaltyProgram />} />

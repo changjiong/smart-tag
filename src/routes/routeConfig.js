@@ -134,6 +134,14 @@ export const applicationsRoutes = {
     crossSelling: '/applications/retail-marketing/cross-selling',
     digital: '/applications/retail-marketing/digital'
   },
+  business: {
+    base: '/applications/business',
+    marketingEngine: '/applications/business/marketing-engine',
+    retentionAssistant: '/applications/business/retention-assistant',
+    wealthAdvisor: '/applications/business/wealth-advisor',
+    riskMonitor: '/applications/business/risk-monitor',
+    corporatePortrait: '/applications/business/corporate-portrait'
+  },
   customerManagement: {
     base: '/applications/customer-management',
     churn: '/applications/customer-management/churn',
