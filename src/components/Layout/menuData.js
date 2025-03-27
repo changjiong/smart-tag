@@ -9,19 +9,11 @@ export const menuItems = [
         name: '驾驶舱',
         path: '/dashboard/cockpit',
         isNew: true,
-        children: [
-          { name: '业务任务看板', path: '/dashboard/cockpit/tasks', isNew: true },
-          { name: '数据洞察快报', path: '/dashboard/cockpit/insights', isNew: true },
-        ]
       },
       {
         name: '智能助手',
         path: '/dashboard/assistant',
         isNew: true,
-        children: [
-          { name: '对话式分析', path: '/dashboard/assistant/conversation', isNew: true },
-          { name: '操作引导', path: '/dashboard/assistant/guide', isNew: true }
-        ]
       }
     ]
   },
