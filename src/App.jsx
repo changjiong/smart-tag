@@ -41,6 +41,8 @@ import ApplicationsRouter from './pages/Applications/ApplicationsRouter';
 import * as AppPages from './pages/Applications/ApplicationPages';
 import BusinessRouter from './pages/Applications/business/BusinessRouter';
 import SceneTemplates from './pages/Applications/business/SceneTemplates';
+import RetentionAssistantRedirect from './pages/Applications/business/RetentionAssistantRedirect';
+import RetentionAssistant from './pages/Applications/CustomerManagement/RetentionAssistant';
 
 // 导入场景模板组件
 import TemplatesRouter from './pages/Templates/TemplatesRouter';
@@ -119,11 +121,16 @@ import Categories from './pages/Applications/Management/Management';
 import AppPermissions from './pages/Applications/Management/Permissions';
 import AppStatistics from './pages/Applications/Management/Statistics';
 
+// 创建一个简单的助手布局组件
+const SimpleAssistantLayout = () => <Outlet />;
+
 /**
  * 应用程序主组件
  * 设置应用的路由结构
  */
 function App() {
+  console.log('[DEBUG-App] Rendering App component with routes');
+  
   return (
     <Router>
       <Routes>
@@ -140,7 +147,6 @@ function App() {
             <Route index element={<Navigate to="/dashboard/overview" replace />} />
             <Route path="overview" element={<DataOverview />} />
             <Route path="personal/todos" element={<TodoList />} />
-            <Route path="assistant/qa" element={<AIAssistant />} />
             
             <Route path="workspace" element={<div>工作台</div>}>
               <Route index element={<Navigate to="/dashboard/workspace/tasks" replace />} />
@@ -150,21 +156,29 @@ function App() {
               <Route path="achievements" element={<Achievements />} />
             </Route>
             
+            {/* 工作台/仪表盘路由 */}
+            <Route path="cockpit" element={<div>工作台</div>}>
+              <Route index element={<Navigate to="/dashboard/cockpit/tasks" replace />} />
+              <Route path="metrics" element={<Tasks />} />
+              <Route path="results" element={<Achievements />} />
+              <Route path="tasks" element={<Tasks />} />
+              <Route path="navigation" element={<GuideWorkspace />} />
+            </Route>
+            
             <Route path="recommend" element={<div>个性化推荐</div>}>
               <Route index element={<Navigate to="/dashboard/recommend/features" replace />} />
               <Route path="features" element={<Features />} />
               <Route path="tools" element={<Tools />} />
               <Route path="learning" element={<Learning />} />
             </Route>
-            
-            <Route path="assistant" element={<div>全局智能助手</div>}>
-              <Route index element={<Navigate to="/dashboard/assistant/conversation" replace />} />
-              <Route path="conversation" element={<Conversation />} />
-              <Route path="qa" element={<QA />} />
-              <Route path="analysis" element={<Analysis />} />
-              <Route path="guide" element={<GuideAssistant />} />
-            </Route>
           </Route>
+          
+          {/* 智能助手路由 - 单独的路由 */}
+          <Route path="dashboard/assistant" element={<Navigate to="/dashboard/assistant/conversation" replace />} />
+          <Route path="dashboard/assistant/conversation" element={<AIAssistant />} />
+          <Route path="dashboard/assistant/qa" element={<AIAssistant />} />
+          <Route path="dashboard/assistant/analysis" element={<AIAssistant />} />
+          <Route path="dashboard/assistant/guide" element={<AIAssistant />} />
           
           {/* 标签中心路由 */}
           <Route path="tags" element={<TagsRouter />}>
@@ -261,11 +275,12 @@ function App() {
               <Route path="digital" element={<AppPages.DigitalMarketing />} />
             </Route>
             
-            {/* 业务应用路由 */}
+            {/* 业务应用路由 - 包含场景模板功能 */}
             <Route path="business" element={<BusinessRouter />}>
+              {/* 场景模板作为默认页面 */}
               <Route index element={<SceneTemplates />} />
-              <Route path="index" element={<SceneTemplates />} />
-              <Route path="retention-assistant" element={<AppPages.RetentionAssistantRedirect />} />
+              {/* 删除index路径，这导致了路由混淆 */}
+              <Route path="retention-assistant" element={<RetentionAssistant />} />
               <Route path="marketing-engine" element={<Navigate to="/applications/retail-marketing/precision" replace />} />
               <Route path="wealth-advisor" element={<div>财富增值顾问</div>} />
               <Route path="risk-monitor" element={<div>风险预警监控</div>} />

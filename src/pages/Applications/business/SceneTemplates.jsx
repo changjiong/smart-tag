@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 /**
  * 场景模板组件
@@ -8,17 +8,34 @@ import { useNavigate } from 'react-router-dom';
 const SceneTemplates = () => {
   const [viewMode, setViewMode] = useState('all');
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  useEffect(() => {
+    console.log('[DEBUG-SceneTemplates] Rendering SceneTemplates component at path:', location.pathname);
+    console.log('[DEBUG-SceneTemplates] Component loaded at:', new Date().toISOString());
+    
+    const interval = setInterval(() => {
+      console.log('[DEBUG-SceneTemplates] Still mounted at:', new Date().toISOString());
+    }, 5000);
+    
+    return () => {
+      console.log('[DEBUG-SceneTemplates] Component unmounting');
+      clearInterval(interval);
+    };
+  }, [location.pathname]);
   
   // 处理模板使用跳转
   const handleUseTemplate = (templatePath) => {
-    console.log("Navigating to template:", templatePath);
+    console.log("[DEBUG-SceneTemplates] Navigating to template:", templatePath);
     navigate(templatePath);
   };
   
+  console.log('[DEBUG-SceneTemplates] Rendering JSX');
+  
   return (
-    <div className="container mx-auto">
+    <div className="bg-white rounded-lg shadow-md p-6">
       <div className="page-header flex justify-between items-center mb-5">
-        <h2 className="text-2xl font-semibold">场景模板</h2>
+        <h2 className="text-xl font-semibold">场景模板中心</h2>
         <div>
           <button className="bg-blue-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-700">
             + 创建新模板
@@ -97,73 +114,55 @@ const SceneTemplates = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="border border-gray-200 rounded-lg p-4 shadow-sm">
           <div className="font-bold text-blue-600 border-b pb-2 mb-3">零售营销模板</div>
-          <ul className="space-y-2 mb-3">
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">精准营销引擎</li>
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">新客获取平台</li>
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">交叉销售助手</li>
-          </ul>
-          <div className="text-right">
-            <a href="#" className="text-blue-600 text-sm">查看全部</a>
+          <div className="py-2">
+            <div className="mb-2 flex items-center">
+              <span className="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
+              <span>新客获取活动模板</span>
+            </div>
+            <div className="mb-2 flex items-center">
+              <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+              <span>跨产品营销模板</span>
+            </div>
+            <div className="mb-2 flex items-center">
+              <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+              <span>数字渠道转化模板</span>
+            </div>
           </div>
         </div>
         
         <div className="border border-gray-200 rounded-lg p-4 shadow-sm">
           <div className="font-bold text-blue-600 border-b pb-2 mb-3">客户经营模板</div>
-          <ul className="space-y-2 mb-3">
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">流失预警与挽留平台</li>
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">客户价值提升</li>
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">客户生命周期管理</li>
-          </ul>
-          <div className="text-right">
-            <a href="#" className="text-blue-600 text-sm">查看全部</a>
+          <div className="py-2">
+            <div className="mb-2 flex items-center">
+              <span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
+              <span>客户流失预警模板</span>
+            </div>
+            <div className="mb-2 flex items-center">
+              <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+              <span>客户价值提升模板</span>
+            </div>
+            <div className="mb-2 flex items-center">
+              <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
+              <span>生命周期管理模板</span>
+            </div>
           </div>
         </div>
         
         <div className="border border-gray-200 rounded-lg p-4 shadow-sm">
           <div className="font-bold text-blue-600 border-b pb-2 mb-3">财富管理模板</div>
-          <ul className="space-y-2 mb-3">
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">智能财富顾问</li>
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">投资者画像</li>
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">产品匹配推荐</li>
-          </ul>
-          <div className="text-right">
-            <a href="#" className="text-blue-600 text-sm">查看全部</a>
-          </div>
-        </div>
-        
-        <div className="border border-gray-200 rounded-lg p-4 shadow-sm">
-          <div className="font-bold text-blue-600 border-b pb-2 mb-3">风险管控模板</div>
-          <ul className="space-y-2 mb-3">
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">风险预警平台</li>
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">欺诈检测系统</li>
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">信用风险评估</li>
-          </ul>
-          <div className="text-right">
-            <a href="#" className="text-blue-600 text-sm">查看全部</a>
-          </div>
-        </div>
-        
-        <div className="border border-gray-200 rounded-lg p-4 shadow-sm">
-          <div className="font-bold text-blue-600 border-b pb-2 mb-3">对公业务模板</div>
-          <ul className="space-y-2 mb-3">
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">企业客户画像</li>
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">供应链金融分析</li>
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">企业关系图谱</li>
-          </ul>
-          <div className="text-right">
-            <a href="#" className="text-blue-600 text-sm">查看全部</a>
-          </div>
-        </div>
-        
-        <div className="border border-gray-200 rounded-lg p-4 shadow-sm">
-          <div className="font-bold text-blue-600 border-b pb-2 mb-3">业务价值模板</div>
-          <ul className="space-y-2 mb-3">
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">应用价值看板</li>
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">标签ROI分析</li>
-            <li className="before:content-['•'] before:mr-2 before:text-blue-600">成功案例库</li>
-          </ul>
-          <div className="text-right">
-            <a href="#" className="text-blue-600 text-sm">查看全部</a>
+          <div className="py-2">
+            <div className="mb-2 flex items-center">
+              <span className="w-2 h-2 bg-blue-700 rounded-full mr-2"></span>
+              <span>智能投顾模板</span>
+            </div>
+            <div className="mb-2 flex items-center">
+              <span className="w-2 h-2 bg-green-700 rounded-full mr-2"></span>
+              <span>退休规划模板</span>
+            </div>
+            <div className="mb-2 flex items-center">
+              <span className="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+              <span>资产配置模板</span>
+            </div>
           </div>
         </div>
       </div>
@@ -171,11 +170,25 @@ const SceneTemplates = () => {
       <div className="bg-gray-50 p-4 rounded-lg mb-8">
         <div className="flex items-center mb-2">
           <span className="text-orange-500 mr-2">🔔</span>
-          <span className="font-bold">基于您的角色和历史使用行为，我们推荐以下模板:</span>
+          <span className="font-bold">基于您的角色和历史使用行为，我们推荐以下模板</span>
         </div>
-        <div className="py-1 pl-5 before:content-['→'] before:mr-2 before:text-blue-600">交叉销售助手: 您管理的客户中有72位适合推荐基金产品</div>
-        <div className="py-1 pl-5 before:content-['→'] before:mr-2 before:text-blue-600">客户价值提升: 本月有23位客户价值等级变动，需要调整服务策略</div>
-        <div className="py-1 pl-5 before:content-['→'] before:mr-2 before:text-blue-600">新功能: 智能财富顾问现已支持养老金规划模块</div>
+        <div className="py-2">
+          <div className="mb-2 flex items-center">
+            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+            <span className="font-medium">交叉销售助手</span>
+            <span className="text-xs bg-blue-100 text-blue-800 ml-2 px-2 py-0.5 rounded">98% 匹配</span>
+          </div>
+          <div className="mb-2 flex items-center">
+            <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+            <span className="font-medium">客户生命周期管理平台</span>
+            <span className="text-xs bg-green-100 text-green-800 ml-2 px-2 py-0.5 rounded">89% 匹配</span>
+          </div>
+          <div className="mb-2 flex items-center">
+            <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+            <span className="font-medium">零售存款营销方案</span>
+            <span className="text-xs bg-purple-100 text-purple-800 ml-2 px-2 py-0.5 rounded">85% 匹配</span>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -17,10 +17,25 @@ const Header = ({ toggleSidebar }) => {
   // 使用useCallback包装菜单处理函数，防止不必要的重新渲染
   const handleMainMenuClick = useCallback((menu) => {
     try {
-      console.log("Header: handleMainMenuClick called for menu:", menu.name);
+      console.log("[Header] handleMainMenuClick called for menu:", menu.name, "path:", menu.path);
+      
+      // 特殊处理场景模板菜单项，直接导航
+      if (menu.name === '业务场景') {
+        console.log("[Header] Special handling for 业务场景 menu");
+        const sceneTemplateSubmenu = menu.children.find(item => item.name === '场景模板');
+        if (sceneTemplateSubmenu) {
+          console.log("[Header] Found 场景模板 submenu, navigating to:", sceneTemplateSubmenu.path);
+          handleMenuChange({ 
+            menuName: menu.name, 
+            subMenuName: sceneTemplateSubmenu.name,
+            path: sceneTemplateSubmenu.path 
+          });
+          return;
+        }
+      }
       
       if (!handleMenuChange || typeof handleMenuChange !== 'function') {
-        console.error("Header: handleMenuChange is not a function", { handleMenuChange });
+        console.error("[Header] handleMenuChange is not a function", { handleMenuChange });
         return;
       }
       
@@ -33,18 +48,18 @@ const Header = ({ toggleSidebar }) => {
       // 如果有子菜单，默认选择第一个子菜单
       if (menu.children && menu.children.length > 0) {
         const firstSubMenu = menu.children[0];
-        console.log("Header: Selecting first submenu:", firstSubMenu.name);
+        console.log("[Header] Selecting first submenu:", firstSubMenu.name, "path:", firstSubMenu.path);
         
         // 如果第一个子菜单还有子菜单，默认选择其第一个子项
         if (firstSubMenu.children && firstSubMenu.children.length > 0) {
-          console.log("Header: Submenu has children, selecting first child item");
+          console.log("[Header] Submenu has children, selecting first child item");
           handleMenuChange({ 
             menuName: menu.name, 
             subMenuName: firstSubMenu.name,
             path: firstSubMenu.children[0].path 
           });
         } else {
-          console.log("Header: Submenu has no children, selecting submenu itself");
+          console.log("[Header] Submenu has no children, selecting submenu itself");
           handleMenuChange({ 
             menuName: menu.name, 
             subMenuName: firstSubMenu.name,
@@ -53,7 +68,7 @@ const Header = ({ toggleSidebar }) => {
         }
       }
     } catch (error) {
-      console.error("Header Error in handleMainMenuClick:", error, { menu });
+      console.error("[Header] Error in handleMainMenuClick:", error, { menu });
     }
   }, [handleMenuChange]);
 

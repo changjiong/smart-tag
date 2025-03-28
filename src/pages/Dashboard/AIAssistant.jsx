@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { aiRecommendations } from '../../mockData/marketing';
 import { tagDistributionData } from '../../mockData/tags';
 import { customerGroups } from '../../mockData/groups';
@@ -13,12 +13,35 @@ function AIAssistant() {
   const [insights, setInsights] = useState([]);
   const [selectedInsight, setSelectedInsight] = useState(null);
   const [question, setQuestion] = useState('');
+  const location = useLocation();
+  const [pageTitle, setPageTitle] = useState('智能问答');
+  const [pageDescription, setPageDescription] = useState('基于AI的智能问答系统，为您提供专业的标签分析和使用建议');
   const [conversation, setConversation] = useState([
     {
       role: 'assistant',
       message: '您好，我是数智标签系统的AI助手。我可以帮助您分析客户数据、提供营销建议以及解答有关系统功能的问题。请问有什么可以帮您的？'
     }
   ]);
+
+  // Set page title and description based on current route
+  useEffect(() => {
+    if (location.pathname.includes('/conversation')) {
+      setPageTitle('对话分析');
+      setPageDescription('通过自然语言对话方式进行深度数据分析和洞察');
+    } else if (location.pathname.includes('/qa')) {
+      setPageTitle('业务问题解答');
+      setPageDescription('快速解答业务相关问题，提供准确的信息和建议');
+    } else if (location.pathname.includes('/analysis')) {
+      setPageTitle('智能解读');
+      setPageDescription('AI自动解读数据趋势和业务现象，提供专业解释');
+    } else if (location.pathname.includes('/guide')) {
+      setPageTitle('操作引导');
+      setPageDescription('提供智能化的系统操作指导和使用帮助');
+    } else {
+      setPageTitle('智能问答');
+      setPageDescription('基于AI的智能问答系统，为您提供专业的标签分析和使用建议');
+    }
+  }, [location]);
 
   // Mock insights and recommendations
   useEffect(() => {
@@ -152,8 +175,50 @@ function AIAssistant() {
       {/* Page Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">智能问答</h1>
-          <p className="mt-1 text-sm text-gray-500">基于AI的智能问答系统，为您提供专业的标签分析和使用建议</p>
+          <h1 className="text-2xl font-bold text-gray-900">{pageTitle}</h1>
+          <p className="mt-1 text-sm text-gray-500">{pageDescription}</p>
+        </div>
+        <div className="flex space-x-2">
+          <Link
+            to="/dashboard/assistant/conversation"
+            className={`px-3 py-2 rounded-lg text-sm ${
+              location.pathname.includes('/conversation')
+                ? 'bg-blue-100 text-blue-700'
+                : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            对话分析
+          </Link>
+          <Link
+            to="/dashboard/assistant/qa"
+            className={`px-3 py-2 rounded-lg text-sm ${
+              location.pathname.includes('/qa')
+                ? 'bg-blue-100 text-blue-700'
+                : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            问题解答
+          </Link>
+          <Link
+            to="/dashboard/assistant/analysis"
+            className={`px-3 py-2 rounded-lg text-sm ${
+              location.pathname.includes('/analysis')
+                ? 'bg-blue-100 text-blue-700'
+                : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            智能解读
+          </Link>
+          <Link
+            to="/dashboard/assistant/guide"
+            className={`px-3 py-2 rounded-lg text-sm ${
+              location.pathname.includes('/guide')
+                ? 'bg-blue-100 text-blue-700'
+                : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            操作引导
+          </Link>
         </div>
       </div>
 

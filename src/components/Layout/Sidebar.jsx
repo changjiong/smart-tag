@@ -34,12 +34,38 @@ const Sidebar = ({ isOpen, isMobile, closeSidebar }) => {
     try {
       // 确保activeMenu存在
       if (!activeMenu) {
-        console.error("activeMenu is undefined in handleMenuItemClick");
+        console.error("[DEBUG-Sidebar] activeMenu is undefined in handleMenuItemClick");
+        return;
+      }
+      
+      // 打印当前点击的菜单项
+      console.log("[DEBUG-Sidebar] Handling menu item click:", { 
+        activeMenu, 
+        level2Name: level2Item?.name, 
+        level3Name: level3Item?.name,
+        level2Path: level2Item?.path,
+        level3Path: level3Item?.path,
+        currentPath: location.pathname
+      });
+      
+      // 特殊处理场景模板菜单项
+      if (level2Item.name === "场景模板") {
+        console.log("[DEBUG-Sidebar] Special handling for 场景模板 menu item");
+        console.log("[DEBUG-Sidebar] 直接导航到路径:", level2Item.path);
+        
+        // 为了确保场景模板页面正确显示，直接处理菜单点击
+        handleMenuChange({
+          menuName: activeMenu,
+          subMenuName: level2Item.name,
+          path: level2Item.path
+        });
+        
         return;
       }
       
       // 如果是三级菜单项
       if (level3Item) {
+        console.log("[DEBUG-Sidebar] 处理三级菜单点击:", level3Item.name);
         handleMenuChange({
           menuName: activeMenu,
           subMenuName: level2Item.name,
@@ -49,14 +75,18 @@ const Sidebar = ({ isOpen, isMobile, closeSidebar }) => {
       } 
       // 如果是二级菜单项
       else {
+        console.log("[DEBUG-Sidebar] 处理二级菜单点击:", level2Item.name);
+        
         // 如果二级菜单有子菜单，优先选择第一个子菜单
         if (level2Item.children && level2Item.children.length > 0) {
+          console.log("[DEBUG-Sidebar] 二级菜单有子菜单，选择第一个:", level2Item.children[0].name);
           handleMenuChange({
             menuName: activeMenu,
             subMenuName: level2Item.name,
             path: level2Item.children[0].path
           });
         } else {
+          console.log("[DEBUG-Sidebar] 二级菜单无子菜单，直接导航:", level2Item.path);
           handleMenuChange({
             menuName: activeMenu,
             subMenuName: level2Item.name,
@@ -65,9 +95,9 @@ const Sidebar = ({ isOpen, isMobile, closeSidebar }) => {
         }
       }
     } catch (error) {
-      console.error("Error in handleMenuItemClick:", error, { level2Item, level3Item });
+      console.error("[DEBUG-Sidebar] ❌ Error in handleMenuItemClick:", error, { level2Item, level3Item });
     }
-  }, [activeMenu, handleMenuChange]);
+  }, [activeMenu, handleMenuChange, location.pathname]);
   
   // 确保菜单数据始终可用
   if (!menuItems || menuItems.length === 0) {

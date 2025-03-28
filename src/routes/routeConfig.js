@@ -45,6 +45,13 @@ export const dashboardRoutes = {
     guide: '/dashboard/workspace/guide',
     achievements: '/dashboard/workspace/achievements'
   },
+  cockpit: {
+    base: '/dashboard/cockpit',
+    metrics: '/dashboard/cockpit/metrics',
+    results: '/dashboard/cockpit/results',
+    tasks: '/dashboard/cockpit/tasks',
+    navigation: '/dashboard/cockpit/navigation'
+  },
   recommend: {
     base: '/dashboard/recommend',
     features: '/dashboard/recommend/features',

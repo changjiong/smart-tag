@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
 
 /**
@@ -21,10 +21,12 @@ const Dashboard = () => {
           {/* 业务任务看板 */}
           <div className="md:col-span-2 bg-white rounded-lg shadow p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-800">业务任务看板</h2>
-              <button className="text-blue-600 hover:text-blue-800">
+              <Link to="/dashboard/cockpit/tasks">
+                <h2 className="text-xl font-bold text-gray-800 hover:text-blue-600">业务任务看板</h2>
+              </Link>
+              <Link to="/dashboard/cockpit/tasks" className="text-blue-600 hover:text-blue-800">
                 查看全部
-              </button>
+              </Link>
             </div>
             <div className="space-y-4">
               {/* 任务卡片示例 */}
@@ -65,7 +67,9 @@ const Dashboard = () => {
           {/* 数据洞察快报 */}
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-800">数据洞察快报</h2>
+              <Link to="/dashboard/cockpit/metrics">
+                <h2 className="text-xl font-bold text-gray-800 hover:text-blue-600">数据洞察快报</h2>
+              </Link>
               <span className="text-sm text-gray-500">今日更新</span>
             </div>
             <div className="space-y-4">
@@ -144,10 +148,12 @@ const Dashboard = () => {
           {/* 价值成果展示 */}
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-800">价值成果展示</h2>
-              <button className="text-blue-600 hover:text-blue-800">
+              <Link to="/dashboard/cockpit/results">
+                <h2 className="text-xl font-bold text-gray-800 hover:text-blue-600">价值成果展示</h2>
+              </Link>
+              <Link to="/dashboard/cockpit/results" className="text-blue-600 hover:text-blue-800">
                 详细报告
-              </button>
+              </Link>
             </div>
             <div className="space-y-4">
               <div className="flex justify-between text-center">

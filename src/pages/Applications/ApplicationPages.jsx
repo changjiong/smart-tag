@@ -12,7 +12,7 @@ const DigitalMarketing = createPlaceholderPage('数字营销平台', '一站式�
 // 客户经营应用页面
 import CustomerManagementPage from './CustomerManagement/CustomerManagementPage';
 import RetentionAssistant from './CustomerManagement/RetentionAssistant';
-import RetentionAssistantRedirect from './business/RetentionAssistant';
+import RetentionAssistantRedirect from './business/RetentionAssistantRedirect';
 
 // 业务应用中心
 import BusinessApplications from './business/BusinessApplications';

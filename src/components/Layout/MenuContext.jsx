@@ -10,6 +10,65 @@ const isEqual = (obj1, obj2) => {
 // 创建Context
 const MenuContext = createContext();
 
+// 递归查找当前路径对应的菜单项
+const findActiveMenuItems = (items, pathname) => {
+  console.log('[DEBUG-MenuContext] 🔍 Finding menu items for path:', pathname);
+  
+  let activeItems = [];
+  let exactMatch = false;
+
+  const search = (menuList, parentPath = '') => {
+    for (const item of menuList) {
+      const isExactPathMatch = pathname === item.path;
+      const isSubPathMatch = pathname.startsWith(item.path) && item.path !== '/';
+      
+      console.log(`[DEBUG-MenuContext] Checking item "${item.name}" (${item.path}):`, {
+        isExactPathMatch, 
+        isSubPathMatch,
+        pathname
+      });
+      
+      if (isExactPathMatch) {
+        activeItems.push(item);
+        exactMatch = true;
+        console.log(`[DEBUG-MenuContext] ✅ Exact match found for "${item.name}"`);
+        return true;
+      }
+      
+      if (isSubPathMatch) {
+        console.log(`[DEBUG-MenuContext] 🔶 Partial match found for "${item.name}"`);
+        activeItems.push(item);
+        
+        if (item.children && item.children.length > 0) {
+          const foundInChildren = search(item.children, item.path);
+          if (!foundInChildren) {
+            console.log(`[DEBUG-MenuContext] ℹ️ No exact match in children of "${item.name}", keeping as active`);
+          }
+          return foundInChildren;
+        }
+        return false;
+      }
+      
+      if (item.children && item.children.length > 0) {
+        const foundInChildren = search(item.children, item.path);
+        if (foundInChildren) {
+          activeItems.push(item);
+          return true;
+        }
+      }
+    }
+    
+    return false;
+  };
+
+  search(items);
+  
+  console.log('[DEBUG-MenuContext] Active menu items found:', activeItems.map(i => i.name).join(' > '));
+  console.log('[DEBUG-MenuContext] Exact match found:', exactMatch);
+  
+  return { activeItems: activeItems.reverse(), exactMatch };
+};
+
 // 创建Provider组件
 export const MenuProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState('首页');
@@ -32,126 +91,94 @@ export const MenuProvider = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // 根据路径更新活动菜单
+  // 更新激活的菜单项
   useEffect(() => {
-    try {
-      const currentPath = location.pathname;
-      if (currentPath !== activePath) {
-        console.log(`Updating active path from ${activePath} to ${currentPath}`);
-        setActivePath(currentPath);
-      }
+    console.log('[DEBUG-MenuContext] ⭐⭐⭐ Location changed to:', location.pathname);
+    
+    const { activeItems, exactMatch } = findActiveMenuItems(menuItems, location.pathname);
+    
+    if (activeItems.length > 0) {
+      const newOpenKeys = activeItems.slice(0, -1).map(item => item.path);
+      const newSelectedKey = activeItems[activeItems.length - 1].path;
       
-      let foundMatch = false;
+      console.log('[DEBUG-MenuContext] Setting new menu state:', {
+        openKeys: newOpenKeys,
+        selectedKey: newSelectedKey
+      });
       
-      // 查找匹配当前路径的菜单
-      for (const menuItem of menuItems) {
-        // 精确匹配或路径前缀匹配
-        const exactMatch = currentPath === menuItem.path;
-        const prefixMatch = menuItem.path && currentPath.startsWith(menuItem.path + '/');
-        
-        if (exactMatch || prefixMatch) {
-          if (activeMenuRef.current !== menuItem.name) {
-            console.log(`Setting active menu to: ${menuItem.name} for path: ${currentPath}`);
-            setActiveMenu(menuItem.name);
-          }
-          
-          foundMatch = true;
-          
-          // 查找匹配的二级菜单
-          if (menuItem.children) {
-            let subMenuFound = false;
-            
-            for (const subMenu of menuItem.children) {
-              // 精确匹配或路径前缀匹配
-              const subExactMatch = currentPath === subMenu.path;
-              const subPrefixMatch = subMenu.path && currentPath.startsWith(subMenu.path + '/');
-              
-              if (subExactMatch || subPrefixMatch) {
-                if (activeSubMenuRef.current !== subMenu.name) {
-                  console.log(`Setting active submenu to: ${subMenu.name} for path: ${currentPath}`);
-                  setActiveSubMenu(subMenu.name);
-                  
-                  // 自动展开找到的菜单
-                  setExpandedMenus(prev => {
-                    const newExpandedMenus = {
-                      ...prev,
-                      [subMenu.name]: true
-                    };
-                    
-                    // 只有在真正变化时才返回新对象
-                    return isEqual(prev, newExpandedMenus) ? prev : newExpandedMenus;
-                  });
-                }
-                
-                subMenuFound = true;
-                
-                // 如果有三级菜单也可以在这里处理
-                
-                break;
-              }
-            }
-            
-            // 如果没有找到匹配的二级菜单，但当前是该一级菜单的路径
-            // 可以考虑默认选择第一个二级菜单
-            if (!subMenuFound && prefixMatch && menuItem.children.length > 0) {
-              const firstSubMenu = menuItem.children[0];
-              setActiveSubMenu(firstSubMenu.name);
-              setExpandedMenus(prev => ({
-                ...prev,
-                [firstSubMenu.name]: true
-              }));
-            }
-          }
-          
-          break;
-        }
-      }
-      
-      if (!foundMatch && activeMenuRef.current !== menuItems[0].name) {
-        console.log(`No menu match found for path: ${currentPath}, reverting to default menu`);
-        setActiveMenu(menuItems[0].name);
-        setActiveSubMenu(null);
-      }
-    } catch (error) {
-      console.error("Error updating active menu based on path:", error);
+      setActivePath(newSelectedKey);
+    } else {
+      console.log('[DEBUG-MenuContext] ⚠️ No matching menu items found for path:', location.pathname);
     }
   }, [location.pathname]);
   
   // 处理菜单点击
   const handleMenuChange = useCallback((data) => {
     try {
-      console.log("MenuContext: handleMenuChange called with data:", data);
+      console.log("[DEBUG-MenuContext] ⭐⭐⭐ handleMenuChange called with data:", data);
       
       // 如果只传入了字符串，则按照之前的逻辑处理
       if (typeof data === 'string') {
-        console.log(`MenuContext: Setting active menu to string: ${data}`);
+        console.log(`[DEBUG-MenuContext] Setting active menu to string: ${data}`);
         setActiveMenu(data);
         const menuItem = menuItems.find(item => item.name === data);
         if (menuItem) {
-          console.log(`MenuContext: Navigating to path: ${menuItem.path}`);
+          console.log(`[DEBUG-MenuContext] Navigating to path: ${menuItem.path}`);
           navigate(menuItem.path);
         } else {
-          console.warn(`MenuContext: No menu item found with name: ${data}`);
+          console.warn(`[DEBUG-MenuContext] No menu item found with name: ${data}`);
         }
         return;
       }
       
       const { menuName, subMenuName, thirdMenuName, path } = data;
-      console.log("MenuContext: Menu navigation:", { menuName, subMenuName, thirdMenuName, path });
+      console.log("[DEBUG-MenuContext] Menu navigation:", { menuName, subMenuName, thirdMenuName, path });
+      
+      // 场景模板特殊处理
+      if (subMenuName === "场景模板") {
+        console.log("[DEBUG-MenuContext] 🚩🚩🚩 Special handling for 场景模板 submenu");
+        
+        // 直接导航到场景模板路径
+        const businessMenuItem = menuItems.find(item => item.name === "业务场景");
+        if (businessMenuItem && businessMenuItem.children) {
+          const sceneTemplateItem = businessMenuItem.children.find(item => item.name === "场景模板");
+          
+          if (sceneTemplateItem) {
+            console.log(`[DEBUG-MenuContext] Found 场景模板 path: ${sceneTemplateItem.path}`);
+            
+            // 强制激活这个菜单项
+            setActiveMenu("业务场景");
+            setActiveSubMenu("场景模板");
+            
+            // 设置展开状态
+            setExpandedMenus(prev => ({
+              ...prev,
+              "场景模板": true
+            }));
+            
+            // 导航到场景模板页面
+            console.log(`[DEBUG-MenuContext] 🚀 Navigating to scene template path: ${sceneTemplateItem.path}`);
+            navigate(sceneTemplateItem.path);
+            
+            // 提前返回，不执行后续逻辑
+            return;
+          }
+        }
+      }
       
       // 更新活动菜单状态
       if (menuName) {
-        console.log(`MenuContext: Setting active menu to: ${menuName}`);
+        console.log(`[DEBUG-MenuContext] Setting active menu to: ${menuName}`);
         setActiveMenu(menuName);
       }
       
       // 更新活动子菜单状态
       if (subMenuName) {
-        console.log(`MenuContext: Setting active submenu to: ${subMenuName}`);
+        console.log(`[DEBUG-MenuContext] Setting active submenu to: ${subMenuName}`);
         setActiveSubMenu(subMenuName);
         
         // 设置展开状态
-        console.log(`MenuContext: Expanding submenu: ${subMenuName}`);
+        console.log(`[DEBUG-MenuContext] Expanding submenu: ${subMenuName}`);
         setExpandedMenus(prev => {
           const newExpandedMenus = {
             ...prev,
@@ -163,20 +190,20 @@ export const MenuProvider = ({ children }) => {
         });
       } else {
         // 如果没有指定二级菜单，则默认清空展开状态
-        console.log("MenuContext: No submenu specified, clearing expanded menus");
+        console.log("[DEBUG-MenuContext] No submenu specified, clearing expanded menus");
         setExpandedMenus({});
         setActiveSubMenu(null);
       }
       
       // 导航到指定路径
       if (path) {
-        console.log(`MenuContext: Navigating to path: ${path}`);
+        console.log(`[DEBUG-MenuContext] Navigating to path: ${path}`);
         navigate(path);
       } else {
-        console.warn("MenuContext: No path provided for navigation");
+        console.warn("[DEBUG-MenuContext] No path provided for navigation");
       }
     } catch (error) {
-      console.error("MenuContext: Error handling menu change:", error);
+      console.error("[DEBUG-MenuContext] Error handling menu change:", error);
     }
   }, [navigate]);
   
