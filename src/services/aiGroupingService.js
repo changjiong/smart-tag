@@ -14,6 +14,61 @@ const BUSINESS_GOAL_TEMPLATES = {
   CUSTOM: 'custom'                     // 自定义分群
 };
 
+// 自然语言分析服务，将自然语言转换为查询条件
+export const analyzeNaturalLanguageQuery = async (query) => {
+  // 模拟网络延迟
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
+  // 这里模拟自然语言处理，实际项目中应该调用NLP服务
+  // 简单模拟一些关键词匹配
+  const conditions = [];
+  
+  if (query.includes('高价值')) {
+    conditions.push({
+      field: '客户价值',
+      operator: '大于',
+      value: '80'
+    });
+  }
+  
+  if (query.includes('流失风险')) {
+    conditions.push({
+      field: '流失风险评分',
+      operator: '大于',
+      value: '60'
+    });
+  }
+  
+  if (query.includes('最近3个月') || query.includes('最近三个月')) {
+    conditions.push({
+      field: '时间范围',
+      operator: '最近',
+      value: '90',
+      unit: '天'
+    });
+  }
+  
+  if (query.includes('消费增长')) {
+    conditions.push({
+      field: '消费增长率',
+      operator: '大于',
+      value: '10',
+      unit: '%'
+    });
+  }
+  
+  // 如果没有匹配到任何关键词，返回一个默认条件
+  if (conditions.length === 0) {
+    conditions.push({
+      field: '新条件',
+      operator: '等于',
+      value: '0'
+    });
+  }
+  
+  return conditions;
+};
+
 // 获取可用的业务目标选项
 export const getBusinessGoals = async () => {
   // 模拟网络延迟
@@ -534,4 +589,65 @@ const getActionRecommendations = (businessGoalId) => {
         }
       ];
   }
+};
+
+// 获取分群洞察
+export const getGroupInsights = async (groupId) => {
+  // 模拟网络延迟
+  await new Promise(resolve => setTimeout(resolve, 800));
+  
+  // 返回分群洞察
+  return [
+    {
+      type: 'profile',
+      title: '用户画像特征',
+      content: '该群体主要为25-35岁的年轻白领，消费能力强，对品质要求高，但近期访问频次明显下降。'
+    },
+    {
+      type: 'behavior',
+      title: '行为特征',
+      content: '平均每月访问次数：5.8次，平均停留时间：15分钟，主要访问时间段：20:00-22:00。'
+    },
+    {
+      type: 'trend',
+      title: '发展趋势',
+      content: '该群体规模较上季度增长15%，但客单价略有下降，消费频次保持稳定。'
+    },
+    {
+      type: 'action',
+      title: '营销建议',
+      content: '建议通过个性化推送高品质新品信息，并提供专属优惠券，提升用户活跃度。'
+    }
+  ];
+};
+
+// 获取相似分群
+export const getSimilarGroups = async (groupId) => {
+  // 模拟网络延迟
+  await new Promise(resolve => setTimeout(resolve, 600));
+  
+  // 返回相似分群列表
+  return [
+    {
+      id: 'sg001',
+      name: '高消费低频次用户',
+      description: '近90天内消费金额高但访问频次低的用户',
+      matchRate: 89,
+      customerCount: 9872
+    },
+    {
+      id: 'sg002',
+      name: '潜在流失用户',
+      description: '有流失风险的高价值用户',
+      matchRate: 76,
+      customerCount: 12560
+    },
+    {
+      id: 'sg003',
+      name: '高成长潜力用户',
+      description: '消费增长率高的中价值用户',
+      matchRate: 68,
+      customerCount: 18340
+    }
+  ];
 }; 

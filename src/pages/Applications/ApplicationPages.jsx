@@ -13,6 +13,12 @@ const DigitalMarketing = createPlaceholderPage('数字营销平台', '一站式�
 import CustomerManagementPage from './CustomerManagement/CustomerManagementPage';
 import RetentionAssistant from './CustomerManagement/RetentionAssistant';
 import RetentionAssistantRedirect from './business/RetentionAssistant';
+
+// 业务应用中心
+import BusinessApplications from './business/BusinessApplications';
+import SceneTemplates from './business/SceneTemplates';
+import TemplatesRouter from './templates/TemplatesRouter';
+
 const ValueEnhancement = createPlaceholderPage('客户价值提升', '通过深度分析客户行为和需求，提供客户价值提升的策略和工具。');
 const LifecycleManagement = createPlaceholderPage('客户生命周期管理', '全面管理客户从获取到忠诚的全生命周期，优化每个阶段的客户体验。');
 const LoyaltyProgram = createPlaceholderPage('忠诚度计划管理', '设计和管理客户忠诚度计划，提高客户粘性和复购率。');
@@ -37,6 +43,7 @@ export {
   RiskManagementPage,
   CorporatePage,
   ApplicationManagementPage,
+  TemplatesRouter,
   
   // 具体页面组件
   PrecisionMarketing,
@@ -45,6 +52,8 @@ export {
   DigitalMarketing,
   RetentionAssistant,
   RetentionAssistantRedirect,
+  BusinessApplications,
+  SceneTemplates,
   ValueEnhancement,
   LifecycleManagement,
   LoyaltyProgram

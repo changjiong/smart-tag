@@ -92,7 +92,8 @@ export const tagsRoutes = {
     base: '/tags/value',
     usage: '/tags/value/usage',
     tracking: '/tags/value/tracking',
-    businessMapping: '/tags/value/business-mapping'
+    businessMapping: '/tags/value/business-mapping',
+    insights: '/tags/value/insights'
   }
 };
 
@@ -141,6 +142,9 @@ export const applicationsRoutes = {
     wealthAdvisor: '/applications/business/wealth-advisor',
     riskMonitor: '/applications/business/risk-monitor',
     corporatePortrait: '/applications/business/corporate-portrait'
+  },
+  templates: {
+    base: '/applications/templates',
   },
   customerManagement: {
     base: '/applications/customer-management',

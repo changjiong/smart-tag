@@ -6,7 +6,7 @@ export const menuItems = [
     isNew: true,
     children: [
       {
-        name: '驾驶舱',
+        name: '工作台',
         path: '/dashboard/cockpit',
         isNew: true,
         children: [
@@ -105,12 +105,12 @@ export const menuItems = [
   },
 
   {
-    name: '业务解决方案',
+    name: '业务场景',
     path: '/applications',
     isNew: true,
     children: [
       {
-        name: '业务应用',
+        name: '场景模板',
         path: '/applications/business',
         isNew: true,
         children: [
@@ -122,13 +122,9 @@ export const menuItems = [
         ]
       },
       {
-        name: '场景模板',
+        name: '业务应用',
         path: '/applications/templates',
         isNew: true,
-        children: [
-          { name: '应用模板', path: '/applications/templates/application', isNew: true },
-          { name: '数据看板', path: '/applications/templates/dashboard', isNew: true }
-        ]
       }
     ]
   },
@@ -189,9 +185,6 @@ export const menuItems = [
             name: '数据输出',
             path: '/system/open-api/data-output',
             isNew: true,
-            children: [
-              { name: '数据资产目录', path: '/system/open-api/data-output/catalog', isNew: true }
-            ]
           }
         ]
       }

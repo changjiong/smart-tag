@@ -17,12 +17,15 @@ import AIAssistant from './pages/Dashboard/AIAssistant';
 import TagsRouter from './pages/Tags/TagsRouter';
 import AI from './pages/Tags/Creation/AI';
 import CreationRouter from './pages/Tags/Creation/CreationRouter';
+import ValueRouter from './pages/Tags/Value/ValueRouter';
+import TagValueInsightsPage from './pages/Tags/Value/insights';
 console.log('AI组件已导入:', AI);
 
 // 导入客群分析页面组件
 import PortraitRouter from './pages/Portrait/PortraitRouter';
 import GroupsPage from './pages/Portrait/GroupsPage';
 import AnalysisPage from './pages/Portrait/AnalysisPage';
+import IntelligentGrouping from './pages/Portrait/Groups/AI';
 
 // 导入系统管理页面组件
 import SystemRouter from './pages/System/SystemRouter';
@@ -33,6 +36,7 @@ import SettingsPage from './pages/System/SettingsPage';
 import ApplicationsRouter from './pages/Applications/ApplicationsRouter';
 import * as AppPages from './pages/Applications/ApplicationPages';
 import BusinessRouter from './pages/Applications/business/BusinessRouter';
+import SceneTemplates from './pages/Applications/business/SceneTemplates';
 
 // 导入场景模板组件
 import TemplatesRouter from './pages/Templates/TemplatesRouter';
@@ -193,8 +197,9 @@ function App() {
             </Route>
             
             {/* 标签价值 */}
-            <Route path="value" element={<div>标签价值</div>}>
-              <Route index element={<Navigate to="/tags/value/usage" replace />} />
+            <Route path="value" element={<ValueRouter />}>
+              <Route index element={<Navigate to="/tags/value/insights" replace />} />
+              <Route path="insights" element={<TagValueInsightsPage />} />
               <Route path="usage" element={<div>标签使用分析</div>} />
               <Route path="tracking" element={<div>价值追踪</div>} />
               <Route path="business-mapping" element={<div>业务映射</div>} />
@@ -216,7 +221,7 @@ function App() {
             <Route path="groups" element={<GroupsPage />}>
               <Route index element={<div>客群创建列表</div>} />
               <Route path="create" element={<div>创建新客群</div>} />
-              <Route path="ai" element={<div>智能分群</div>} />
+              <Route path="ai" element={<IntelligentGrouping />} />
               <Route path="similar" element={<div>相似客群发现</div>} />
               <Route path="insights" element={<div>客群洞察库</div>} />
             </Route>
@@ -253,12 +258,18 @@ function App() {
             
             {/* 业务应用路由 */}
             <Route path="business" element={<BusinessRouter />}>
-              <Route index element={<Navigate to="/applications/business/retention-assistant" replace />} />
+              <Route index element={<SceneTemplates />} />
+              <Route path="index" element={<SceneTemplates />} />
               <Route path="retention-assistant" element={<AppPages.RetentionAssistantRedirect />} />
               <Route path="marketing-engine" element={<Navigate to="/applications/retail-marketing/precision" replace />} />
               <Route path="wealth-advisor" element={<div>财富增值顾问</div>} />
               <Route path="risk-monitor" element={<div>风险预警监控</div>} />
               <Route path="corporate-portrait" element={<div>企业客户画像</div>} />
+            </Route>
+            
+            {/* 业务应用模板 */}
+            <Route path="templates" element={<AppPages.TemplatesRouter />}>
+              <Route index element={<AppPages.BusinessApplications />} />
             </Route>
             
             {/* 客户经营应用 */}

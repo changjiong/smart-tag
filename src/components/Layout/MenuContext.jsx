@@ -37,6 +37,7 @@ export const MenuProvider = ({ children }) => {
     try {
       const currentPath = location.pathname;
       if (currentPath !== activePath) {
+        console.log(`Updating active path from ${activePath} to ${currentPath}`);
         setActivePath(currentPath);
       }
       
@@ -114,7 +115,7 @@ export const MenuProvider = ({ children }) => {
     } catch (error) {
       console.error("Error updating active menu based on path:", error);
     }
-  }, [location.pathname, activePath]);
+  }, [location.pathname]);
   
   // 处理菜单点击
   const handleMenuChange = useCallback((data) => {
