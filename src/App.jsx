@@ -31,6 +31,10 @@ import IntelligentGrouping from './pages/Portrait/Groups/AI';
 import SystemRouter from './pages/System/SystemRouter';
 import UserPage from './pages/System/UserPage';
 import SettingsPage from './pages/System/SettingsPage';
+import OpenAPIRouter from './pages/System/OpenAPI';
+import ServicesRouter from './pages/System/OpenAPI/Services';
+import TagsAPI from './pages/System/OpenAPI/Services/TagsAPI';
+import DataOutput from './pages/System/OpenAPI/DataOutput';
 
 // 导入业务应用中心组件
 import ApplicationsRouter from './pages/Applications/ApplicationsRouter';
@@ -43,7 +47,7 @@ import TemplatesRouter from './pages/Templates/TemplatesRouter';
 import * as TemplatePages from './pages/Templates/TemplatePages';
 
 // 导入开放能力组件
-import OpenAPIRouter from './pages/OpenAPI/OpenAPIRouter';
+import OpenAPIPageRouter from './pages/OpenAPI/OpenAPIRouter';
 import * as OpenAPIPages from './pages/OpenAPI/OpenAPIPages';
 
 // 导入个人资料页面组件
@@ -350,31 +354,16 @@ function App() {
           
           {/* 开放能力路由 */}
           <Route path="open-api" element={<OpenAPIRouter />}>
-            <Route index element={<Navigate to="/open-api/services" replace />} />
+            <Route index element={<Navigate to="/system/open-api/services/tags" replace />} />
             
             {/* API服务 */}
-            <Route path="services" element={<OpenAPIPages.APIServicesPage />}>
-              <Route index element={<Navigate to="/open-api/services/tags" replace />} />
-              <Route path="tags" element={<OpenAPIPages.TagsAPI />} />
-              <Route path="portraits" element={<OpenAPIPages.PortraitsAPI />} />
-              <Route path="groups" element={<OpenAPIPages.GroupsAPI />} />
+            <Route path="services" element={<ServicesRouter />}>
+              <Route index element={<Navigate to="/system/open-api/services/tags" replace />} />
+              <Route path="tags" element={<TagsAPI />} />
             </Route>
             
-            {/* 数据服务 */}
-            <Route path="data" element={<OpenAPIPages.DataServicesPage />}>
-              <Route index element={<Navigate to="/open-api/data/catalog" replace />} />
-              <Route path="catalog" element={<OpenAPIPages.DataCatalog />} />
-              <Route path="subscription" element={<OpenAPIPages.DataSubscription />} />
-              <Route path="push" element={<OpenAPIPages.DataPush />} />
-            </Route>
-            
-            {/* 服务监控 */}
-            <Route path="monitoring" element={<OpenAPIPages.MonitoringPage />}>
-              <Route index element={<Navigate to="/open-api/monitoring/statistics" replace />} />
-              <Route path="statistics" element={<OpenAPIPages.APIStatistics />} />
-              <Route path="performance" element={<OpenAPIPages.PerformanceMonitoring />} />
-              <Route path="alerts" element={<OpenAPIPages.AlertManagement />} />
-            </Route>
+            {/* 数据输出 */}
+            <Route path="data-output" element={<DataOutput />} />
           </Route>
           
           {/* 系统管理路由 */}
@@ -405,6 +394,19 @@ function App() {
               <Route path="logs" element={<Logs />} />
               <Route path="platform" element={<Platform />} />
               <Route path="services" element={<Services />} />
+            </Route>
+            {/* 开放能力模块 */}
+            <Route path="open-api" element={<OpenAPIRouter />}>
+              <Route index element={<Navigate to="/system/open-api/services/tags" replace />} />
+              
+              {/* API服务 */}
+              <Route path="services" element={<ServicesRouter />}>
+                <Route index element={<Navigate to="/system/open-api/services/tags" replace />} />
+                <Route path="tags" element={<TagsAPI />} />
+              </Route>
+              
+              {/* 数据输出 */}
+              <Route path="data-output" element={<DataOutput />} />
             </Route>
           </Route>
         </Route>
