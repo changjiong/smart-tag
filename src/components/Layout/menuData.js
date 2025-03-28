@@ -158,7 +158,7 @@ export const menuItems = [
         children: [
           { name: '模型服务', path: '/system/ai/models', isNew: true },
           { name: '提示词管理', path: '/system/ai/prompts', isNew: true },
-          { name: '知识库', path: '/system/ai/knowledge', isNew: true }
+          { name: '知识库', path: '/system/ai/knowledge', isNew: true },
         ]
       },
       {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
 // 导入布局组件
 import MainLayout from './components/Layout/MainLayout';
@@ -77,6 +77,7 @@ import GuideAssistant from './pages/Dashboard/Assistant/Guide';
 import Models from './pages/System/AI/Models';
 import Knowledge from './pages/System/AI/Knowledge';
 import Prompts from './pages/System/AI/Prompts';
+import AiTest from './pages/System/AI/AiTest';
 
 // 导入系统监控模块组件
 import Traffic from './pages/System/Monitoring/Traffic';
@@ -382,11 +383,16 @@ function App() {
               <Route path="parameters" element={<Parameters />} />
               <Route path="announcements" element={<Announcements />} />
             </Route>
-            <Route path="ai" element={<div>大模型配置</div>}>
+            {/* 大模型配置路由 - 包含模型服务、提示词管理、知识库 */}
+            <Route path="ai" element={<div className="system-ai-container">
+              <h3 className="mb-4">大模型配置</h3>
+              <Outlet />
+            </div>}>
               <Route index element={<Navigate to="/system/ai/models" replace />} />
               <Route path="models" element={<Models />} />
               <Route path="knowledge" element={<Knowledge />} />
               <Route path="prompts" element={<Prompts />} />
+              <Route path="test" element={<AiTest />} />
             </Route>
             <Route path="monitoring" element={<div>运行监控</div>}>
               <Route index element={<Navigate to="/system/monitoring/traffic" replace />} />
