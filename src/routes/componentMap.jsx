@@ -1,27 +1,22 @@
 /**
  * 组件映射文件
  * 集中管理所有路由组件的导入
+ * **注意:** 此文件应只包含 routeConfig.jsx 中实际使用的组件
  */
 
 import React from 'react';
 
-// 布局组件
+// --- 布局与基础组件 ---
 import MainLayout from '../components/Layout/MainLayout';
 import Login from '../pages/Login/Login';
 import NotFoundPage from '../components/ErrorPages/NotFoundPage';
 
-// 仪表盘组件
-import Dashboard from '../pages/Dashboard/Dashboard';
-import Metrics from '../pages/Dashboard/Cockpit/Metrics';
-import Results from '../pages/Dashboard/Cockpit/Results';
-import Tasks from '../pages/Dashboard/Cockpit/Tasks';
-import Navigation from '../pages/Dashboard/Cockpit/Navigation';
-import Conversation from '../pages/Dashboard/Assistant/Conversation';
-import QA from '../pages/Dashboard/Assistant/QA';
-import Analysis from '../pages/Dashboard/Assistant/Analysis';
-import Guide from '../pages/Dashboard/Assistant/Guide';
+// --- 仪表盘 (根据路由调整) ---
+import Dashboard from '../pages/Dashboard/Cockpit/Dashboard';
+import Cockpit from '../pages/Dashboard/Cockpit/index';
+import Assistant from '../pages/Dashboard/Aiassistant/AIAssistant';
 
-// 标签中心组件
+// --- 标签中心 ---
 import TagsRouter from '../pages/Tags/TagsRouter';
 import TagMarket from '../pages/Tags/Management/Market';
 import TagCategories from '../pages/Tags/Management/Categories';
@@ -40,7 +35,7 @@ import TagRuleAlerts from '../pages/Tags/Quality/RuleAlerts';
 import TagHistory from '../pages/Tags/Quality/History';
 import TagValueInsights from '../pages/Tags/Value/insights';
 
-// 客群画像组件
+// --- 客群画像 ---
 import PortraitRouter from '../pages/Portrait/PortraitRouter';
 import GroupCreate from '../pages/Portrait/Groups/Create';
 import GroupAI from '../pages/Portrait/Groups/AI';
@@ -51,16 +46,15 @@ import FunnelAnalysis from '../pages/Portrait/Analysis/Funnel';
 import GroupComparison from '../pages/Portrait/Analysis/Comparison';
 import YRFMAnalysis from '../pages/Portrait/Analysis/YRFM';
 
-// 业务场景组件
+// --- 业务场景 ---
 import ApplicationsRouter from '../pages/Applications/ApplicationsRouter';
 import PrecisionMarketing from '../pages/Applications/business/PrecisionMarketing';
 import RetentionAssistant from '../pages/Applications/business/RetentionAssistant';
 import WealthAdvisor from '../pages/Applications/business/WealthAdvisor';
 import RiskMonitor from '../pages/Applications/business/RiskMonitor';
 import CorporatePortrait from '../pages/Applications/business/CorporatePortrait';
-import TemplatesRouter from '../pages/Applications/Templates/TemplatesRouter';
 
-// 系统管理组件
+// --- 系统管理 ---
 import SystemRouter from '../pages/System/SystemRouter';
 import Organizations from '../pages/System/Users/Organizations';
 import Accounts from '../pages/System/Users/Accounts';
@@ -75,28 +69,21 @@ import AIKnowledge from '../pages/System/AI/Knowledge';
 import TrafficMonitoring from '../pages/System/Monitoring/Traffic';
 import LogsMonitoring from '../pages/System/Monitoring/Logs';
 import PlatformMonitoring from '../pages/System/Monitoring/Platform';
-import APITags from '../pages/System/OpenAPI/Services/Tags';
 import DataOutput from '../pages/System/OpenAPI/DataOutput';
 
-// 组件映射对象
+// --- 组件映射对象 (与 routeConfig.jsx 对应) ---
 export const componentMap = {
-  // 布局组件
+  // 布局与基础
   mainLayout: MainLayout,
   login: Login,
   notFound: NotFoundPage,
 
-  // 仪表盘组件
+  // 仪表盘
   dashboard: Dashboard,
-  metrics: Metrics,
-  results: Results,
-  tasks: Tasks,
-  navigation: Navigation,
-  conversation: Conversation,
-  qa: QA,
-  analysis: Analysis,
-  guide: Guide,
+  cockpit: Cockpit,
+  assistant: Assistant,
 
-  // 标签中心组件
+  // 标签中心
   tagsRouter: TagsRouter,
   tagMarket: TagMarket,
   tagCategories: TagCategories,
@@ -115,7 +102,7 @@ export const componentMap = {
   tagHistory: TagHistory,
   tagValueInsights: TagValueInsights,
 
-  // 客群画像组件
+  // 客群画像
   portraitRouter: PortraitRouter,
   groupCreate: GroupCreate,
   groupAI: GroupAI,
@@ -126,16 +113,15 @@ export const componentMap = {
   groupComparison: GroupComparison,
   yrfmAnalysis: YRFMAnalysis,
 
-  // 业务场景组件
+  // 业务场景
   applicationsRouter: ApplicationsRouter,
   precisionMarketing: PrecisionMarketing,
   retentionAssistant: RetentionAssistant,
   wealthAdvisor: WealthAdvisor,
   riskMonitor: RiskMonitor,
   corporatePortrait: CorporatePortrait,
-  templatesRouter: TemplatesRouter,
 
-  // 系统管理组件
+  // 系统管理
   systemRouter: SystemRouter,
   organizations: Organizations,
   accounts: Accounts,
@@ -150,7 +136,6 @@ export const componentMap = {
   trafficMonitoring: TrafficMonitoring,
   logsMonitoring: LogsMonitoring,
   platformMonitoring: PlatformMonitoring,
-  apiTags: APITags,
   dataOutput: DataOutput
 };
 
@@ -158,8 +143,8 @@ export const componentMap = {
 export const getComponent = (componentName) => {
   const component = componentMap[componentName];
   if (!component) {
-    console.warn(`Component "${componentName}" not found in componentMap`);
-    return () => <div>Component not found: {componentName}</div>;
+    console.warn(`Component \"${componentName}\" not found in componentMap`);
+    return () => React.createElement('div', null, `Component not found: ${componentName}`);
   }
   return component;
 };

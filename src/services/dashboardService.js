@@ -1,35 +1,21 @@
 // 模拟仪表盘数据服务
 // 在实际项目中，这些数据将从后端API获取
 
-// 根据时间范围和用户角色获取仪表盘数据
-export const fetchDashboardData = async (timeRange, userRole) => {
+// 根据时间范围获取仪表盘数据，移除了 userRole 参数
+export const fetchDashboardData = async (timeRange) => {
   // 模拟API调用延迟
   await new Promise(resolve => setTimeout(resolve, 800));
 
   // 获取基础数据
   const baseData = getBaseData(timeRange);
   
-  // 根据角色合并特定数据
-  let roleSpecificData = {};
-  
-  switch (userRole) {
-    case 'business_analyst':
-      roleSpecificData = getBusinessAnalystData(timeRange);
-      break;
-    case 'manager':
-      roleSpecificData = getManagerData(timeRange);
-      break;
-    case 'data_scientist':
-      roleSpecificData = getDataScientistData(timeRange);
-      break;
-    default:
-      roleSpecificData = getDefaultUserData(timeRange);
-  }
+  // 获取默认用户数据
+  const defaultData = getDefaultUserData(timeRange);
 
   // 合并数据
   return {
     ...baseData,
-    ...roleSpecificData
+    ...defaultData
   };
 };
 
@@ -98,7 +84,37 @@ const getBaseData = (timeRange) => {
   };
 };
 
-// 业务分析师特定数据
+// 默认用户数据
+const getDefaultUserData = (timeRange) => {
+  return {
+    // 待处理任务
+    tasks: [
+      {
+        title: '欢迎使用标签画像中台',
+        description: '点击此处查看系统使用指南，快速上手各项功能',
+        priority: '建议',
+        dueDate: '随时',
+        link: '/dashboard/assistant/guide'
+      },
+      {
+        title: '创建您的第一个标签',
+        description: '通过智能标签生成功能，轻松创建业务标签',
+        priority: '建议',
+        dueDate: '随时',
+        link: '/tags/creation/ai'
+      },
+      {
+        title: '探索客群画像',
+        description: '使用智能分群功能，洞察客户群体特征',
+        priority: '建议',
+        dueDate: '随时',
+        link: '/portrait/groups/ai'
+      }
+    ]
+  };
+};
+
+// 业务分析师特定数据 - 可以保留，但不再被调用
 const getBusinessAnalystData = (timeRange) => {
   return {
     // 待处理任务
@@ -135,7 +151,7 @@ const getBusinessAnalystData = (timeRange) => {
   };
 };
 
-// 管理层特定数据
+// 管理层特定数据 - 可以保留，但不再被调用
 const getManagerData = (timeRange) => {
   return {
     // ROI数据
@@ -196,7 +212,7 @@ const getManagerData = (timeRange) => {
   };
 };
 
-// 数据科学家特定数据
+// 数据科学家特定数据 - 可以保留，但不再被调用
 const getDataScientistData = (timeRange) => {
   return {
     // 标签健康
@@ -262,36 +278,6 @@ const getDataScientistData = (timeRange) => {
         description: '服务响应时间不稳定',
         severity: 'info',
         link: '/system/ai/models?id=42'
-      }
-    ]
-  };
-};
-
-// 默认用户特定数据
-const getDefaultUserData = (timeRange) => {
-  return {
-    // 待处理任务
-    tasks: [
-      {
-        title: '欢迎使用标签画像中台',
-        description: '点击此处查看系统使用指南，快速上手各项功能',
-        priority: '建议',
-        dueDate: '随时',
-        link: '/dashboard/assistant/guide'
-      },
-      {
-        title: '创建您的第一个标签',
-        description: '通过智能标签生成功能，轻松创建业务标签',
-        priority: '建议',
-        dueDate: '随时',
-        link: '/tags/creation/ai'
-      },
-      {
-        title: '探索客群画像',
-        description: '使用智能分群功能，洞察客户群体特征',
-        priority: '建议',
-        dueDate: '随时',
-        link: '/portrait/groups/ai'
       }
     ]
   };

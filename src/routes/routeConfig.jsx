@@ -248,70 +248,62 @@ export const otherRoutes = {
   notFound: '*'
 };
 
-// 路由配置对象，包含路径和对应的组件
+// 路由配置对象，直接反映 menuData.js 结构
 export const routeConfig = {
-  // 登录路由
+  // 登录路由 (不在主布局内)
   login: {
     path: '/login',
     element: <componentMap.login />
   },
 
-  // 主应用路由
+  // 主应用路由 (使用 MainLayout)
   root: {
     path: '/',
     element: <componentMap.mainLayout />,
     children: {
-      // 默认重定向
+      // 根路径默认重定向到仪表盘
       index: {
         path: '',
         element: <Navigate to="/dashboard" replace />
       },
 
-      // 仪表盘路由
+      // 首页/仪表盘
       dashboard: {
-        path: 'dashboard',
-        element: <componentMap.dashboard />,
+        path: 'dashboard', // 相对路径 'dashboard'
+        element: <componentMap.dashboard />, // Dashboard 根组件，可能只是个Outlet容器
         children: {
+          // /dashboard 默认重定向到 /dashboard/cockpit
           index: {
             path: '',
             element: <Navigate to="/dashboard/cockpit" replace />
           },
-          // 工作台
-          cockpit: {
-            path: 'cockpit',
-            children: {
-              metrics: { path: 'metrics', element: <componentMap.metrics /> },
-              results: { path: 'results', element: <componentMap.results /> },
-              tasks: { path: 'tasks', element: <componentMap.tasks /> },
-              navigation: { path: 'navigation', element: <componentMap.navigation /> }
-            }
+          cockpit: { // 对应菜单 "工作台"
+            path: 'cockpit', // 相对路径 'cockpit'
+            element: <componentMap.cockpit /> // Cockpit 根组件或页面
+            // 如果 Cockpit 有子路由，在这里添加
           },
-          // 智能助手
-          assistant: {
-            path: 'assistant',
-            children: {
-              conversation: { path: 'conversation', element: <componentMap.conversation /> },
-              qa: { path: 'qa', element: <componentMap.qa /> },
-              analysis: { path: 'analysis', element: <componentMap.analysis /> },
-              guide: { path: 'guide', element: <componentMap.guide /> }
-            }
+          assistant: { // 对应菜单 "智能助手"
+            path: 'assistant', // 相对路径 'assistant'
+            element: <componentMap.assistant /> // Assistant 根组件或页面
+            // 如果 Assistant 有子路由，在这里添加
           }
         }
       },
 
-      // 标签中心路由
+      // 标签中心
       tags: {
-        path: 'tags',
-        element: <componentMap.tagsRouter />,
+        path: 'tags', // 相对路径 'tags'
+        element: <componentMap.tagsRouter />, // 标签模块根路由组件
         children: {
+          // /tags 默认重定向
           index: {
             path: '',
             element: <Navigate to="/tags/management" replace />
           },
-          // 标签管理
           management: {
             path: 'management',
             children: {
+              index: { path: '', element: <Navigate to="/tags/management/market" replace /> },
               market: { path: 'market', element: <componentMap.tagMarket /> },
               categories: { path: 'categories', element: <componentMap.tagCategories /> },
               info: { path: 'info', element: <componentMap.tagInfo /> },
@@ -320,169 +312,184 @@ export const routeConfig = {
               batchUpdate: { path: 'batch-update', element: <componentMap.tagBatchUpdate /> }
             }
           },
-          // 标签创建
           creation: {
             path: 'creation',
             children: {
+              index: { path: '', element: <Navigate to="/tags/creation/requirements" replace /> },
               requirements: { path: 'requirements', element: <componentMap.tagRequirements /> },
               registration: { path: 'registration', element: <componentMap.tagRegistration /> },
               factory: { path: 'factory', element: <componentMap.tagFactory /> },
               ai: { path: 'ai', element: <componentMap.tagAI /> }
             }
           },
-          // 标签质量监控
           quality: {
             path: 'quality',
             children: {
+              index: { path: '', element: <Navigate to="/tags/quality/dashboard" replace /> },
               dashboard: { path: 'dashboard', element: <componentMap.tagQualityDashboard /> },
               alerts: { path: 'alerts', element: <componentMap.tagAlerts /> },
               alertConfig: { path: 'alert-config', element: <componentMap.tagAlertConfig /> },
               ruleAlerts: { path: 'rule-alerts', element: <componentMap.tagRuleAlerts /> },
               history: { path: 'history', element: <componentMap.tagHistory /> }
+              // health 路由不在 menuData 中，暂时移除
             }
           },
-          // 标签价值
           value: {
             path: 'value',
             children: {
+              index: { path: '', element: <Navigate to="/tags/value/insights" replace /> },
               insights: { path: 'insights', element: <componentMap.tagValueInsights /> }
+              // usage, tracking, businessMapping 不在 menuData 中，暂时移除
             }
           }
         }
       },
 
-      // 客群画像路由
+      // 客群画像
       portrait: {
-        path: 'portrait',
+        path: 'portrait', // 相对路径 'portrait'
         element: <componentMap.portraitRouter />,
         children: {
+          // /portrait 默认重定向
           index: {
             path: '',
             element: <Navigate to="/portrait/groups" replace />
           },
-          // 客群管理
           groups: {
             path: 'groups',
             children: {
+              index: { path: '', element: <Navigate to="/portrait/groups/create" replace /> },
               create: { path: 'create', element: <componentMap.groupCreate /> },
               ai: { path: 'ai', element: <componentMap.groupAI /> }
+              // similar, insights 不在 menuData 中，暂时移除
             }
           },
-          // 画像分析
           analysis: {
             path: 'analysis',
             children: {
+              index: { path: '', element: <Navigate to="/portrait/analysis/customer" replace /> },
               customer: { path: 'customer', element: <componentMap.customerView /> },
               groupInsights: { path: 'group-insights', element: <componentMap.groupInsights /> },
               groupPortrait: { path: 'group-portrait', element: <componentMap.groupPortrait /> },
               funnel: { path: 'funnel', element: <componentMap.funnelAnalysis /> },
               comparison: { path: 'comparison', element: <componentMap.groupComparison /> },
               yrfm: { path: 'yrfm', element: <componentMap.yrfmAnalysis /> }
+              // behavior 不在 menuData 中，暂时移除
             }
           }
+          // applications 子模块不在 menuData 中，暂时移除
         }
       },
 
-      // 业务场景路由
+      // 业务场景
       applications: {
-        path: 'applications',
+        path: 'applications', // 相对路径 'applications'
         element: <componentMap.applicationsRouter />,
         children: {
+          // /applications 默认重定向到第一个菜单项
           index: {
             path: '',
-            element: <Navigate to="/applications/business" replace />
+            element: <Navigate to="/applications/retail-marketing/precision" replace />
           },
-          // 场景模板
-          business: {
-            path: 'business',
-            children: {
-              retailMarketing: { 
-                path: 'retail-marketing/precision', 
-                element: <componentMap.precisionMarketing /> 
-              },
-              retentionAssistant: { 
-                path: 'retention-assistant', 
-                element: <componentMap.retentionAssistant /> 
-              },
-              wealthAdvisor: { 
-                path: 'wealth-advisor', 
-                element: <componentMap.wealthAdvisor /> 
-              },
-              riskMonitor: { 
-                path: 'risk-monitor', 
-                element: <componentMap.riskMonitor /> 
-              },
-              corporatePortrait: { 
-                path: 'corporate-portrait', 
-                element: <componentMap.corporatePortrait /> 
-              }
-            }
+          // 直接映射菜单中的路径，注意路径是相对于 /applications
+          // --- 场景模板下的路径 ---
+          // 精准营销引擎
+          retailMarketingPrecision: {
+            path: 'retail-marketing/precision', // 完整相对路径
+            element: <componentMap.precisionMarketing />
           },
-          // 业务应用
-          templates: {
-            path: 'templates',
+          // 客户挽留助手
+          retentionAssistant: {
+            path: 'business/retention-assistant', // 完整相对路径
+            element: <componentMap.retentionAssistant />
+          },
+          // 财富增值顾问
+          wealthAdvisor: {
+            path: 'business/wealth-advisor', // 完整相对路径
+            element: <componentMap.wealthAdvisor />
+          },
+           // 风险预警监控
+          riskMonitor: {
+            path: 'business/risk-monitor', // 完整相对路径
+            element: <componentMap.riskMonitor />
+          },
+          // 企业客户画像
+          corporatePortrait: {
+            path: 'business/corporate-portrait', // 完整相对路径
+            element: <componentMap.corporatePortrait />
+          },
+          // --- 业务应用下的路径 ---
+          templates: { // 对应菜单 "业务应用"
+            path: 'templates', // 相对路径 'templates'
             element: <componentMap.templatesRouter />
           }
+          // 其他 business 下的子路由如果不在 menuData 中，暂时移除
         }
       },
 
-      // 系统管理路由
+      // 系统管理
       system: {
-        path: 'system',
+        path: 'system', // 相对路径 'system'
         element: <componentMap.systemRouter />,
         children: {
+          // /system 默认重定向
           index: {
             path: '',
             element: <Navigate to="/system/users" replace />
           },
-          // 用户权限
           users: {
             path: 'users',
             children: {
+              index: { path: '', element: <Navigate to="/system/users/organizations" replace /> },
               organizations: { path: 'organizations', element: <componentMap.organizations /> },
               accounts: { path: 'accounts', element: <componentMap.accounts /> },
               roles: { path: 'roles', element: <componentMap.roles /> },
               workflows: { path: 'workflows', element: <componentMap.workflows /> }
             }
           },
-          // 系统配置
           settings: {
             path: 'settings',
             children: {
+              index: { path: '', element: <Navigate to="/system/settings/schedules" replace /> },
               schedules: { path: 'schedules', element: <componentMap.schedules /> },
               parameters: { path: 'parameters', element: <componentMap.parameters /> },
               announcements: { path: 'announcements', element: <componentMap.announcements /> }
             }
           },
-          // 大模型配置
           ai: {
             path: 'ai',
             children: {
+              index: { path: '', element: <Navigate to="/system/ai/models" replace /> },
               models: { path: 'models', element: <componentMap.aiModels /> },
               prompts: { path: 'prompts', element: <componentMap.aiPrompts /> },
               knowledge: { path: 'knowledge', element: <componentMap.aiKnowledge /> }
             }
           },
-          // 运行监控
           monitoring: {
             path: 'monitoring',
             children: {
+              index: { path: '', element: <Navigate to="/system/monitoring/traffic" replace /> },
               traffic: { path: 'traffic', element: <componentMap.trafficMonitoring /> },
               logs: { path: 'logs', element: <componentMap.logsMonitoring /> },
               platform: { path: 'platform', element: <componentMap.platformMonitoring /> }
+              // services 不在 menuData 中，暂时移除
             }
           },
-          // 开放能力
+          // 开放能力 - 路径为 open-api
           openApi: {
-            path: 'open-api',
+            path: 'open-api', // 相对路径 'open-api'
             children: {
+              index: { path: '', element: <Navigate to="/system/open-api/services" replace /> },
               services: {
                 path: 'services',
                 children: {
+                  index: { path: '', element: <Navigate to="/system/open-api/services/tags" replace /> },
                   tags: { path: 'tags', element: <componentMap.apiTags /> }
+                  // portraits, groups 不在 menuData 中，暂时移除
                 }
               },
               dataOutput: { path: 'data-output', element: <componentMap.dataOutput /> }
+              // data 子模块不在 menuData 中，暂时移除
             }
           }
         }
@@ -490,7 +497,7 @@ export const routeConfig = {
     }
   },
 
-  // 404 路由
+  // 404 路由 (放在最后)
   notFound: {
     path: '*',
     element: <componentMap.notFound />
@@ -527,7 +534,7 @@ export const generateRoutes = (config) => {
     // 子路由处理
     if (children) {
       // 转换children对象为数组
-      route.children = Object.values(children).map(child => processRoute(child));
+      route.children = Object.values(children).map(child => processRoute(child)).filter(Boolean); // Filter out null/undefined routes
     }
 
     return route;
@@ -535,10 +542,15 @@ export const generateRoutes = (config) => {
 
   // 处理所有顶级路由
   if (Array.isArray(config)) {
-    return config.map(route => processRoute(route));
+    console.warn("Route config should be an object, not an array.");
+    return []; // Or handle array case if necessary
   } else {
     Object.values(config).forEach(route => {
-      routes.push(processRoute(route));
+      if (route && route.path) { // Ensure route is valid
+         routes.push(processRoute(route));
+      } else {
+         console.warn("Invalid route configuration item:", route);
+      }
     });
     return routes;
   }

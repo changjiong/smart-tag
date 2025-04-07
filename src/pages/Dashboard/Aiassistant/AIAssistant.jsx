@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { aiRecommendations } from '../../mockData/marketing';
-import { tagDistributionData } from '../../mockData/tags';
-import { customerGroups } from '../../mockData/groups';
+import { aiRecommendations } from '../../../mockData/marketing';
+import { tagDistributionData } from '../../../mockData/tags';
+import { customerGroups } from '../../../mockData/groups';
 
 /**
  * AIAssistant component for the dashboard that provides AI-powered recommendations 

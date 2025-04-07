@@ -9,23 +9,11 @@ export const menuItems = [
         name: '工作台',
         path: '/dashboard/cockpit',
         isNew: true,
-        children: [
-          { name: '业务指标看板', path: '/dashboard/cockpit/metrics', isNew: true },
-          { name: '价值成果展示', path: '/dashboard/cockpit/results', isNew: true },
-          { name: '任务管理中心', path: '/dashboard/cockpit/tasks', isNew: true },
-          { name: '快速导航', path: '/dashboard/cockpit/navigation', isNew: true }
-        ]
       },
       {
         name: '智能助手',
         path: '/dashboard/assistant',
         isNew: true,
-        children: [
-          { name: '对话分析', path: '/dashboard/assistant/conversation', isNew: true },
-          { name: '业务问题解答', path: '/dashboard/assistant/qa', isNew: true },
-          { name: '智能解读', path: '/dashboard/assistant/analysis', isNew: true },
-          { name: '操作引导', path: '/dashboard/assistant/guide', isNew: true }
-        ]
       }
     ]
   },

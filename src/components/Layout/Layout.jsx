@@ -8,14 +8,12 @@ import AIAssistant from '../AIAssistant/AIAssistant';
 
 // 临时导入仪表盘服务用于获取数据
 import { fetchDashboardData } from '../../services/dashboardService';
-import { useUserRole } from '../../hooks/useUserRole';
 
 const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [dashboardData, setDashboardData] = useState(null);
   const location = useLocation();
-  const { userRole } = useUserRole();
   
   // 响应式侧边栏
   useEffect(() => {

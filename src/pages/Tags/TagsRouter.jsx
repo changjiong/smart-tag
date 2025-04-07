@@ -7,11 +7,7 @@ import { Outlet } from 'react-router-dom';
  */
 const TagsRouter = () => {
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <Outlet />
-      </div>
-    </div>
+    <Outlet />
   );
 };
 
