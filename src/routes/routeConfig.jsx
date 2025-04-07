@@ -1,7 +1,21 @@
 /**
  * 路由配置文件
- * 提供系统中所有路由的集中管理
+ * 提供系统中所有路由的集中管理和组件映射
  */
+
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { componentMap } from './componentMap.jsx';
+
+// 导入所有需要的组件
+import MainLayout from '../components/Layout/MainLayout';
+import Login from '../pages/Login/Login';
+import NotFoundPage from '../components/ErrorPages/NotFoundPage';
+import Dashboard from '../pages/Dashboard/Dashboard';
+import DataOverview from '../pages/Dashboard/DataOverview';
+import TodoList from '../pages/Dashboard/TodoList';
+import AIAssistant from '../pages/Dashboard/AIAssistant';
+// ... 其他组件导入（保持与 App.jsx 相同的导入）
 
 // 系统管理模块路由配置
 export const systemRoutes = {
@@ -242,4 +256,132 @@ export const otherRoutes = {
   login: '/login',
   profile: '/profile',
   notFound: '*'
-}; 
+};
+
+// 路由配置对象，包含路径和对应的组件
+export const routeConfig = {
+  // 登录路由
+  login: {
+    path: '/login',
+    element: componentMap.login
+  },
+
+  // 主应用路由
+  root: {
+    path: '/',
+    element: componentMap.mainLayout,
+    children: {
+      // 默认重定向
+      index: {
+        path: '',
+        element: <Navigate to="/dashboard" replace />
+      },
+
+      // 仪表盘路由
+      dashboard: {
+        path: 'dashboard',
+        element: componentMap.dashboard,
+        children: {
+          index: {
+            path: '',
+            element: <Navigate to="/dashboard/overview" replace />
+          },
+          overview: {
+            path: 'overview',
+            element: componentMap.dataOverview
+          },
+          todos: {
+            path: 'personal/todos',
+            element: componentMap.todoList
+          }
+          // ... 其他仪表盘子路由
+        }
+      },
+
+      // 标签中心路由
+      tags: {
+        path: 'tags',
+        element: componentMap.tagsRouter,
+        children: {
+          // ... 标签中心子路由
+        }
+      },
+
+      // 客群画像路由
+      portrait: {
+        path: 'portrait',
+        element: componentMap.portraitRouter,
+        children: {
+          // ... 客群画像子路由
+        }
+      },
+
+      // 系统管理路由
+      system: {
+        path: 'system',
+        element: componentMap.systemRouter,
+        children: {
+          // ... 系统管理子路由
+        }
+      }
+    }
+  },
+
+  // 404 路由
+  notFound: {
+    path: '*',
+    element: componentMap.notFound
+  }
+};
+
+// 辅助函数：将配置转换为 React Router 所需的格式
+export const generateRoutes = (config) => {
+  const routes = [];
+
+  const processRoute = (routeConfig) => {
+    const { path, element, children } = routeConfig;
+    const route = { 
+      path, 
+      element: React.isValidElement(element) ? element : React.createElement(element)
+    };
+
+    if (children) {
+      route.children = Object.values(children).map(child => processRoute(child));
+    }
+
+    return route;
+  };
+
+  Object.values(config).forEach(route => {
+    routes.push(processRoute(route));
+  });
+
+  return routes;
+};
+
+// 导出路由路径常量
+export const ROUTES = {
+  // 登录
+  LOGIN: '/login',
+
+  // 仪表盘
+  DASHBOARD: {
+    ROOT: '/dashboard',
+    OVERVIEW: '/dashboard/overview',
+    TODOS: '/dashboard/personal/todos',
+    // ... 其他路由常量
+  },
+
+  // 标签中心
+  TAGS: {
+    ROOT: '/tags',
+    MANAGEMENT: '/tags/management',
+    CREATION: '/tags/creation',
+    QUALITY: '/tags/quality',
+    VALUE: '/tags/value',
+  },
+
+  // ... 其他模块的路由常量
+};
+
+export default routeConfig; 
