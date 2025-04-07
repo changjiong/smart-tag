@@ -7,16 +7,6 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { componentMap } from './componentMap.jsx';
 
-// 导入所有需要的组件
-import MainLayout from '../components/Layout/MainLayout';
-import Login from '../pages/Login/Login';
-import NotFoundPage from '../components/ErrorPages/NotFoundPage';
-import Dashboard from '../pages/Dashboard/Dashboard';
-import DataOverview from '../pages/Dashboard/DataOverview';
-import TodoList from '../pages/Dashboard/TodoList';
-import AIAssistant from '../pages/Dashboard/AIAssistant';
-// ... 其他组件导入（保持与 App.jsx 相同的导入）
-
 // 系统管理模块路由配置
 export const systemRoutes = {
   base: '/system',
@@ -263,13 +253,13 @@ export const routeConfig = {
   // 登录路由
   login: {
     path: '/login',
-    element: componentMap.login
+    element: <componentMap.login />
   },
 
   // 主应用路由
   root: {
     path: '/',
-    element: componentMap.mainLayout,
+    element: <componentMap.mainLayout />,
     children: {
       // 默认重定向
       index: {
@@ -280,48 +270,221 @@ export const routeConfig = {
       // 仪表盘路由
       dashboard: {
         path: 'dashboard',
-        element: componentMap.dashboard,
+        element: <componentMap.dashboard />,
         children: {
           index: {
             path: '',
-            element: <Navigate to="/dashboard/overview" replace />
+            element: <Navigate to="/dashboard/cockpit" replace />
           },
-          overview: {
-            path: 'overview',
-            element: componentMap.dataOverview
+          // 工作台
+          cockpit: {
+            path: 'cockpit',
+            children: {
+              metrics: { path: 'metrics', element: <componentMap.metrics /> },
+              results: { path: 'results', element: <componentMap.results /> },
+              tasks: { path: 'tasks', element: <componentMap.tasks /> },
+              navigation: { path: 'navigation', element: <componentMap.navigation /> }
+            }
           },
-          todos: {
-            path: 'personal/todos',
-            element: componentMap.todoList
+          // 智能助手
+          assistant: {
+            path: 'assistant',
+            children: {
+              conversation: { path: 'conversation', element: <componentMap.conversation /> },
+              qa: { path: 'qa', element: <componentMap.qa /> },
+              analysis: { path: 'analysis', element: <componentMap.analysis /> },
+              guide: { path: 'guide', element: <componentMap.guide /> }
+            }
           }
-          // ... 其他仪表盘子路由
         }
       },
 
       // 标签中心路由
       tags: {
         path: 'tags',
-        element: componentMap.tagsRouter,
+        element: <componentMap.tagsRouter />,
         children: {
-          // ... 标签中心子路由
+          index: {
+            path: '',
+            element: <Navigate to="/tags/management" replace />
+          },
+          // 标签管理
+          management: {
+            path: 'management',
+            children: {
+              market: { path: 'market', element: <componentMap.tagMarket /> },
+              categories: { path: 'categories', element: <componentMap.tagCategories /> },
+              info: { path: 'info', element: <componentMap.tagInfo /> },
+              metadata: { path: 'metadata', element: <componentMap.tagMetadata /> },
+              uninstall: { path: 'uninstall', element: <componentMap.tagUninstall /> },
+              batchUpdate: { path: 'batch-update', element: <componentMap.tagBatchUpdate /> }
+            }
+          },
+          // 标签创建
+          creation: {
+            path: 'creation',
+            children: {
+              requirements: { path: 'requirements', element: <componentMap.tagRequirements /> },
+              registration: { path: 'registration', element: <componentMap.tagRegistration /> },
+              factory: { path: 'factory', element: <componentMap.tagFactory /> },
+              ai: { path: 'ai', element: <componentMap.tagAI /> }
+            }
+          },
+          // 标签质量监控
+          quality: {
+            path: 'quality',
+            children: {
+              dashboard: { path: 'dashboard', element: <componentMap.tagQualityDashboard /> },
+              alerts: { path: 'alerts', element: <componentMap.tagAlerts /> },
+              alertConfig: { path: 'alert-config', element: <componentMap.tagAlertConfig /> },
+              ruleAlerts: { path: 'rule-alerts', element: <componentMap.tagRuleAlerts /> },
+              history: { path: 'history', element: <componentMap.tagHistory /> }
+            }
+          },
+          // 标签价值
+          value: {
+            path: 'value',
+            children: {
+              insights: { path: 'insights', element: <componentMap.tagValueInsights /> }
+            }
+          }
         }
       },
 
       // 客群画像路由
       portrait: {
         path: 'portrait',
-        element: componentMap.portraitRouter,
+        element: <componentMap.portraitRouter />,
         children: {
-          // ... 客群画像子路由
+          index: {
+            path: '',
+            element: <Navigate to="/portrait/groups" replace />
+          },
+          // 客群管理
+          groups: {
+            path: 'groups',
+            children: {
+              create: { path: 'create', element: <componentMap.groupCreate /> },
+              ai: { path: 'ai', element: <componentMap.groupAI /> }
+            }
+          },
+          // 画像分析
+          analysis: {
+            path: 'analysis',
+            children: {
+              customer: { path: 'customer', element: <componentMap.customerView /> },
+              groupInsights: { path: 'group-insights', element: <componentMap.groupInsights /> },
+              groupPortrait: { path: 'group-portrait', element: <componentMap.groupPortrait /> },
+              funnel: { path: 'funnel', element: <componentMap.funnelAnalysis /> },
+              comparison: { path: 'comparison', element: <componentMap.groupComparison /> },
+              yrfm: { path: 'yrfm', element: <componentMap.yrfmAnalysis /> }
+            }
+          }
+        }
+      },
+
+      // 业务场景路由
+      applications: {
+        path: 'applications',
+        element: <componentMap.applicationsRouter />,
+        children: {
+          index: {
+            path: '',
+            element: <Navigate to="/applications/business" replace />
+          },
+          // 场景模板
+          business: {
+            path: 'business',
+            children: {
+              retailMarketing: { 
+                path: 'retail-marketing/precision', 
+                element: <componentMap.precisionMarketing /> 
+              },
+              retentionAssistant: { 
+                path: 'retention-assistant', 
+                element: <componentMap.retentionAssistant /> 
+              },
+              wealthAdvisor: { 
+                path: 'wealth-advisor', 
+                element: <componentMap.wealthAdvisor /> 
+              },
+              riskMonitor: { 
+                path: 'risk-monitor', 
+                element: <componentMap.riskMonitor /> 
+              },
+              corporatePortrait: { 
+                path: 'corporate-portrait', 
+                element: <componentMap.corporatePortrait /> 
+              }
+            }
+          },
+          // 业务应用
+          templates: {
+            path: 'templates',
+            element: <componentMap.templatesRouter />
+          }
         }
       },
 
       // 系统管理路由
       system: {
         path: 'system',
-        element: componentMap.systemRouter,
+        element: <componentMap.systemRouter />,
         children: {
-          // ... 系统管理子路由
+          index: {
+            path: '',
+            element: <Navigate to="/system/users" replace />
+          },
+          // 用户权限
+          users: {
+            path: 'users',
+            children: {
+              organizations: { path: 'organizations', element: <componentMap.organizations /> },
+              accounts: { path: 'accounts', element: <componentMap.accounts /> },
+              roles: { path: 'roles', element: <componentMap.roles /> },
+              workflows: { path: 'workflows', element: <componentMap.workflows /> }
+            }
+          },
+          // 系统配置
+          settings: {
+            path: 'settings',
+            children: {
+              schedules: { path: 'schedules', element: <componentMap.schedules /> },
+              parameters: { path: 'parameters', element: <componentMap.parameters /> },
+              announcements: { path: 'announcements', element: <componentMap.announcements /> }
+            }
+          },
+          // 大模型配置
+          ai: {
+            path: 'ai',
+            children: {
+              models: { path: 'models', element: <componentMap.aiModels /> },
+              prompts: { path: 'prompts', element: <componentMap.aiPrompts /> },
+              knowledge: { path: 'knowledge', element: <componentMap.aiKnowledge /> }
+            }
+          },
+          // 运行监控
+          monitoring: {
+            path: 'monitoring',
+            children: {
+              traffic: { path: 'traffic', element: <componentMap.trafficMonitoring /> },
+              logs: { path: 'logs', element: <componentMap.logsMonitoring /> },
+              platform: { path: 'platform', element: <componentMap.platformMonitoring /> }
+            }
+          },
+          // 开放能力
+          openApi: {
+            path: 'open-api',
+            children: {
+              services: {
+                path: 'services',
+                children: {
+                  tags: { path: 'tags', element: <componentMap.apiTags /> }
+                }
+              },
+              dataOutput: { path: 'data-output', element: <componentMap.dataOutput /> }
+            }
+          }
         }
       }
     }
@@ -330,7 +493,7 @@ export const routeConfig = {
   // 404 路由
   notFound: {
     path: '*',
-    element: componentMap.notFound
+    element: <componentMap.notFound />
   }
 };
 
@@ -340,23 +503,45 @@ export const generateRoutes = (config) => {
 
   const processRoute = (routeConfig) => {
     const { path, element, children } = routeConfig;
-    const route = { 
-      path, 
-      element: React.isValidElement(element) ? element : React.createElement(element)
-    };
+    
+    // 创建路由对象
+    const route = { path };
+    
+    // 元素处理：确保元素是有效的React元素
+    if (element) {
+      // 如果元素已经是React元素，直接使用它
+      if (React.isValidElement(element)) {
+        route.element = element;
+      } 
+      // 如果元素是组件或函数，使用JSX创建元素
+      else if (typeof element === 'function') {
+        route.element = React.createElement(element);
+      } 
+      // 否则假设它是来自componentMap的引用
+      else {
+        console.warn(`Route element for path "${path}" is not a valid React element or function`);
+        route.element = null;
+      }
+    }
 
+    // 子路由处理
     if (children) {
+      // 转换children对象为数组
       route.children = Object.values(children).map(child => processRoute(child));
     }
 
     return route;
   };
 
-  Object.values(config).forEach(route => {
-    routes.push(processRoute(route));
-  });
-
-  return routes;
+  // 处理所有顶级路由
+  if (Array.isArray(config)) {
+    return config.map(route => processRoute(route));
+  } else {
+    Object.values(config).forEach(route => {
+      routes.push(processRoute(route));
+    });
+    return routes;
+  }
 };
 
 // 导出路由路径常量

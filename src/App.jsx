@@ -7,8 +7,9 @@ import { routeConfig, generateRoutes } from './routes/routeConfig.jsx';
  * 使用集中式路由配置
  */
 function AppRoutes() {
-  const routes = generateRoutes(routeConfig);
-  return useRoutes(routes);
+  // 生成路由配置并使用 useRoutes 钩子
+  const routes = useRoutes(generateRoutes(routeConfig));
+  return routes;
 }
 
 function App() {
