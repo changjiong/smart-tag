@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gavekal报告解读：关税风暴与全球市场震荡</title>
+    <link href="https://cdn.staticfile.org/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+      @font-face {
+        font-family: 'LucideIcons';
+        src: url(https://cdn.jsdelivr.net/npm/lucide-static@latest/font/Lucide.ttf) format('truetype');
+      }
+      /* 自定义字体 */
+      body {
+        font-family: 'Noto Sans SC', Tahoma, Arial, Roboto, "Droid Sans", "Helvetica Neue", "Droid Sans Fallback", "Heiti SC", "Hiragino Sans GB", Simsun, sans-serif;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Noto Serif SC', serif;
+      }
+      /* 深色模式基础样式 */
+      .dark body {
+        background-color: #1a202c; /* 深灰 */
+        color: #e2e8f0; /* 浅灰 */
+      }
+      .dark .bg-white { background-color: #2d3748; } /* 深色模式下的“白色”背景 */
+      .dark .text-gray-800 { color: #e2e8f0; }
+      .dark .text-gray-600 { color: #a0aec0; }
+      .dark .text-gray-500 { color: #cbd5e0; }
+      .dark .border-gray-200 { border-color: #4a5568; }
+      .dark .hover\:bg-gray-100:hover { background-color: #4a5568; }
+      .dark .prose { color: #e2e8f0; }
+      .dark .prose strong { color: #f7fafc; }
+      .dark .prose a { color: #63b3ed; }
+      .dark .prose blockquote { border-left-color: #63b3ed; color: #a0aec0; }
+      .dark .prose code { background-color: #2d3748; color: #f7fafc; }
+      .dark .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15); }
+      .dark .mermaid > svg { background-color: #2d3748 !important; }
+      .dark .mermaid .node rect, .dark .mermaid .node circle, .dark .mermaid .node ellipse, .dark .mermaid .node polygon { fill: #4a5568 !important; stroke: #a0aec0 !important; }
+      .dark .mermaid .node text { fill: #e2e8f0 !important; }
+      .dark .mermaid .edgeLabel { background-color: #2d3748 !important; color: #e2e8f0 !important; }
+      .dark .mermaid .cluster rect { fill: #2d3748 !important; stroke: #63b3ed !important; }
+      .dark .mermaid .cluster text { fill: #e2e8f0 !important; }
+      .dark .mermaid .arrowheadPath { fill: #a0aec0 !important; }
+      .dark .mermaid .edgePath .path { stroke: #a0aec0 !important; }
+
+      /* 首字下沉 */
+      .first-letter-drop::first-letter {
+        font-family: 'Noto Serif SC', serif;
+        font-size: 4em; /* 调整大小 */
+        font-weight: 600;
+        float: left;
+        line-height: 0.7;
+        margin-right: 0.05em;
+        margin-top: 0.05em;
+        color: #4a90e2; /* 强调色 */
+      }
+      .dark .first-letter-drop::first-letter {
+        color: #63b3ed; /* 深色模式下的强调色 */
+      }
+
+      /* 响应式 Mermaid 图表容器 */
+      .mermaid-container {
+        overflow-x: auto; /* 允许水平滚动 */
+        max-width: 100%;
+      }
+      .mermaid {
+        min-width: 600px; /* 设置最小宽度以防过度压缩 */
+        margin: auto; /* 居中显示 */
+      }
+      :root {
+            --primary-color: #2A4365;
+            --primary-light: #4A69BB;
+            --secondary-color: #C53030;
+            --accent-color: #F6AD55;
+            --text-main: #2D3748;
+            --text-light: #718096;
+            --background-light: #FFFFFF;
+            --background-card: #F7FAFC;
+            --border-color: #E2E8F0;
+        }
+
+        .dark {
+            --primary-color: #4A69BB;
+            --primary-light: #5A78E2;
+            --secondary-color: #FC8181;
+            --accent-color: #F6AD55;
+            --text-main: #F7FAFC;
+            --text-light: #CBD5E0;
+            --background-light: #1A202C;
+            --background-card: #2D3748;
+            --border-color: #4A5568;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', Tahoma, Arial, Roboto, "Droid Sans", "Helvetica Neue", "Droid Sans Fallback", "Heiti SC", "Hiragino Sans GB", Simsun, sans-serif;
+            color: var(--text-main);
+            background-color: var(--background-light);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .hero {
+            background-image: linear-gradient(to right, rgba(42, 67, 101, 0.9), rgba(42, 67, 101, 0.7)), url('https://images.unsplash.com/photo-1566252493434-89940e91695b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .dark .hero {
+            background-image: linear-gradient(to right, rgba(26, 32, 44, 0.9), rgba(26, 32, 44, 0.7)), url('https://images.unsplash.com/photo-1566252493434-89940e91695b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+        }
+
+        .first-letter::first-letter {
+            font-size: 3.5rem;
+            float: left;
+            line-height: 0.8;
+            margin-right: 0.1em;
+            color: var(--secondary-color);
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 700;
+        }
+
+        .card {
+            background-color: var(--background-card);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .highlight {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .chart-container {
+            background-color: var(--background-card);
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .toggle-theme {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 50;
+            background-color: var(--background-card);
+            border: 1px solid var(--border-color);
+            border-radius: 9999px;
+            padding: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-theme:hover {
+            background-color: var(--primary-light);
+            color: white;
+        }
+
+        .nav-link {
+            position: relative;
+            padding-bottom: 0.25rem;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.25rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 1.25rem;
+            width: 2px;
+            height: calc(100% + 1rem);
+            background-color: var(--border-color);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+      /* 添加平滑滚动 */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* 自定义滚动条 (可选, 增加精致感) */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e0;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #a0aec0;
+      }
+      .dark ::-webkit-scrollbar-track {
+        background: #2d3748;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4a5568;
+      }
+      .dark ::-webkit-scrollbar-thumb:hover {
+        background: #718096;
+      }
+
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 transition-colors duration-300">
+
+    <div class="container mx-auto px-4 py-8 md:py-16 max-w-5xl">
+
+
+
+        <header class="mb-12 md:mb-16 text-center">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+                关税风暴<span class="text-blue-600 dark:text-blue-400">再起</span>：
+            </h1>
+            <h2 class="text-2xl md:text-3xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
+                Gavekal 报告深度解读与全球市场震荡预警
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                一份极端保护主义情景的报告，揭示了潜在的贸易冲突对中国经济及全球金融体系可能造成的深远影响。
+            </p>
+             <div class="mt-6 border-t border-b border-gray-300 dark:border-gray-600 py-2 text-sm text-gray-500 dark:text-gray-400">
+                报告发布日期: 2025年4月3日 | 分析机构: Gavekal Dragonomics
+            </div>
+        </header>
+
+        <main class="space-y-12 md:space-y-16">
+
+            <section id="report-summary">
+                <h2 class="text-3xl md:text-4xl font-semibold text-gray-800 dark:text-white mb-6 pb-2 border-b-2 border-blue-500 dark:border-blue-400 inline-block">
+                    <i class="fas fa-file-alt mr-3 text-blue-500 dark:text-blue-400"></i>Gavekal 报告核心摘要
+                </h2>
+
+                <div class="prose dark:prose-dark max-w-none text-lg leading-relaxed space-y-6">
+                    <p class="first-letter-drop">
+                        Gavekal Dragonomics 的一份前瞻性报告，预测了2025年4月美国可能实施的大规模关税政策及其对全球贸易、中国经济和金融市场的潜在影响。这份政策分析对投资者、企业决策者和政策制定者具有重要参考价值，帮助理解和应对可能出现的全球贸易格局剧变。
+                    </p>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-2xl font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
+                            <i class="fas fa-bullseye mr-3 text-red-500"></i>核心情景：大规模关税上调
+                        </h3>
+                        <ul class="list-none space-y-3 pl-0">
+                            <li class="flex items-start"><i class="fas fa-arrow-right text-red-500 mt-1 mr-3 flex-shrink-0"></i>对中国进口商品实际关税提至 <strong class="font-semibold mx-1">50-60%</strong> (若取消小额豁免，可达 <strong class="font-semibold mx-1">64%</strong>)。</li>
+                            <li class="flex items-start"><i class="fas fa-arrow-right text-red-500 mt-1 mr-3 flex-shrink-0"></i>对韩国征收 <strong class="font-semibold mx-1">25%</strong>，对越南征收 <strong class="font-semibold mx-1">46%</strong> 关税。</li>
+                            <li class="flex items-start"><i class="fas fa-arrow-right text-red-500 mt-1 mr-3 flex-shrink-0"></i>对欧盟和英国征收 <strong class="font-semibold mx-1">20%</strong> 关税。</li>
+                            <li class="flex items-start"><i class="fas fa-arrow-right text-red-500 mt-1 mr-3 flex-shrink-0"></i>美墨加协定(USMCA)商品部分豁免，但含 <strong class="font-semibold mx-1">25%</strong> 以上非北美价值的商品仍征收 <strong class="font-semibold mx-1">25%</strong> 关税。</li>
+                            <li class="flex items-start"><i class="fas fa-arrow-right text-red-500 mt-1 mr-3 flex-shrink-0"></i>对所有贸易伙伴征收最低 <strong class="font-semibold mx-1">10%</strong> 关税。</li>
+                        </ul>
+                        <p class="mt-4 text-gray-600 dark:text-gray-400 italic">
+                            <i class="fas fa-exclamation-triangle mr-2 text-yellow-500"></i>这将导致美国整体加权平均关税税率从约 <strong class="font-semibold">5%</strong> 飙升至 <strong class="font-semibold">24%</strong>。
+                        </p>
+                    </div>
+
+                    <blockquote>
+                        <i class="fas fa-history mr-2"></i>
+                        报告将此情景与 1930 年的《斯姆特-霍利关税法案》相提并论，认为其规模更大、实施更迅速，可能加剧全球贸易崩溃。报告同时指出，几乎没有谈判空间，关税进一步升级的可能性大于缓和。
+                    </blockquote>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                             <h3 class="text-2xl font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
+                                对中国的影响
+                             </h3>
+                             <div class="space-y-6">
+                                <div class="timeline-item">
+                                    <h4 class="font-semibold text-lg">直接冲击</h4>
+                                    <p>对中国的出口造成沉重打击，特别是对北美（美国、加拿大、墨西哥）的出口。按增加值计算，该地区约占中国出口的24%。与该区域的贸易额可能至少腰斩。</p>
+                                </div>
+                                <div class="timeline-item">
+                                    <h4 class="font-semibold text-lg">间接冲击</h4>
+                                    <p>东亚和东盟国家（约占中国增加值出口的18%）也将受到美国直接关税（25-46%）和全球贸易整体降温的严重打击，从而减少对中国商品的需求。</p>
+                                </div>
+                                <div class="timeline-item">
+                                    <h4 class="font-semibold text-lg">中度冲击</h4>
+                                    <p>欧盟/英国（约占中国出口的21%）面临新的20%关税。相比亚洲，它们对北美需求的敞口较小，但仍会受到影响。</p>
+                                </div>
+                                <div class="timeline-item">
+                                    <h4 class="font-semibold text-lg">总体影响</h4>
+                                    <p>按增加值计算，中国约有40-45%的出口可能受到严重冲击。报告预测今年中国总出口将出现两位数的收缩（估计为10-15%），这将对GDP产生显著拖累（约2-3.5万亿人民币）。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                             <h3 class="text-2xl font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
+                              中国的政策应对
+                            </h3>
+                            <div class="grid md:grid-cols-1 gap-6">
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><i class="fas fa-yen-sign text-purple-600 dark:text-purple-400 mt-1 mr-3 flex-shrink-0"></i>汇率策略</h4>
+                                    <p>不太可能将大幅贬值作为主要工具（以避免进一步激怒美国并维持国内信心）。可能会允许人民币小幅、渐进式贬值。</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><i class="fas fa-money-bill-wave text-purple-600 dark:text-purple-400 mt-1 mr-3 flex-shrink-0"></i>刺激措施</h4>
+                                    <p>主要应对措施将是<span class="highlight">大幅增加国内刺激</span>——很可能包括降息、加速政府债券（尤其是特别国债）发行（可能额外增加1-2万亿人民币），以及更大力度地支持房地产行业。这种刺激的规模可能远超过去十年。</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><i class="fas fa-chart-bar text-purple-600 dark:text-purple-400 mt-1 mr-3 flex-shrink-0"></i>规模</h4>
+                                    <p>刺激规模可能远超过去十年。</p>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="visualization">
+                <h2 class="text-3xl md:text-4xl font-semibold text-gray-800 dark:text-white mb-6 pb-2 border-b-2 border-blue-500 dark:border-blue-400 inline-block">
+                    <i class="fas fa-project-diagram mr-3 text-blue-500 dark:text-blue-400"></i>关税影响链可视化
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+                    下图展示了报告中描述的极端关税政策可能引发的连锁反应，从贸易冲击到市场动荡的传导路径。
+                </p>
+                <div class="mermaid-container bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+                    <div class="mermaid">
+                        graph LR
+                        A["美国极端关税政策(50-60%对华, 10%+对全球)"] --> B{"全球贸易急剧萎缩"}
+                        B --> C["全球经济衰退风险急剧上升"]
+                    
+                        subgraph 对中国的影响
+                            direction LR
+                            B --> D["中国出口大幅下滑(10-15%收缩)"]
+                            D --> E["GDP增长显著放缓(拖累2-3.5万亿)"]
+                            E --> F["中国政策应对(大规模刺激, 温和贬值)"]
+                        end
+                    
+                        subgraph 全球金融市场影响
+                            direction TB
+                            C --> G("股市抛售/周期性行业重创")
+                            C --> H("避险情绪升温/国债收益率下降")
+                            C --> I("公司债利差扩大")
+                            C --> J("美元初期走强/新兴货币贬值")
+                            C --> K("石油/工业金属价格下跌")
+                            C --> L("黄金价格上涨")
+                        end
+                    
+                        A --> M["贸易伙伴报复性关税"]
+                        M --> B
+                    
+                        classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px,font-size:12px
+                        classDef policy fill:#e3f2fd,stroke:#2196f3,stroke-width:2px
+                        classDef impact fill:#ffebee,stroke:#f44336,stroke-width:2px
+                        classDef response fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
+                        classDef market fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+                    
+                        class A,M policy
+                        class B,C,D,E impact
+                        class F response
+                        class G,H,I,J,K,L market
+                    </div>
+                </div>
+                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-4 text-center italic">注：此图简化了复杂的相互作用，旨在说明主要的传导机制。</p>
+            </section>
+
+            <section id="market-impact">
+                <h2 class="text-3xl md:text-4xl font-semibold text-gray-800 dark:text-white mb-6 pb-2 border-b-2 border-blue-500 dark:border-blue-400 inline-block">
+                    <i class="fas fa-chart-line mr-3 text-blue-500 dark:text-blue-400"></i>对全球金融市场的潜在影响
+                </h2>
+                <div class="space-y-8">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-shadow duration-300 hover:shadow-lg">
+                        <h3 class="text-2xl font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
+                           <i class="fas fa-chart-pie mr-3 text-indigo-500"></i>全球股市：<span class="ml-2 text-red-500 font-bold">广泛抛售</span>
+                        </h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+                            <li><strong class="font-semibold">整体情绪：</strong> 全球衰退担忧主导，引发广泛抛售潮。</li>
+                            <li><strong class="font-semibold">板块影响：</strong> 周期性行业（工业、原材料、非必需消费品、全球供应链科技公司）受创最重。防御性行业（公用事业、必需消费品、医疗保健）相对抗跌，但亦可能下跌。</li>
+                            <li><strong class="font-semibold">区域影响：</strong>
+                                <ul class="list-none list-inside pl-6 mt-1 space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                    <li><i class="fas fa-flag-usa mr-2 text-red-400"></i><strong class="font-medium">美国：</strong> 进口成本上升、出口受阻、全球放缓均构成利空。</li>
+                                    <li><i class="fas fa-globe-asia mr-2 text-red-600"></i><strong class="font-medium">中国及亚洲新兴市场：</strong> 面临直接关税和贸易依赖的双重打击，货币贬值加剧损失。</li>
+                                    <li><i class="fas fa-euro-sign mr-2 text-red-500"></i><strong class="font-medium">欧洲：</strong> 同样受显著负面影响，尤其依赖出口的经济体（如德国）。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-shadow duration-300 hover:shadow-lg">
+                        <h3 class="text-2xl font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
+                            <i class="fas fa-landmark mr-3 text-green-600 dark:text-green-400"></i>固定收益：<span class="ml-2 text-green-500 font-bold">避险升温</span>
+                        </h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+                            <li><strong class="font-semibold">避险资产：</strong> 对美国国债、德国国债等需求激增，推高价格，压低收益率。</li>
+                            <li><strong class="font-semibold">公司债券：</strong> 利差（尤其高收益债）显著扩大，反映违约风险上升。</li>
+                            <li><strong class="font-semibold">新兴市场债务：</strong> 可能因风险厌恶、货币危机、经济恶化而遭大规模抛售。</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-shadow duration-300 hover:shadow-lg">
+                        <h3 class="text-2xl font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
+                            <i class="fas fa-exchange-alt mr-3 text-blue-500"></i>外汇市场：<span class="ml-2 text-yellow-600 font-bold">美元初期或强，新兴货币承压</span>
+                        </h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+                            <li><strong class="font-semibold">美元 (USD)：</strong> 初期因避险地位可能走强，但长期或因政策破坏性受侵蚀。</li>
+                            <li><strong class="font-semibold">人民币 (CNY/CNH)：</strong> 面临巨大贬值压力，但央行可能干预以防失序。</li>
+                            <li><strong class="font-semibold">新兴市场货币：</strong> 可能相对美元大幅贬值。</li>
+                            <li><strong class="font-semibold">欧元 (EUR) / 日元 (JPY)：</strong> 相对于风险货币可能走强，但相对美元初期或走弱。</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-shadow duration-300 hover:shadow-lg">
+                        <h3 class="text-2xl font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
+                           <i class="fas fa-cubes mr-3 text-yellow-700"></i>大宗商品：<span class="ml-2 text-red-500 font-bold">需求预期悲观，黄金或受益</span>
+                        </h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+                            <li><strong class="font-semibold">石油：</strong> 全球需求减少预期可能导致油价大跌。</li>
+                            <li><strong class="font-semibold">工业金属 (铜等)：</strong> 全球制造业放缓预期可能导致价格暴跌。</li>
+                            <li><strong class="font-semibold">黄金：</strong> 作为经典避险资产，在动荡和不确定性中可能大幅上涨。</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-10 pt-6 border-t border-gray-300 dark:border-gray-600">
+                        <h3 class="text-2xl font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
+                           <i class="fas fa-exclamation-circle mr-3 text-red-500"></i>总结：严峻的图景
+                        </h3>
+                        <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                            Gavekal 报告描绘了一幅由极端贸易保护主义引发的严峻经济图景。此类措施极有可能<strong class="font-semibold text-red-600 dark:text-red-400">中断全球贸易</strong>、<strong class="font-semibold text-red-600 dark:text-red-400">增加经济衰退风险</strong>，并导致<strong class="font-semibold text-red-600 dark:text-red-400">金融市场普遍动荡</strong>。市场反应将体现为股价下跌、避险资产受追捧、信用利差扩大、美元初期走强但新兴市场货币承压、工业品价格下跌而黄金上涨。中国的应对策略将严重依赖<strong class="font-semibold text-green-600 dark:text-green-400">国内大规模刺激</strong>，而非激进的货币贬值。
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="further-reading">
+                <h2 class="text-3xl md:text-4xl font-semibold text-gray-800 dark:text-white mb-6 pb-2 border-b-2 border-blue-500 dark:border-blue-400 inline-block">
+                    <i class="fas fa-book-open mr-3 text-blue-500 dark:text-blue-400"></i>延伸阅读推荐
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+                    如果您希望更深入地了解贸易战、保护主义及其经济影响，以下书籍和资源可能会有所帮助：
+                </p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 flex flex-col transition-transform transform hover:scale-105 duration-300">
+                         <h4 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">《贸易战是阶级战》</h4>
+                         <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">作者: 马修·克莱恩, 迈克尔·佩蒂斯</p>
+                         <p class="text-gray-600 dark:text-gray-300 text-sm flex-grow">深入探讨贸易冲突背后的国内收入不平等问题，提供了一个理解当前全球紧张局势的新视角。</p>
+                    </div>
+                     <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 flex flex-col transition-transform transform hover:scale-105 duration-300">
+                         <h4 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">《注定一战：中美能避免修昔底德陷阱吗？》</h4>
+                         <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">作者: 格雷厄姆·艾利森</p>
+                         <p class="text-gray-600 dark:text-gray-300 text-sm flex-grow">分析了历史上崛起大国与守成大国之间的冲突模式，并探讨了中美关系的未来。</p>
+                    </div>
+                     <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 flex flex-col transition-transform transform hover:scale-105 duration-300">
+                         <h4 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">《原则：应对变化中的世界秩序》</h4>
+                         <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">作者: 瑞·达利欧</p>
+                         <p class="text-gray-600 dark:text-gray-300 text-sm flex-grow">通过分析历史周期，探讨国家兴衰和世界秩序演变的模式，为理解当前地缘政治和经济格局提供宏观框架。</p>
+                    </div>
+                     <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 flex flex-col transition-transform transform hover:scale-105 duration-300">
+                         <h4 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">彼得森国际经济研究所 (PIIE)</h4>
+                         <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">机构网站</p>
+                         <p class="text-gray-600 dark:text-gray-300 text-sm flex-grow">提供大量关于国际贸易、金融和经济政策的研究报告和分析，是获取专业见解的重要来源。</p>
+                    </div>
+                     <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 flex flex-col transition-transform transform hover:scale-105 duration-300">
+                         <h4 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">国际货币基金组织 (IMF) 报告</h4>
+                         <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">机构报告</p>
+                         <p class="text-gray-600 dark:text-gray-300 text-sm flex-grow">IMF 定期发布《世界经济展望》等报告，包含对全球贸易紧张局势及其对全球经济增长影响的分析。</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="mt-16 pt-8 border-t border-gray-300 dark:border-gray-600 text-center text-gray-500 dark:text-gray-400 text-sm">
+            <p>&copy; 2025 数据可视化呈现。内容基于 Gavekal Dragonomics 报告分析。</p>
+            <p class="mt-1">请注意：本页面内容仅供参考，不构成任何投资建议。</p>
+        </footer>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js"></script>
+    <script>
+        // 初始化 Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default', // 根据初始模式设置主题
+            securityLevel: 'loose', // 允许 Font Awesome 图标
+            fontFamily: '"Noto Sans SC", Tahoma, Arial, Roboto, "Droid Sans", "Helvetica Neue", "Droid Sans Fallback", "Heiti SC", "Hiragino Sans GB", Simsun, sans-serif',
+            flowchart: { // 增加图表间距
+                nodeSpacing: 60,
+                rankSpacing: 70
+            },
+            themeVariables: { // 深色模式下的自定义颜色 (如果需要覆盖默认主题)
+              // primaryColor: '#2d3748', // 背景
+              // primaryTextColor: '#e2e8f0', // 主要文字
+              // lineTextColor: '#a0aec0', // 标签文字
+              // nodeBorder: '#63b3ed', // 节点边框
+              // clusterBkg: '#4a5568', // 集群背景
+              // clusterBorder: '#63b3ed', // 集群边框
+              // defaultLinkColor: '#a0aec0', // 箭头和线条
+              // titleColor: '#f7fafc', // 标题
+              // edgeLabelBackground: '#2d3748' // 边缘标签背景
+            }
+        });
+
+        // 深色/浅色模式切换逻辑
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const sunIcon = themeToggleBtn.querySelector('.fa-sun');
+        const moonIcon = themeToggleBtn.querySelector('.fa-moon');
+
+        // 检查 localStorage 中用户的主题偏好
+        const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
+        // 检查系统的主题偏好
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+        // 应用初始主题
+        if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+            document.documentElement.classList.add('dark');
+            moonIcon.classList.remove('hidden');
+            sunIcon.classList.add('hidden');
+            // 告诉 Mermaid 使用深色主题
+            mermaid.initialize({ theme: 'dark' });
+        } else {
+            document.documentElement.classList.remove('dark');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+             // 告诉 Mermaid 使用默认(浅色)主题
+            mermaid.initialize({ theme: 'default' });
+        }
+
+        // 切换按钮点击事件
+        themeToggleBtn.addEventListener('click', function() {
+            // 切换 HTML 根元素的 'dark' 类
+            document.documentElement.classList.toggle('dark');
+
+            // 更新图标显示
+            sunIcon.classList.toggle('hidden');
+            moonIcon.classList.toggle('hidden');
+
+            // 更新 localStorage 中的主题偏好
+            const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+
+            // 更新 Mermaid 主题并重新渲染 (Mermaid 9.1+ 支持动态主题切换)
+            // 注意：旧版 Mermaid 可能需要重新加载页面或手动重新渲染图表
+            // 对于最新版，可以尝试:
+            // mermaid.initialize({ theme: theme });
+            // mermaid.contentLoaded(); // 或者找到图表元素重新渲染 mermaid.render(...)
+            // 为了兼容性，简单刷新页面可能是最可靠的方式，但这会丢失当前滚动位置
+            // location.reload();
+            // 或者，尝试仅更新配置并期望它生效
+             mermaid.initialize({ theme: theme === 'dark' ? 'dark' : 'default' });
+             // 强制 Mermaid 重新解析和渲染页面上的图表
+             window.mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+
+        });
+
+        // 监听系统颜色方案变化 (可选)
+        prefersDarkScheme.addEventListener('change', (e) => {
+            // 仅当用户没有手动设置偏好时才跟随系统
+            if (!localStorage.getItem('theme')) {
+                if (e.matches) {
+                    document.documentElement.classList.add('dark');
+                    moonIcon.classList.remove('hidden');
+                    sunIcon.classList.add('hidden');
+                    mermaid.initialize({ theme: 'dark' });
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                    mermaid.initialize({ theme: 'default' });
+                }
+                 window.mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+            }
+        });
+
+    </script>
+</body>
+</html>

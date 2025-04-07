@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTag System - Menu Navigation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .transition-menu {
+            transition: all 0.3s ease-in-out;
+        }
+        .sidebar-collapsed {
+            width: 64px;
+        }
+        .sidebar-expanded {
+            width: 240px;
+        }
+        .menu-hover:hover {
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+        .active-menu {
+            background-color: rgba(79, 70, 229, 0.15);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+        .submenu-active {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        .menu-panel {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .submenu-panel {
+            background-color: rgba(249, 250, 251, 0.95);
+        }
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .mobile-menu-open {
+            transform: translateX(0);
+        }
+        @media (min-width: 1024px) {
+            .mobile-menu {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Header - Level 1 Menu -->
+        <header class="bg-white shadow-sm sticky top-0 z-10 hidden lg:block">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Logo -->
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto" src="https://via.placeholder.com/150x50?text=SmartTag" alt="SmartTag Logo">
+                    </div>
+                    
+                    <!-- Level 1 Menu -->
+                    <nav class="flex space-x-8 h-full">
+                        <!-- Home -->
+                        <div class="group relative h-full">
+                            <button class="h-full px-4 flex items-center text-sm font-medium text-gray-700 hover:text-indigo-600 focus:outline-none">
+                                <i class="fas fa-home mr-2"></i>
+                                首页
+                                <i class="fas fa-chevron-down ml-1 text-xs transition-transform duration-200 group-hover:rotate-180"></i>
+                            </button>
+                            
+                            <!-- Level 2 & 3 Menu Panel -->
+                            <div class="absolute left-0 mt-0 w-96 bg-white shadow-lg rounded-b-md menu-panel submenu-panel opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-menu">
+                                <div class="p-4 grid grid-cols-3 gap-4">
+                                    <!-- 工作台 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">工作台</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">业务指标看板</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">价值成果展示</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 智能助手 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">智能助手</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">对话分析</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">业务问题解答</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 标签中心 -->
+                        <div class="group relative h-full">
+                            <button class="h-full px-4 flex items-center text-sm font-medium text-gray-700 hover:text-indigo-600 focus:outline-none">
+                                <i class="fas fa-tags mr-2"></i>
+                                标签中心
+                                <i class="fas fa-chevron-down ml-1 text-xs transition-transform duration-200 group-hover:rotate-180"></i>
+                            </button>
+                            
+                            <div class="absolute left-0 mt-0 w-96 bg-white shadow-lg rounded-b-md menu-panel submenu-panel opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-menu">
+                                <div class="p-4 grid grid-cols-3 gap-4">
+                                    <!-- 标签管理 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">标签管理</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">标签超市</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">标签分类管理</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 标签创建 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">标签创建</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">标签需求</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">标签注册</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 标签质量监控 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">质量监控</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">质量看板</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-7 00 hover:text-indigo-600 transition-colors duration-150">异常预警</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 标签价值 -->
+                                    <div class="col-span-3 mt-2 border-t pt-2">
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">标签价值</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">价值洞察</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 客群画像 -->
+                        <div class="group relative h-full">
+                            <button class="h-full px-4 flex items-center text-sm font-medium text-gray-700 hover:text-indigo-600 focus:outline-none">
+                                <i class="fas fa-users mr-2"></i>
+                                客群画像
+                                <i class="fas fa-chevron-down ml-1 text-xs transition-transform duration-200 group-hover:rotate-180"></i>
+                            </button>
+                            
+                            <div class="absolute left-0 mt-0 w-96 bg-white shadow-lg rounded-b-md menu-panel submenu-panel opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-menu">
+                                <div class="p-4 grid grid-cols-2 gap-4">
+                                    <!-- 客群管理 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">客群管理</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">客群创建</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">智能分群</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 画像分析 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">画像分析</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">单客户视图</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">群体洞察</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 业务场景 -->
+                        <div class="group relative h-full">
+                            <button class="h-full px-4 flex items-center text-sm font-medium text-gray-700 hover:text-indigo-600 focus:outline-none">
+                                <i class="fas fa-cogs mr-2"></i>
+                                业务场景
+                                <i class="fas fa-chevron-down ml-1 text-xs transition-transform duration-200 group-hover:rotate-180"></i>
+                            </button>
+                            
+                            <div class="absolute left-0 mt-0 w-96 bg-white shadow-lg rounded-b-md menu-panel submenu-panel opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-menu">
+                                <div class="p-4 grid grid-cols-2 gap-4">
+                                    <!-- 场景模板 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">场景模板</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">精准营销引擎</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">客户挽留助手</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 业务应用 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">业务应用</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">营销活动</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">客户服务</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 系统管理 -->
+                        <div class="group relative h-full">
+                            <button class="h-full px-4 flex items-center text-sm font-medium text-gray-700 hover:text-indigo-600 focus:outline-none">
+                                <i class="fas fa-sliders-h mr-2"></i>
+                                系统管理
+                                <i class="fas fa-chevron-down ml-1 text-xs transition-transform duration-200 group-hover:rotate-180"></i>
+                            </button>
+                            
+                            <div class="absolute left-0 mt-0 w-96 bg-white shadow-lg rounded-b-md menu-panel submenu-panel opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-menu">
+                                <div class="p-4 grid grid-cols-3 gap-4">
+                                    <!-- 用户权限 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">用户权限</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">机构管理</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">用户管理</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 系统配置 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">系统配置</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">调度任务</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">参数设置</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 大模型配置 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">大模型配置</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">模型服务</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">知识库</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 运行监控 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">运行监控</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">流量监控</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">日志监控</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 开放能力 -->
+                                    <div>
+                                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">开放能力</h3>
+                                        <div class="space-y-1">
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">API服务</a>
+                                            <a href="#" class="block px-2 py-1 text-sm text-gray-700 hover:text-indigo-600 transition-colors duration-150">数据输出</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                    
+                    <!-- User Info -->
+                    <div class="flex items-center space-x-4">
+                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
+                            <i class="fas fa-bell"></i>
+                        </button>
+                        <div class="relative">
+                            <button id="user-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                                <span class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <span class="text-sm font-medium text-indigo-700">AD</span>
+                                </span>
+                                <span class="text-sm font-medium text-gray-700">Admin</span>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Mobile Header -->
+        <header class="bg-white shadow-sm sticky top-0 z-10 lg:hidden">
+            <div class="px-4">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-button" class="p-2 rounded-md text-gray-700 focus:outline-none">
+                        <i class="fas fa-bars h-6 w-6"></i>
+                    </button>
+                    
+                    <!-- Logo -->
+                    <div>
+                        <img class="h-8 w-auto" src="https://via.placeholder.com/150x50?text=SmartTag" alt="SmartTag Logo">
+                    </div>
+                    
+                    <!-- User Info -->
+                    <div>
+                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
+                            <i class="fas fa-bell"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="flex flex-1 overflow-hidden">
+            <!-- Sidebar - Level 2 & 3 Menu -->
+            <aside id="sidebar" class="hidden lg:block bg-white shadow-sm w-64 flex-shrink-0 overflow-y-auto transition-menu">
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-semibold text-gray-800">标签中心</h2>
+                        <button class="p-1 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Level 2 Menu Items -->
+                    <nav class="space-y-1">
+                        <!-- 标签管理 -->
+                        <div class="relative">
+                            <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                <div class="flex items-center">
+                                    <i class="fas fa-tag mr-3 text-gray-400"></i>
+                                    <span>标签管理</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            
+                            <!-- Level 3 Menu Items -->
+                            <div class="pl-8 mt-1 space-y-1">
+                                <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">标签超市</a>
+                                <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">标签分类管理</a>
+                            </div>
+                        </div>
+                        
+                        <!-- 标签创建 -->
+                        <div class="relative">
+                            <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                <div class="flex items-center">
+                                    <i class="fas fa-plus-circle mr-3 text-gray-400"></i>
+                                    <span>标签创建</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            
+                            <!-- Level 3 Menu Items -->
+                            <div class="pl-8 mt-1 space-y-1">
+                                <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">标签需求</a>
+                                <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">标签注册</a>
+                            </div>
+                        </div>
+                        
+                        <!-- 标签质量监控 -->
+                        <div class="relative">
+                            <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                <div class="flex items-center">
+                                    <i class="fas fa-chart-bar mr-3 text-gray-400"></i>
+                                    <span>标签质量监控</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            
+                            <!-- Level 3 Menu Items -->
+                            <div class="pl-8 mt-1 space-y-1">
+                                <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">质量看板</a>
+                                <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">异常预警</a>
+                            </div>
+                        </div>
+                        
+                        <!-- 标签价值 -->
+                        <div>
+                            <a href="#" class="block w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                <div class="flex items-center">
+                                    <i class="fas fa-lightbulb mr-3 text-gray-400"></i>
+                                    <span>标签价值</span>
+                                </div>
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+            </aside>
+            
+            <!-- Mobile Sidebar -->
+            <aside id="mobile-sidebar" class="mobile-menu fixed inset-y-0 left-0 z-20 w-64 bg-white shadow-sm overflow-y-auto transition-menu lg:hidden">
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-semibold text-gray-800">SmartTag</h2>
+                        <button id="mobile-close-button" class="p-1 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Full Menu Structure -->
+                    <nav class="space-y-1">
+                        <!-- 首页 -->
+                        <div class="relative">
+                            <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                <div class="flex items-center">
+                                    <i class="fas fa-home mr-3 text-gray-400"></i>
+                                    <span>首页</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            
+                            <!-- Level 2 & 3 Menu -->
+                            <div class="pl-8 mt-1 space-y-1">
+                                <!-- 工作台 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>工作台</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">业务指标看板</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">价值成果展示</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- 智能助手 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>智能助手</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">对话分析</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">业务问题解答</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 标签中心 -->
+                        <div class="relative">
+                            <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                <div class="flex items-center">
+                                    <i class="fas fa-tags mr-3 text-gray-400"></i>
+                                    <span>标签中心</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            
+                            <!-- Level 2 & 3 Menu -->
+                            <div class="pl-8 mt-1 space-y-1">
+                                <!-- 标签管理 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>标签管理</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">标签超市</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">标签分类管理</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- 标签创建 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>标签创建</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">标签需求</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">标签注册</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- 标签质量监控 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>标签质量监控</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">质量看板</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">异常预警</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- 标签价值 -->
+                                <a href="#" class="block w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                    <span>标签价值</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- 客群画像 -->
+                        <div class="relative">
+                            <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                <div class="flex items-center">
+                                    <i class="fas fa-users mr-3 text-gray-400"></i>
+                                    <span>客群画像</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            
+                            <!-- Level 2 & 3 Menu -->
+                            <div class="pl-8 mt-1 space-y-1">
+                                <!-- 客群管理 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>客群管理</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">客群创建</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">智能分群</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- 画像分析 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>画像分析</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">单客户视图</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">群体洞察</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 业务场景 -->
+                        <div class="relative">
+                            <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                <div class="flex items-center">
+                                    <i class="fas fa-cogs mr-3 text-gray-400"></i>
+                                    <span>业务场景</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            
+                            <!-- Level 2 & 3 Menu -->
+                            <div class="pl-8 mt-1 space-y-1">
+                                <!-- 场景模板 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>场景模板</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">精准营销引擎</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">客户挽留助手</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- 业务应用 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>业务应用</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">营销活动</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">客户服务</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 系统管理 -->
+                        <div class="relative">
+                            <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                <div class="flex items-center">
+                                    <i class="fas fa-sliders-h mr-3 text-gray-400"></i>
+                                    <span>系统管理</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            
+                            <!-- Level 2 & 3 Menu -->
+                            <div class="pl-8 mt-1 space-y-1">
+                                <!-- 用户权限 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>用户权限</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">机构管理</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">用户管理</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- 系统配置 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>系统配置</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">调度任务</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">参数设置</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- 大模型配置 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>大模型配置</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">模型服务</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">知识库</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- 运行监控 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>运行监控</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">流量监控</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">日志监控</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- 开放能力 -->
+                                <div class="relative">
+                                    <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">
+                                        <span>开放能力</span>
+                                        <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    
+                                    <div class="pl-4 mt-1 space-y-1">
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">API服务</a>
+                                        <a href="#" class="block px-3 py-2 text-sm font-medium text-gray-500 rounded-md hover:bg-gray-50 transition-colors duration-150 focus:outline-none">数据输出</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </aside>
+            
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-auto bg-gray-50 focus:outline-none">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                    <!-- Page Header -->
+                    <div class="mb-6 flex justify-between items-center">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">标签超市</h1>
+                            <p class="mt-1 text-sm text-gray-500">查看和管理系统中的所有标签</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <i class="fas fa-filter mr-2"></i> 筛选
+                            </button>
+                            <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <i class="fas fa-plus mr-2"></i> 新建标签
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="bg-white shadow rounded-lg p-6">
+                        <!-- Content would go here -->
+                        <div class="flex items-center justify-center h-64 text-gray-500">
+                            <i class="fas fa-tags text-4xl mr-3"></i>
+                            <span class="text-xl">标签超市内容区域</span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Simple menu toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle mobile menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileSidebar = document.getElementById('mobile-sidebar');
+            const mobileCloseButton = document.getElementById('mobile-close-button');
+            
+            mobileMenuButton.addEventListener('click', function() {
+                mobileSidebar.classList.add('mobile-menu-open');
+            });
+            
+            mobileCloseButton.addEventListener('click', function() {
+                mobileSidebar.classList.remove('mobile-menu-open');
+            });
+            
+            // Collapsible sidebar menus
+            const menuButtons = document.querySelectorAll('#sidebar button, #mobile-sidebar button');
+            menuButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Skip if it's a mobile close button
+                    if (this.id === 'mobile-close-button') return;
+                    
+                    const parent = this.parentElement;
+                    const submenu = parent.querySelector('div:not([id])');
+                    
+                    if (submenu) {
+                        const icon = this.querySelector('.fa-chevron-down');
+                        
+                        if (submenu.classList.contains('hidden')) {
+                            submenu.classList.remove('hidden');
+                            if (icon) icon.classList.add('rotate-180');
+                        } else {
+                            submenu.classList.add('hidden');
+                            if (icon) icon.classList.remove('rotate-180');
+                        }
+                    }
+                });
+            });
+            
+            // Set active menu item (simulated)
+            const simulateActiveMenu = () => {
+                // In a real app, this would be based on the current route
+                const menuItems = document.querySelectorAll('#sidebar a, #mobile-sidebar a');
+                const sidebar = document.querySelector('#sidebar');
+                
+                if (menuItems.length > 0 && sidebar) {
+                    // Simulate active menu (3rd item)
+                    menuItems[2].classList.add('active-menu');
+                    menuItems[2].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Open parent menus by default
+                    const parentMenus = document.querySelectorAll('#sidebar > nav > div > div');
+                    parentMenus[1].classList.remove('hidden');
+                    parentMenus[1].previousElementSibling.querySelector('.fa-chevron-down').classList.add('rotate-180');
+                }
+            };
+            
+            // Run after a short delay to allow DOM to fully render
+            setTimeout(simulateActiveMenu, 100);
+        });
+    </script>
+</body>
+</html>
