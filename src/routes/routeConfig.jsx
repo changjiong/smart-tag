@@ -383,47 +383,56 @@ export const routeConfig = {
 
       // 业务场景
       applications: {
-        path: 'applications', // 相对路径 'applications'
+        path: 'applications',
         element: <componentMap.applicationsRouter />,
         children: {
-          // /applications 默认重定向到第一个菜单项
+          // /applications 默认重定向到业务场景
           index: {
             path: '',
-            element: <Navigate to="/applications/retail-marketing/precision" replace />
+            element: <Navigate to="/applications/business" replace />
           },
-          // 直接映射菜单中的路径，注意路径是相对于 /applications
-          // --- 场景模板下的路径 ---
-          // 精准营销引擎
-          retailMarketingPrecision: {
-            path: 'retail-marketing/precision', // 完整相对路径
-            element: <componentMap.precisionMarketing />
+          // 业务场景路由组
+          business: {
+            path: 'business',
+            element: <componentMap.businessRouter />,
+            children: {
+              // /applications/business 默认重定向
+              index: {
+                path: '',
+                element: <Navigate to="/applications/business/marketing-engine" replace />
+              },
+              // 精准营销引擎
+              marketingEngine: {
+                path: 'marketing-engine',
+                element: <componentMap.precisionMarketing />
+              },
+              // 客户挽留助手
+              retentionAssistant: {
+                path: 'retention-assistant',
+                element: <componentMap.retentionAssistant />
+              },
+              // 财富增值顾问
+              wealthAdvisor: {
+                path: 'wealth-advisor',
+                element: <componentMap.wealthAdvisor />
+              },
+              // 风险预警监控
+              riskMonitor: {
+                path: 'risk-monitor',
+                element: <componentMap.riskMonitor />
+              },
+              // 企业客户画像
+              corporatePortrait: {
+                path: 'corporate-portrait',
+                element: <componentMap.corporatePortrait />
+              }
+            }
           },
-          // 客户挽留助手
-          retentionAssistant: {
-            path: 'business/retention-assistant', // 完整相对路径
-            element: <componentMap.retentionAssistant />
-          },
-          // 财富增值顾问
-          wealthAdvisor: {
-            path: 'business/wealth-advisor', // 完整相对路径
-            element: <componentMap.wealthAdvisor />
-          },
-           // 风险预警监控
-          riskMonitor: {
-            path: 'business/risk-monitor', // 完整相对路径
-            element: <componentMap.riskMonitor />
-          },
-          // 企业客户画像
-          corporatePortrait: {
-            path: 'business/corporate-portrait', // 完整相对路径
-            element: <componentMap.corporatePortrait />
-          },
-          // --- 业务应用下的路径 ---
-          templates: { // 对应菜单 "业务应用"
-            path: 'templates', // 相对路径 'templates'
-            element: <componentMap.templatesRouter />
+          // 业务应用
+          templates: {
+            path: 'templates',
+            element: <componentMap.businessApplications />
           }
-          // 其他 business 下的子路由如果不在 menuData 中，暂时移除
         }
       },
 

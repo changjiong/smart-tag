@@ -138,25 +138,7 @@ const Prompts = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-      <h2 className="text-xl font-medium text-gray-800 mb-4">提示词管理</h2>
-      <p className="text-gray-600 mb-6">优化大模型的输入提示，提升系统输出质量和准确性</p>
-      
-      <div className="mb-4">
-        <Space>
-          <Link to="/system/ai/models">
-            <Button>模型服务</Button>
-          </Link>
-          <Link to="/system/ai/prompts">
-            <Button type="primary">提示词管理</Button>
-          </Link>
-          <Link to="/system/ai/knowledge">
-            <Button>知识库</Button>
-          </Link>
-          <Link to="/system/ai/test">
-            <Button>功能测试</Button>
-          </Link>
-        </Space>
-      </div>
+
       
       <Tabs
         activeKey={activeTab}

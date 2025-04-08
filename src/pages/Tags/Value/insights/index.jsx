@@ -400,24 +400,7 @@ const TagValueInsightsPage = () => {
 
   return (
     <div className="tag-value-insights-page">
-      <Breadcrumb className="breadcrumb">
-        <Breadcrumb.Item href="/dashboard">
-          <HomeOutlined />
-        </Breadcrumb.Item>
-        <Breadcrumb.Item href="/tags">标签中心</Breadcrumb.Item>
-        <Breadcrumb.Item href="/tags/value">标签价值</Breadcrumb.Item>
-        <Breadcrumb.Item>标签价值洞察</Breadcrumb.Item>
-      </Breadcrumb>
       
-      <div className="page-header">
-        <Title level={2}>
-          <LineChartOutlined /> 标签价值洞察
-        </Title>
-        <Paragraph>
-          深入分析标签体系为业务带来的价值，帮助优化标签资源配置，提升标签的业务贡献度。
-        </Paragraph>
-      </div>
-
       {loading ? (
         <div className="loading-container">
           <Spin size="large" />

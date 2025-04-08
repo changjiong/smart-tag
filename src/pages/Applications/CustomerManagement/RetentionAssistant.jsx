@@ -359,24 +359,7 @@ const RetentionAssistant = () => {
 
   return (
     <div className="retention-assistant-page">
-      <Breadcrumb className="breadcrumb">
-        <Breadcrumb.Item href="/dashboard">
-          <HomeOutlined />
-        </Breadcrumb.Item>
-        <Breadcrumb.Item href="/applications">业务应用</Breadcrumb.Item>
-        <Breadcrumb.Item href="/applications/customer-management">客户经营</Breadcrumb.Item>
-        <Breadcrumb.Item>客户挽留助手</Breadcrumb.Item>
-      </Breadcrumb>
-      
-      <div className="page-header">
-        <Title level={2}>
-          <SafetyOutlined /> 客户挽留助手
-        </Title>
-        <Paragraph>
-          识别具有流失风险的高价值客户，并通过智能推荐的干预措施降低流失率，提升客户保留率和价值
-        </Paragraph>
-      </div>
-      
+
       <div className="steps-container" ref={stepsRef}>
         <Steps current={currentStep}>
           <Step title="选择风险指标" icon={<WarningOutlined />} />

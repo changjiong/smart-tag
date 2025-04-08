@@ -1,17 +1,21 @@
 import React, { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 /**
  * 业务应用中心路由组件
  * 负责处理业务应用中心相关的路由导航
  */
 const ApplicationsRouter = () => {
+  const location = useLocation();
+
   useEffect(() => {
-    console.log('[ApplicationsRouter] Rendering ApplicationsRouter component');
-  }, []);
+    console.log('[ApplicationsRouter] Current path:', location.pathname);
+  }, [location]);
   
   return (
-    <Outlet />
+    <div className="flex-1 w-full">
+      <Outlet />
+    </div>
   );
 };
 

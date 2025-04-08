@@ -75,25 +75,7 @@ const Models = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-      <h2 className="text-xl font-medium text-gray-800 mb-4">模型服务</h2>
-      <p className="text-gray-600 mb-6">配置和管理大模型服务接入，支持智能化功能的参数调整</p>
-      
-      <div className="mb-4">
-        <Space>
-          <Link to="/system/ai/models">
-            <Button type="primary">模型服务</Button>
-          </Link>
-          <Link to="/system/ai/prompts">
-            <Button>提示词管理</Button>
-          </Link>
-          <Link to="/system/ai/knowledge">
-            <Button>知识库</Button>
-          </Link>
-          <Link to="/system/ai/test">
-            <Button>功能测试</Button>
-          </Link>
-        </Space>
-      </div>
+
       
       <Tabs
         activeKey={activeTab}

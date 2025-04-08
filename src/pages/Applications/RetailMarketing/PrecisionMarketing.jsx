@@ -360,23 +360,7 @@ const PrecisionMarketing = () => {
 
   return (
     <div className="precision-marketing-page">
-      <Breadcrumb className="breadcrumb">
-        <Breadcrumb.Item href="/dashboard">
-          <HomeOutlined />
-        </Breadcrumb.Item>
-        <Breadcrumb.Item href="/applications">业务应用</Breadcrumb.Item>
-        <Breadcrumb.Item href="/applications/retail-marketing">零售营销</Breadcrumb.Item>
-        <Breadcrumb.Item>精准营销引擎</Breadcrumb.Item>
-      </Breadcrumb>
-      
-      <div className="page-header">
-        <Title level={2}>
-          <RocketOutlined /> 精准营销引擎
-        </Title>
-        <Paragraph>
-          通过AI技术为您提供智能营销策略，自动推荐客群、生成营销话术并优化渠道选择，提升营销效率和客户转化率。
-        </Paragraph>
-      </div>
+
       
       <div className="steps-container" ref={stepsRef}>
         <Steps current={currentStep}>

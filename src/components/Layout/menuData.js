@@ -102,7 +102,7 @@ export const menuItems = [
         path: '/applications/business',
         isNew: true,
         children: [
-          { name: '精准营销引擎', path: '/applications/retail-marketing/precision', isNew: true },
+          { name: '精准营销引擎', path: '/applications/business/marketing-engine', isNew: true },
           { name: '客户挽留助手', path: '/applications/business/retention-assistant', isNew: true },
           { name: '财富增值顾问', path: '/applications/business/wealth-advisor', isNew: true },
           { name: '风险预警监控', path: '/applications/business/risk-monitor', isNew: true },

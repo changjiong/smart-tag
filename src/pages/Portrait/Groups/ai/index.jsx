@@ -262,29 +262,6 @@ const AIGroupingPage = () => {
   
   return (
     <div className="ai-grouping-page">
-      <div className="bg-white p-4 shadow-sm mb-6">
-        <Breadcrumb className="text-gray-500">
-          <Breadcrumb.Item href="/dashboard">
-            <HomeOutlined />
-          </Breadcrumb.Item>
-          <Breadcrumb.Item href="/portrait">客群画像</Breadcrumb.Item>
-          <Breadcrumb.Item href="/portrait/groups">客群管理</Breadcrumb.Item>
-          <Breadcrumb.Item>智能分群</Breadcrumb.Item>
-        </Breadcrumb>
-        
-        <div className="flex justify-between items-center mt-4">
-          <div className="text-lg font-medium">智能分群</div>
-          <div className="space-x-4">
-            <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateGroup}>
-              新建分群
-            </Button>
-            <Button icon={<DownloadOutlined />} onClick={handleExportGroup}>
-              导出
-            </Button>
-          </div>
-        </div>
-      </div>
-      
       <div className="px-4">
         <Row gutter={24}>
           <Col span={10}>

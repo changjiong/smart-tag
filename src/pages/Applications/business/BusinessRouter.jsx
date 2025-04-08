@@ -10,31 +10,14 @@ const BusinessRouter = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.log('[DEBUG-BusinessRouter] BusinessRouter mounted at path:', location.pathname);
-    console.log('[DEBUG-BusinessRouter] Component loaded at:', new Date().toISOString());
-    
-    // 检查Outlet是否存在子组件
-    const outletElement = document.getElementById('business-outlet-container');
-    if (outletElement) {
-      console.log('[DEBUG-BusinessRouter] Outlet element exists, content height:', outletElement.clientHeight);
-      console.log('[DEBUG-BusinessRouter] Outlet element children count:', outletElement.children.length);
-      if (outletElement.children.length === 0) {
-        console.warn('[DEBUG-BusinessRouter] ⚠️ Outlet has no children! This might indicate a routing issue.');
-      }
-    } else {
-      console.error('[DEBUG-BusinessRouter] ❌ Outlet element not found in DOM!');
-    }
-    
-    return () => {
-      console.log('[DEBUG-BusinessRouter] Component unmounting from path:', location.pathname);
-    };
-  }, [location.pathname]);
-
-  console.log('[DEBUG-BusinessRouter] Rendering at path:', location.pathname);
+    console.log('[BusinessRouter] Current path:', location.pathname);
+  }, [location]);
 
   return (
-    <div id="business-outlet-container" style={{width: '100%', minHeight: '300px'}}>
-      <Outlet />
+    <div className="flex-1 w-full min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-6">
+        <Outlet />
+      </div>
     </div>
   );
 };

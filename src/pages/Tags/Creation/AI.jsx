@@ -53,22 +53,6 @@ const AI = () => {
   return (
     <div className="bg-gray-50 min-h-screen py-6">
       <div className="container mx-auto px-4">
-        {/* 面包屑导航 */}
-        <nav className="flex items-center text-sm mb-6">
-          <span className="text-gray-500">标签中心</span>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mx-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-          <span className="text-gray-500">标签管理</span>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mx-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-          <span className="text-gray-500">标签生成</span>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mx-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-          <span className="text-gray-900">智能生成</span>
-        </nav>
 
         {/* 模式切换和操作按钮 */}
         <div className="flex justify-between items-center mb-6">
