@@ -14,65 +14,25 @@ const Header = ({ toggleSidebar }) => {
   // 使用Context获取菜单状态和方法
   const { handleMenuChange, activeMenu, activePath: currentPath } = useMenuContext();
   
-  // 使用useCallback包装菜单处理函数，防止不必要的重新渲染
+  // 主菜单点击处理 - 简化版
   const handleMainMenuClick = useCallback((menu) => {
     try {
-      console.log("[Header] handleMainMenuClick called for menu:", menu.name, "path:", menu.path);
-      
-      // 特殊处理场景模板菜单项，直接导航
-      if (menu.name === '业务场景') {
-        console.log("[Header] Special handling for 业务场景 menu");
-        const sceneTemplateSubmenu = menu.children.find(item => item.name === '场景模板');
-        if (sceneTemplateSubmenu) {
-          console.log("[Header] Found 场景模板 submenu, navigating to:", sceneTemplateSubmenu.path);
-          handleMenuChange({ 
-            menuName: menu.name, 
-            subMenuName: sceneTemplateSubmenu.name,
-            path: sceneTemplateSubmenu.path 
-          });
-          return;
-        }
-      }
+      console.log("[Header] handleMainMenuClick called for menu:", menu.name);
       
       if (!handleMenuChange || typeof handleMenuChange !== 'function') {
         console.error("[Header] handleMenuChange is not a function", { handleMenuChange });
         return;
       }
       
-      // 先导航到一级菜单
-      handleMenuChange({ 
-        menuName: menu.name, 
-        path: menu.path 
-      });
-      
-      // 如果有子菜单，默认选择第一个子菜单
-      if (menu.children && menu.children.length > 0) {
-        const firstSubMenu = menu.children[0];
-        console.log("[Header] Selecting first submenu:", firstSubMenu.name, "path:", firstSubMenu.path);
-        
-        // 如果第一个子菜单还有子菜单，默认选择其第一个子项
-        if (firstSubMenu.children && firstSubMenu.children.length > 0) {
-          console.log("[Header] Submenu has children, selecting first child item");
-          handleMenuChange({ 
-            menuName: menu.name, 
-            subMenuName: firstSubMenu.name,
-            path: firstSubMenu.children[0].path 
-          });
-        } else {
-          console.log("[Header] Submenu has no children, selecting submenu itself");
-          handleMenuChange({ 
-            menuName: menu.name, 
-            subMenuName: firstSubMenu.name,
-            path: firstSubMenu.path 
-          });
-        }
-      }
+      // 只需传递顶级菜单名称，Context会处理导航和状态
+      handleMenuChange(menu.name);
+
     } catch (error) {
       console.error("[Header] Error in handleMainMenuClick:", error, { menu });
     }
   }, [handleMenuChange]);
 
-  // 处理二级菜单点击
+  // 处理二级菜单点击 - 简化版
   const handleSubMenuClick = useCallback((mainMenu, subMenu, event) => {
     try {
       if (event) {
@@ -85,26 +45,28 @@ const Header = ({ toggleSidebar }) => {
         return;
       }
       
-      // 如果二级菜单有子菜单，默认选择第一个子菜单
+      console.log(`[Header] Handling submenu click: ${mainMenu.name} > ${subMenu.name}`);
+      
+      let targetPath;
+      // 如果二级菜单有子菜单，导航到第一个子菜单
       if (subMenu.children && subMenu.children.length > 0) {
-        handleMenuChange({ 
-          menuName: mainMenu.name, 
-          subMenuName: subMenu.name,
-          path: subMenu.children[0].path 
-        });
+        targetPath = subMenu.children[0].path;
       } else {
-        handleMenuChange({ 
-          menuName: mainMenu.name, 
-          subMenuName: subMenu.name,
-          path: subMenu.path 
-        });
+        targetPath = subMenu.path;
       }
+      
+      handleMenuChange({ 
+        menuName: mainMenu.name, 
+        subMenuName: subMenu.name,
+        path: targetPath 
+      });
+      
     } catch (error) {
       console.error("Error in handleSubMenuClick:", error);
     }
   }, [handleMenuChange]);
 
-  // 处理三级菜单点击
+  // 处理三级菜单点击 - 保持不变
   const handleThirdMenuClick = useCallback((mainMenu, subMenu, thirdMenu, event) => {
     try {
       if (event) {
@@ -116,6 +78,8 @@ const Header = ({ toggleSidebar }) => {
         console.error("handleMenuChange is not a function in handleThirdMenuClick", { handleMenuChange });
         return;
       }
+      
+      console.log(`[Header] Handling third menu click: ${mainMenu.name} > ${subMenu.name} > ${thirdMenu.name}`);
       
       handleMenuChange({ 
         menuName: mainMenu.name, 
@@ -178,7 +142,7 @@ const Header = ({ toggleSidebar }) => {
                 <button 
                   onClick={() => handleMainMenuClick(menu)}
                   className={`px-4 py-2 text-sm font-medium rounded-md flex items-center hover:bg-gray-100 transition-colors ${
-                    (currentPath && menu.path && currentPath.startsWith(menu.path)) || hoveredMenu === menu.name
+                    activeMenu === menu.name || hoveredMenu === menu.name
                     ? 'text-blue-600 bg-blue-50' 
                     : 'text-gray-700'
                   }`}
@@ -254,33 +218,27 @@ const Header = ({ toggleSidebar }) => {
                                       </div>
                                     );
                                   } else {
-                                    // 4个或更少的项目，直接显示
-                                    return (
-                                      <div className="flex flex-col space-y-1.5">
-                                        {submenu.children.map((item, index) => (
-                                          <button 
-                                            key={index} 
-                                            onClick={(e) => handleThirdMenuClick(menu, submenu, item, e)}
-                                            className="flex items-center py-0.5 text-sm text-gray-600 hover:text-blue-600 text-left w-full"
-                                          >
-                                            {item.name}
-                                            {item.isNew && (
-                                              <span className="ml-1 px-1.5 text-xs text-white bg-red-500 rounded-sm font-normal leading-4">NEW</span>
-                                            )}
-                                          </button>
-                                        ))}
-                                      </div>
-                                    );
+                                    // 如果不超过4个，则单列显示
+                                    return submenu.children.map((item, index) => (
+                                      <button 
+                                        key={index} 
+                                        onClick={(e) => handleThirdMenuClick(menu, submenu, item, e)}
+                                        className="flex items-center py-0.5 text-sm text-gray-600 hover:text-blue-600 text-left w-full"
+                                      >
+                                        {item.name}
+                                        {item.isNew && (
+                                          <span className="ml-1 px-1.5 text-xs text-white bg-red-500 rounded-sm font-normal leading-4">NEW</span>
+                                        )}
+                                      </button>
+                                    ));
                                   }
                                 } catch (error) {
                                   console.error("Error rendering third level menu:", error);
-                                  return <div>加载出错</div>;
+                                  return null; 
                                 }
                               })()}
                             </div>
-                          ) : (
-                            <span className="text-xs text-gray-400">无子菜单</span>
-                          )}
+                          ) : null}
                         </div>
                       ))}
                     </div>
@@ -290,94 +248,74 @@ const Header = ({ toggleSidebar }) => {
             ))}
           </ul>
         </nav>
-        
-        {/* 右侧工具栏 */}
-        <div className="ml-auto flex items-center space-x-4">
-          {/* 搜索栏 */}
-          <div className="hidden md:flex bg-gray-100 rounded-md">
-            <input 
-              type="text" 
-              placeholder="搜索..."
-              className="bg-transparent border-0 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
-            />
-            <button className="px-3 text-gray-500 hover:text-blue-600">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
-            </button>
-          </div>
-          
-          {/* 通知按钮 */}
+
+        {/* 右侧操作区 */}
+        <div className="flex items-center ml-auto">
+          {/* 通知图标 */}
           <div className="relative">
             <button 
               onClick={toggleNotification}
-              className="p-1 rounded-full text-gray-500 hover:text-blue-600 focus:outline-none"
+              className="p-2 rounded-full text-gray-500 hover:text-blue-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+              <span className="sr-only">View notifications</span>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341A6.002 6.002 0 006 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
               </svg>
-              <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
+              {notifications.some(n => !n.read) && (
+                <span className="absolute top-0 right-0 block h-2 w-2 rounded-full ring-2 ring-white bg-red-500"></span>
+              )}
             </button>
             
-            {/* 通知下拉菜单 */}
+            {/* 通知下拉面板 */}
             {notificationOpen && (
-              <div className="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div className="py-2 px-3 border-b border-gray-200">
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-sm font-medium text-gray-700">通知</h3>
-                    <button className="text-xs text-blue-600 hover:text-blue-800">全部标记为已读</button>
-                  </div>
-                </div>
-                <div className="max-h-96 overflow-y-auto">
+              <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg overflow-hidden z-50">
+                <div className="py-2 px-3 border-b border-gray-200 font-semibold text-sm text-gray-700">通知中心</div>
+                <ul className="divide-y divide-gray-100 max-h-64 overflow-y-auto">
                   {notifications.map(notification => (
-                    <div key={notification.id} className={`px-4 py-3 hover:bg-gray-50 ${!notification.read ? 'bg-blue-50' : ''}`}>
-                      <div className="flex items-start">
-                        <div className={`w-2 h-2 mt-1 rounded-full ${!notification.read ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
-                        <div className="ml-3 flex-1">
-                          <p className="text-sm text-gray-800">{notification.message}</p>
-                          <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
-                        </div>
-                      </div>
-                    </div>
+                    <li key={notification.id} className={`px-3 py-2 hover:bg-gray-50 ${!notification.read ? 'bg-blue-50' : ''}`}>
+                      <p className="text-sm text-gray-600">{notification.message}</p>
+                      <p className="text-xs text-gray-400 mt-1">{notification.time}</p>
+                    </li>
                   ))}
-                </div>
-                <div className="py-2 px-3 border-t border-gray-200 text-center">
-                  <Link to="/notifications" className="text-xs text-blue-600 hover:text-blue-800">查看全部通知</Link>
+                </ul>
+                <div className="py-1 px-3 border-t border-gray-200">
+                  <Link to="/notifications" className="block text-center text-sm text-blue-600 hover:underline">查看所有通知</Link>
                 </div>
               </div>
             )}
           </div>
-          
-          {/* 用户菜单 */}
-          <div className="relative">
-            <button 
-              onClick={toggleUserDropdown}
-              className="flex items-center focus:outline-none"
-            >
-              <img 
-                className="h-8 w-8 rounded-full object-cover"
-                src="https://randomuser.me/api/portraits/women/66.jpg" 
-                alt="User avatar" 
-              />
-              <span className="ml-2 text-sm font-medium text-gray-700 hidden md:block">张三</span>
-              <svg className="w-4 h-4 ml-1 text-gray-500 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </button>
-            
-            {/* 用户下拉菜单 */}
+
+          {/* 用户头像和下拉菜单 */}
+          <div className="relative ml-3">
+            <div>
+              <button 
+                onClick={toggleUserDropdown}
+                className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-blue-300 transition duration-150 ease-in-out"
+              >
+                <img 
+                  className="h-8 w-8 rounded-full object-cover" 
+                  src="https://via.placeholder.com/40/92c9e0/ffffff?text=U"
+                  alt="User avatar"
+                />
+              </button>
+            </div>
+            {/* 用户下拉面板 */}
             {userDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  个人资料
-                </Link>
-                <Link to="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  设置
-                </Link>
-                <hr className="my-1" />
-                <Link to="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  退出登录
-                </Link>
+              <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg z-50">
+                <div className="py-1 rounded-md bg-white shadow-xs">
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <p className="text-sm leading-5 text-gray-700">当前用户</p>
+                    <p className="text-sm font-medium leading-5 text-gray-900 truncate">admin@example.com</p>
+                  </div>
+                  <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">个人中心</Link>
+                  <Link to="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">系统设置</Link>
+                  <button 
+                    onClick={() => { /* 处理登出逻辑 */ }}
+                    className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                  >
+                    退出登录
+                  </button>
+                </div>
               </div>
             )}
           </div>
