@@ -170,9 +170,10 @@ const WealthAdvisorPage = () => {
           goalId: selectedGoal.id,
           riskLevel: riskProfile.level,
           investmentAmount,
-          assetAllocation,
+          assetAllocation: assetAllocation.allocation,
           productRecommendations,
-          projectionYears: 10
+          projectionYears: 10,
+          performanceProjection: projection
         });
         setWealthPlan(plan);
       } catch (error) {

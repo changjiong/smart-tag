@@ -25,6 +25,36 @@ import {
 
 const { Title, Paragraph, Text } = Typography;
 
+// 资产类别颜色映射
+const assetColorMap = {
+  stocks: '#1890ff',
+  bonds: '#52c41a',
+  cash: '#faad14',
+  realEstate: '#722ed1',
+  crypto: '#eb2f96',
+  commodities: '#fa8c16'
+};
+
+// 资产类别中文名映射
+const assetNameMap = {
+  stocks: '股票',
+  bonds: '债券',
+  cash: '现金',
+  realEstate: '房地产',
+  crypto: '加密货币',
+  commodities: '大宗商品'
+};
+
+// 资产类别描述映射
+const assetDescriptionMap = {
+  stocks: '权益类资产，具有较高的长期回报潜力和较大的波动性',
+  bonds: '债务类资产，提供相对稳定的收益和较低的风险',
+  cash: '流动性资产，安全性高但收益率低',
+  realEstate: '不动产投资，提供租金收入和资本增值',
+  crypto: '数字资产，高风险高回报的新兴投资品类',
+  commodities: '实物资产，可作为对冲通胀的工具'
+};
+
 /**
  * 资产配置建议组件
  * 展示根据用户风险偏好和财富目标生成的资产配置方案
@@ -45,7 +75,7 @@ const AssetAllocation = ({
     );
   }
   
-  if (!allocation) {
+  if (!allocation || !allocation.allocation) {
     return (
       <Alert
         message="无法生成资产配置方案"
@@ -57,13 +87,32 @@ const AssetAllocation = ({
   }
   
   // 从状态中获取数据
-  const { allocation: assetAllocation, expectedAnnualReturn, volatility, sharpeRatio, portfolioType } = allocation;
+  const assetAllocation = allocation.allocation;
+  
+  // 计算预期收益和风险指标
+  const expectedAnnualReturn = calculateExpectedReturn(assetAllocation);
+  const volatility = calculateVolatility(assetAllocation);
+  const sharpeRatio = (expectedAnnualReturn - 2.5) / volatility; // 假设无风险利率为2.5%
+  
+  // 确定投资组合类型
+  const portfolioType = determinePortfolioType(assetAllocation);
+  
+  // 转换资产配置数据为可展示格式
+  const formattedAssetAllocation = {};
+  Object.keys(assetAllocation).forEach(key => {
+    formattedAssetAllocation[key] = {
+      name: assetNameMap[key] || key,
+      ratio: assetAllocation[key],
+      color: assetColorMap[key] || '#1890ff',
+      description: assetDescriptionMap[key] || '资产类别'
+    };
+  });
   
   // 创建饼图数据
-  const pieChartData = Object.keys(assetAllocation).map(key => ({
-    type: assetAllocation[key].name,
-    value: assetAllocation[key].ratio,
-    color: assetAllocation[key].color
+  const pieChartData = Object.keys(formattedAssetAllocation).map(key => ({
+    type: formattedAssetAllocation[key].name,
+    value: formattedAssetAllocation[key].ratio,
+    color: formattedAssetAllocation[key].color
   }));
   
   // 资产类别详细信息
@@ -100,9 +149,9 @@ const AssetAllocation = ({
   ];
   
   // 转换资产配置数据为表格数据
-  const assetClassData = Object.keys(assetAllocation).map(key => ({
+  const assetClassData = Object.keys(formattedAssetAllocation).map(key => ({
     key,
-    ...assetAllocation[key]
+    ...formattedAssetAllocation[key]
   }));
   
   return (
@@ -249,15 +298,15 @@ const AssetAllocation = ({
           width: 150px;
           height: 150px;
           border-radius: 50%;
-          background-color: #f0f0f0;
-          overflow: hidden;
+          background-color: #f0f2f5;
         }
         
         .pie-slice {
           position: absolute;
           width: 100%;
           height: 100%;
-          transform-origin: 50% 50%;
+          border-radius: 50%;
+          clip: rect(0px, 75px, 150px, 0px);
         }
         
         .pie-center {
@@ -265,20 +314,89 @@ const AssetAllocation = ({
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          background-color: white;
-          width: 60px;
-          height: 60px;
+          width: 80px;
+          height: 80px;
           border-radius: 50%;
+          background-color: white;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 12px;
-          color: #888;
+          font-weight: bold;
           text-align: center;
+          font-size: 12px;
+        }
+        
+        .asset-table {
+          margin-top: 20px;
         }
       `}</style>
     </div>
   );
+};
+
+// 计算预期收益
+const calculateExpectedReturn = (allocation) => {
+  // 各资产类别的预期收益率
+  const expectedReturns = {
+    stocks: 8.5,
+    bonds: 4.0,
+    cash: 2.0,
+    realEstate: 6.5,
+    crypto: 15.0,
+    commodities: 5.5
+  };
+  
+  // 计算加权平均收益率
+  let weightedReturn = 0;
+  let totalWeight = 0;
+  
+  Object.keys(allocation).forEach(key => {
+    if (expectedReturns[key]) {
+      weightedReturn += expectedReturns[key] * allocation[key];
+      totalWeight += allocation[key];
+    }
+  });
+  
+  return totalWeight > 0 ? weightedReturn / totalWeight : 0;
+};
+
+// 计算波动率
+const calculateVolatility = (allocation) => {
+  // 各资产类别的波动率
+  const volatilities = {
+    stocks: 15.0,
+    bonds: 5.0,
+    cash: 1.0,
+    realEstate: 12.0,
+    crypto: 60.0,
+    commodities: 20.0
+  };
+  
+  // 简化计算，实际应考虑资产间相关性
+  let weightedVolatility = 0;
+  let totalWeight = 0;
+  
+  Object.keys(allocation).forEach(key => {
+    if (volatilities[key]) {
+      weightedVolatility += volatilities[key] * allocation[key];
+      totalWeight += allocation[key];
+    }
+  });
+  
+  return totalWeight > 0 ? weightedVolatility / totalWeight : 0;
+};
+
+// 确定投资组合类型
+const determinePortfolioType = (allocation) => {
+  const stocksRatio = allocation.stocks || 0;
+  const bondsRatio = allocation.bonds || 0;
+  const cashRatio = allocation.cash || 0;
+  
+  if (stocksRatio >= 60) return '进取型';
+  if (stocksRatio >= 40) return '成长型';
+  if (stocksRatio >= 20) return '平衡型';
+  if (bondsRatio >= 60) return '稳健型';
+  return '保守型';
 };
 
 export default AssetAllocation;

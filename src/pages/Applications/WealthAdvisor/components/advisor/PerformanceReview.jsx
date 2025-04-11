@@ -108,6 +108,9 @@ const PerformanceReview = ({
   
   // 获取表格数据
   const getTableData = () => {
+    if (!projection || !projection.yearlyProjections) {
+      return [];
+    }
     return projection.yearlyProjections.slice(0, projectionYears);
   };
   
@@ -249,7 +252,7 @@ const PerformanceReview = ({
                 <Title level={5}>实施建议</Title>
                 <List
                   itemLayout="horizontal"
-                  dataSource={investmentPlan.implementationSteps}
+                  dataSource={investmentPlan?.implementationSteps || []}
                   renderItem={item => (
                     <List.Item>
                       <List.Item.Meta
@@ -271,7 +274,7 @@ const PerformanceReview = ({
                 <Title level={5}>风险提示</Title>
                 <List
                   itemLayout="horizontal"
-                  dataSource={investmentPlan.considerations}
+                  dataSource={investmentPlan?.considerations || []}
                   renderItem={item => (
                     <List.Item>
                       <List.Item.Meta
