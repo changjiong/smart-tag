@@ -15,6 +15,15 @@ RUN pnpm install --frozen-lockfile --prod=false
 # Copy the rest of the application code
 COPY . .
 
+# <<< ADD THIS DEBUGGING STEP >>>
+RUN echo "--- Listing files before build ---" && \
+    echo "Listing /app/src/routes:" && \
+    ls -la /app/src/routes && \
+    echo "Listing /app/src/pages/Dashboard/Cockpit:" && \
+    ls -la /app/src/pages/Dashboard/Cockpit && \
+    echo "--- End Listing ---"
+# <<< END DEBUGGING STEP >>>
+
 # Build the application for production using pnpm
 # If your app needs build-time environment variables, set them here
 # Example: ARG VITE_API_URL
