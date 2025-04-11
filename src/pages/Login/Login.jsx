@@ -115,8 +115,7 @@ const Login = ({ setAuthenticated }) => {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900">数智标签画像系统</h2>
-          <p className="mt-2 text-base text-gray-600">登录您的账号</p>
+          <h2 className="text-2xl font-bold text-gray-900">观澜标签画像系统</h2>
         </div>
         
         {loginError && (

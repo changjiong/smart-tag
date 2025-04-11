@@ -6,6 +6,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { componentMap } from './componentMap.jsx';
+import ProtectedRoute from '../components/ProtectedRoute'; // Import ProtectedRoute
 
 // 系统管理模块路由配置
 export const systemRoutes = {
@@ -253,13 +254,14 @@ export const routeConfig = {
   // 登录路由 (不在主布局内)
   login: {
     path: '/login',
-    element: <componentMap.login />
+    elementKey: 'login' // Use a key to identify the component
   },
 
   // 主应用路由 (使用 MainLayout)
   root: {
     path: '/',
-    element: <componentMap.mainLayout />,
+    elementKey: 'mainLayout', // Use a key to identify the component
+    isProtected: true, // Mark this route as protected
     children: {
       // 根路径默认重定向到仪表盘
       index: {
@@ -270,7 +272,7 @@ export const routeConfig = {
       // 首页/仪表盘
       dashboard: {
         path: 'dashboard', // 相对路径 'dashboard'
-        element: <componentMap.dashboard />, // Dashboard 根组件，可能只是个Outlet容器
+        elementKey: 'dashboard', // Dashboard 根组件，可能只是个Outlet容器
         children: {
           // /dashboard 默认重定向到 /dashboard/cockpit
           index: {
@@ -279,12 +281,12 @@ export const routeConfig = {
           },
           cockpit: { // 对应菜单 "工作台"
             path: 'cockpit', // 相对路径 'cockpit'
-            element: <componentMap.cockpit /> // Cockpit 根组件或页面
+            elementKey: 'cockpit' // Cockpit 根组件或页面
             // 如果 Cockpit 有子路由，在这里添加
           },
           assistant: { // 对应菜单 "智能助手"
             path: 'assistant', // 相对路径 'assistant'
-            element: <componentMap.assistant /> // Assistant 根组件或页面
+            elementKey: 'assistant' // Assistant 根组件或页面
             // 如果 Assistant 有子路由，在这里添加
           }
         }
@@ -293,7 +295,7 @@ export const routeConfig = {
       // 标签中心
       tags: {
         path: 'tags', // 相对路径 'tags'
-        element: <componentMap.tagsRouter />, // 标签模块根路由组件
+        elementKey: 'tagsRouter', // 标签模块根路由组件
         children: {
           // /tags 默认重定向
           index: {
@@ -304,42 +306,40 @@ export const routeConfig = {
             path: 'management',
             children: {
               index: { path: '', element: <Navigate to="/tags/management/market" replace /> },
-              market: { path: 'market', element: <componentMap.tagMarket /> },
-              categories: { path: 'categories', element: <componentMap.tagCategories /> },
-              info: { path: 'info', element: <componentMap.tagInfo /> },
-              metadata: { path: 'metadata', element: <componentMap.tagMetadata /> },
-              uninstall: { path: 'uninstall', element: <componentMap.tagUninstall /> },
-              batchUpdate: { path: 'batch-update', element: <componentMap.tagBatchUpdate /> }
+              market: { path: 'market', elementKey: 'tagMarket' },
+              categories: { path: 'categories', elementKey: 'tagCategories' },
+              info: { path: 'info', elementKey: 'tagInfo' },
+              metadata: { path: 'metadata', elementKey: 'tagMetadata' },
+              uninstall: { path: 'uninstall', elementKey: 'tagUninstall' },
+              batchUpdate: { path: 'batch-update', elementKey: 'tagBatchUpdate' }
             }
           },
           creation: {
             path: 'creation',
             children: {
               index: { path: '', element: <Navigate to="/tags/creation/requirements" replace /> },
-              requirements: { path: 'requirements', element: <componentMap.tagRequirements /> },
-              registration: { path: 'registration', element: <componentMap.tagRegistration /> },
-              factory: { path: 'factory', element: <componentMap.tagFactory /> },
-              ai: { path: 'ai', element: <componentMap.tagAI /> }
+              requirements: { path: 'requirements', elementKey: 'tagRequirements' },
+              registration: { path: 'registration', elementKey: 'tagRegistration' },
+              factory: { path: 'factory', elementKey: 'tagFactory' },
+              ai: { path: 'ai', elementKey: 'tagAI' }
             }
           },
           quality: {
             path: 'quality',
             children: {
               index: { path: '', element: <Navigate to="/tags/quality/dashboard" replace /> },
-              dashboard: { path: 'dashboard', element: <componentMap.tagQualityDashboard /> },
-              alerts: { path: 'alerts', element: <componentMap.tagAlerts /> },
-              alertConfig: { path: 'alert-config', element: <componentMap.tagAlertConfig /> },
-              ruleAlerts: { path: 'rule-alerts', element: <componentMap.tagRuleAlerts /> },
-              history: { path: 'history', element: <componentMap.tagHistory /> }
-              // health 路由不在 menuData 中，暂时移除
+              dashboard: { path: 'dashboard', elementKey: 'tagQualityDashboard' },
+              alerts: { path: 'alerts', elementKey: 'tagAlerts' },
+              alertConfig: { path: 'alert-config', elementKey: 'tagAlertConfig' },
+              ruleAlerts: { path: 'rule-alerts', elementKey: 'tagRuleAlerts' },
+              history: { path: 'history', elementKey: 'tagHistory' }
             }
           },
           value: {
             path: 'value',
             children: {
               index: { path: '', element: <Navigate to="/tags/value/insights" replace /> },
-              insights: { path: 'insights', element: <componentMap.tagValueInsights /> }
-              // usage, tracking, businessMapping 不在 menuData 中，暂时移除
+              insights: { path: 'insights', elementKey: 'tagValueInsights' }
             }
           }
         }
@@ -348,7 +348,7 @@ export const routeConfig = {
       // 客群画像
       portrait: {
         path: 'portrait', // 相对路径 'portrait'
-        element: <componentMap.portraitRouter />,
+        elementKey: 'portraitRouter',
         children: {
           // /portrait 默认重定向
           index: {
@@ -359,8 +359,8 @@ export const routeConfig = {
             path: 'groups',
             children: {
               index: { path: '', element: <Navigate to="/portrait/groups/create" replace /> },
-              create: { path: 'create', element: <componentMap.groupCreate /> },
-              ai: { path: 'ai', element: <componentMap.groupAI /> }
+              create: { path: 'create', elementKey: 'groupCreate' },
+              ai: { path: 'ai', elementKey: 'groupAI' }
               // similar, insights 不在 menuData 中，暂时移除
             }
           },
@@ -368,12 +368,12 @@ export const routeConfig = {
             path: 'analysis',
             children: {
               index: { path: '', element: <Navigate to="/portrait/analysis/customer" replace /> },
-              customer: { path: 'customer', element: <componentMap.customerView /> },
-              groupInsights: { path: 'group-insights', element: <componentMap.groupInsights /> },
-              groupPortrait: { path: 'group-portrait', element: <componentMap.groupPortrait /> },
-              funnel: { path: 'funnel', element: <componentMap.funnelAnalysis /> },
-              comparison: { path: 'comparison', element: <componentMap.groupComparison /> },
-              yrfm: { path: 'yrfm', element: <componentMap.yrfmAnalysis /> }
+              customer: { path: 'customer', elementKey: 'customerView' },
+              groupInsights: { path: 'group-insights', elementKey: 'groupInsights' },
+              groupPortrait: { path: 'group-portrait', elementKey: 'groupPortrait' },
+              funnel: { path: 'funnel', elementKey: 'funnelAnalysis' },
+              comparison: { path: 'comparison', elementKey: 'groupComparison' },
+              yrfm: { path: 'yrfm', elementKey: 'yrfmAnalysis' }
               // behavior 不在 menuData 中，暂时移除
             }
           }
@@ -384,7 +384,7 @@ export const routeConfig = {
       // 业务场景
       applications: {
         path: 'applications',
-        element: <componentMap.applicationsRouter />,
+        elementKey: 'applicationsRouter',
         children: {
           // /applications 默认重定向到业务场景
           index: {
@@ -394,7 +394,7 @@ export const routeConfig = {
           // 业务场景路由组
           business: {
             path: 'business',
-            element: <componentMap.businessRouter />,
+            elementKey: 'businessRouter',
             children: {
               // /applications/business 默认重定向
               index: {
@@ -404,34 +404,34 @@ export const routeConfig = {
               // 精准营销引擎
               marketingEngine: {
                 path: 'marketing-engine',
-                element: <componentMap.precisionMarketing />
+                elementKey: 'precisionMarketing'
               },
               // 客户挽留助手
               retentionAssistant: {
                 path: 'retention-assistant',
-                element: <componentMap.retentionAssistant />
+                elementKey: 'retentionAssistant'
               },
               // 财富增值顾问
               wealthAdvisor: {
                 path: 'wealth-advisor',
-                element: <componentMap.wealthAdvisor />
+                elementKey: 'wealthAdvisor'
               },
               // 风险预警监控
               riskMonitor: {
                 path: 'risk-monitor',
-                element: <componentMap.riskMonitor />
+                elementKey: 'riskMonitor'
               },
               // 企业客户画像
               corporatePortrait: {
                 path: 'corporate-portrait',
-                element: <componentMap.corporatePortrait />
+                elementKey: 'corporatePortrait'
               }
             }
           },
           // 业务应用
           templates: {
             path: 'templates',
-            element: <componentMap.businessApplications />
+            elementKey: 'businessApplications'
           }
         }
       },
@@ -439,7 +439,7 @@ export const routeConfig = {
       // 系统管理
       system: {
         path: 'system', // 相对路径 'system'
-        element: <componentMap.systemRouter />,
+        elementKey: 'systemRouter',
         children: {
           // /system 默认重定向
           index: {
@@ -450,37 +450,37 @@ export const routeConfig = {
             path: 'users',
             children: {
               index: { path: '', element: <Navigate to="/system/users/organizations" replace /> },
-              organizations: { path: 'organizations', element: <componentMap.organizations /> },
-              accounts: { path: 'accounts', element: <componentMap.accounts /> },
-              roles: { path: 'roles', element: <componentMap.roles /> },
-              workflows: { path: 'workflows', element: <componentMap.workflows /> }
+              organizations: { path: 'organizations', elementKey: 'organizations' },
+              accounts: { path: 'accounts', elementKey: 'accounts' },
+              roles: { path: 'roles', elementKey: 'roles' },
+              workflows: { path: 'workflows', elementKey: 'workflows' }
             }
           },
           settings: {
             path: 'settings',
             children: {
               index: { path: '', element: <Navigate to="/system/settings/schedules" replace /> },
-              schedules: { path: 'schedules', element: <componentMap.schedules /> },
-              parameters: { path: 'parameters', element: <componentMap.parameters /> },
-              announcements: { path: 'announcements', element: <componentMap.announcements /> }
+              schedules: { path: 'schedules', elementKey: 'schedules' },
+              parameters: { path: 'parameters', elementKey: 'parameters' },
+              announcements: { path: 'announcements', elementKey: 'announcements' }
             }
           },
           ai: {
             path: 'ai',
             children: {
               index: { path: '', element: <Navigate to="/system/ai/models" replace /> },
-              models: { path: 'models', element: <componentMap.aiModels /> },
-              prompts: { path: 'prompts', element: <componentMap.aiPrompts /> },
-              knowledge: { path: 'knowledge', element: <componentMap.aiKnowledge /> }
+              models: { path: 'models', elementKey: 'aiModels' },
+              prompts: { path: 'prompts', elementKey: 'aiPrompts' },
+              knowledge: { path: 'knowledge', elementKey: 'aiKnowledge' }
             }
           },
           monitoring: {
             path: 'monitoring',
             children: {
               index: { path: '', element: <Navigate to="/system/monitoring/traffic" replace /> },
-              traffic: { path: 'traffic', element: <componentMap.trafficMonitoring /> },
-              logs: { path: 'logs', element: <componentMap.logsMonitoring /> },
-              platform: { path: 'platform', element: <componentMap.platformMonitoring /> }
+              traffic: { path: 'traffic', elementKey: 'trafficMonitoring' },
+              logs: { path: 'logs', elementKey: 'logsMonitoring' },
+              platform: { path: 'platform', elementKey: 'platformMonitoring' }
               // services 不在 menuData 中，暂时移除
             }
           },
@@ -493,11 +493,11 @@ export const routeConfig = {
                 path: 'services',
                 children: {
                   index: { path: '', element: <Navigate to="/system/open-api/services/tags" replace /> },
-                  tags: { path: 'tags', element: <componentMap.apiTags /> }
+                  tags: { path: 'tags', elementKey: 'apiTags' }
                   // portraits, groups 不在 menuData 中，暂时移除
                 }
               },
-              dataOutput: { path: 'data-output', element: <componentMap.dataOutput /> }
+              dataOutput: { path: 'data-output', elementKey: 'dataOutput' }
               // data 子模块不在 menuData 中，暂时移除
             }
           }
@@ -509,56 +509,93 @@ export const routeConfig = {
   // 404 路由 (放在最后)
   notFound: {
     path: '*',
-    element: <componentMap.notFound />
+    elementKey: 'notFound' // Use key for NotFoundPage
   }
 };
 
+// Helper function to get component from componentMap
+const getComponent = (key) => {
+  const Comp = componentMap[key];
+  if (!Comp) {
+    console.warn(`Component with key "${key}" not found in componentMap`);
+    return () => <div>Component not found: {key}</div>; // Return a placeholder
+  }
+  return Comp;
+};
+
 // 辅助函数：将配置转换为 React Router 所需的格式
-export const generateRoutes = (config) => {
+// Updated to accept authenticated and setAuthenticated
+export const generateRoutes = (config, authenticated, setAuthenticated) => {
   const routes = [];
 
+  // Updated to handle elementKey and props
   const processRoute = (routeConfig) => {
-    const { path, element, children } = routeConfig;
-    
-    // 创建路由对象
+    const { path, element, elementKey, children, isProtected } = routeConfig;
     const route = { path };
-    
-    // 元素处理：确保元素是有效的React元素
+
+    let RouteElement = null;
+
     if (element) {
-      // 如果元素已经是React元素，直接使用它
+      // If element is directly provided (like Navigate), use it
       if (React.isValidElement(element)) {
-        route.element = element;
-      } 
-      // 如果元素是组件或函数，使用JSX创建元素
-      else if (typeof element === 'function') {
-        route.element = React.createElement(element);
-      } 
-      // 否则假设它是来自componentMap的引用
-      else {
-        console.warn(`Route element for path "${path}" is not a valid React element or function`);
-        route.element = null;
+        RouteElement = element;
+      }
+    } else if (elementKey) {
+      // Get component from map using elementKey
+      const Component = getComponent(elementKey);
+      // Pass setAuthenticated to Login component
+      if (elementKey === 'login') {
+        RouteElement = <Component setAuthenticated={setAuthenticated} />;
+      } else {
+        RouteElement = <Component />;
       }
     }
 
-    // 子路由处理
-    if (children) {
-      // 转换children对象为数组
-      route.children = Object.values(children).map(child => processRoute(child)).filter(Boolean); // Filter out null/undefined routes
+    // If the route element is determined, wrap it if protected
+    if (RouteElement) {
+      if (isProtected) {
+        route.element = (
+          <ProtectedRoute authenticated={authenticated}>
+            {RouteElement}
+          </ProtectedRoute>
+        );
+      } else {
+        route.element = RouteElement;
+      }
+    } else if (!children) {
+        // Only warn if there's no element AND no children
+        console.warn(`Route for path "${path}" has no element or elementKey and no children.`);
+        // Optionally return null or a placeholder element for debugging
+        // route.element = <div>Invalid route: {path}</div>;
     }
 
-    return route;
+    // 子路由处理 (recursive call)
+    if (children) {
+      route.children = Object.values(children)
+        .map(child => processRoute(child))
+        .filter(Boolean);
+    }
+
+    // Only return the route if it has an element or children
+    if (route.element || (route.children && route.children.length > 0)) {
+       return route;
+    }
+    return null; // Return null for invalid/empty routes
   };
 
   // 处理所有顶级路由
   if (Array.isArray(config)) {
     console.warn("Route config should be an object, not an array.");
-    return []; // Or handle array case if necessary
+    return [];
   } else {
-    Object.values(config).forEach(route => {
-      if (route && route.path) { // Ensure route is valid
-         routes.push(processRoute(route));
+    Object.values(config).forEach(routeData => {
+      if (routeData && routeData.path) {
+        const processed = processRoute(routeData);
+        if (processed) { // Add only if processRoute returns a valid route object
+          routes.push(processed);
+        }
       } else {
-         console.warn("Invalid route configuration item:", route);
+        console.warn("Invalid route configuration item:", routeData);
       }
     });
     return routes;
