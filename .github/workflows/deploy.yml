@@ -3,7 +3,7 @@ name: Build and Deploy Frontend
 # Controls when the workflow will run
 on:
   push:
-    branches: [ main ] # Trigger on pushes to the main branch
+    branches: [ master ] # Trigger on pushes to the main branch
 
 # Environment variables available to all jobs and steps
 env:
@@ -35,7 +35,7 @@ jobs:
           # Define tags: 'latest' and the Git SHA
           tags: |
             type=sha
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
