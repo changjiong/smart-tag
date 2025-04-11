@@ -11,19 +11,56 @@ export const getWealthGoals = async () => {
 export const getRiskAssessmentQuestions = async () => {
   return [
     {
+      id: 'q1',
       question: '您的投资期限是？',
-      options: ['1-3年', '3-5年', '5年以上'],
-      type: 'single_choice'
+      options: [
+        { value: 'a', text: '1-3年', score: 1 },
+        { value: 'b', text: '3-5年', score: 2 },
+        { value: 'c', text: '5-10年', score: 3 },
+        { value: 'd', text: '10年以上', score: 4 }
+      ]
     },
     {
+      id: 'q2',
       question: '您能接受的最大年度亏损比例？',
-      options: ['不超过5%', '5%-10%', '10%以上'],
-      type: 'single_choice'
+      options: [
+        { value: 'a', text: '不能接受亏损', score: 1 },
+        { value: 'b', text: '不超过5%', score: 2 },
+        { value: 'c', text: '5%-10%', score: 3 },
+        { value: 'd', text: '10%-20%', score: 4 },
+        { value: 'e', text: '20%以上', score: 5 }
+      ]
     },
     {
-      question: '您更关注？',
-      options: ['本金安全', '收益增长', '平衡风险与收益'],
-      type: 'single_choice'
+      id: 'q3',
+      question: '您更关注以下哪个方面？',
+      options: [
+        { value: 'a', text: '本金安全，不愿承担任何风险', score: 1 },
+        { value: 'b', text: '保证大部分本金安全，能承受小幅波动', score: 2 },
+        { value: 'c', text: '平衡风险与收益', score: 3 },
+        { value: 'd', text: '愿意承担较大风险以追求较高收益', score: 4 },
+        { value: 'e', text: '追求最大收益，能承受较大亏损', score: 5 }
+      ]
+    },
+    {
+      id: 'q4',
+      question: '如果您的投资在短期内下跌20%，您会怎么做？',
+      options: [
+        { value: 'a', text: '立即全部卖出以避免更大亏损', score: 1 },
+        { value: 'b', text: '卖出一部分以减少风险', score: 2 },
+        { value: 'c', text: '继续持有，等待市场回暖', score: 3 },
+        { value: 'd', text: '买入更多，摊低成本', score: 5 }
+      ]
+    },
+    {
+      id: 'q5',
+      question: '您的投资知识和经验如何？',
+      options: [
+        { value: 'a', text: '几乎没有投资经验', score: 1 },
+        { value: 'b', text: '有少量投资经验，了解基础投资概念', score: 2 },
+        { value: 'c', text: '有一定投资经验，了解不同类型的投资产品', score: 3 },
+        { value: 'd', text: '有丰富的投资经验和知识', score: 4 }
+      ]
     }
   ];
 };

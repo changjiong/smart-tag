@@ -22,7 +22,10 @@ import {
   PieChartOutlined,
   ShoppingOutlined,
   LineChartOutlined,
-  ThunderboltOutlined
+  ThunderboltOutlined,
+  ArrowLeftOutlined,
+  CloudUploadOutlined,
+  CheckOutlined
 } from '@ant-design/icons';
 import { 
   GoalAssessment, 
@@ -224,6 +227,13 @@ const WealthAdvisorPage = () => {
     // 实际实现中可能需要调用API将方案保存到数据库
   };
   
+  // 导出数据到数据输出功能
+  const handleExportToDataOutput = () => {
+    message.success('财富管理方案已发送至数据输出模块');
+    // 这里可以添加导航逻辑
+    window.location.href = '/system/open-api/data-output';
+  };
+  
   // 完成整个流程
   const handleComplete = () => {
     message.success('财富规划已完成');
@@ -312,7 +322,30 @@ const WealthAdvisorPage = () => {
             onComplete={handleComplete}
             onPrev={handlePrevStep}
             onSave={handleSavePlan}
-          />
+          >
+            <div className="action-buttons">
+              <Button 
+                type="default" 
+                icon={<ArrowLeftOutlined />} 
+                onClick={handlePrevStep}>
+                上一步
+              </Button>
+              <Space>
+                <Button 
+                  type="primary" 
+                  icon={<CloudUploadOutlined />}
+                  onClick={handleExportToDataOutput}>
+                  导出到数据输出
+                </Button>
+                <Button 
+                  type="primary" 
+                  icon={<CheckOutlined />} 
+                  onClick={handleComplete}>
+                  完成规划
+                </Button>
+              </Space>
+            </div>
+          </PerformanceReview>
         );
         
       default:
@@ -389,6 +422,11 @@ const WealthAdvisorPage = () => {
           padding: 24px;
           border-radius: 4px;
           min-height: 300px;
+        }
+        
+        .action-buttons {
+          margin-top: 24px;
+          text-align: right;
         }
       `}</style>
     </div>

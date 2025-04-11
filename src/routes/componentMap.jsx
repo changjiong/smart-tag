@@ -71,10 +71,9 @@ import AIKnowledge from '../pages/System/AI/Knowledge';
 import TrafficMonitoring from '../pages/System/Monitoring/Traffic';
 import LogsMonitoring from '../pages/System/Monitoring/Logs';
 import PlatformMonitoring from '../pages/System/Monitoring/Platform';
-// 检查是否有以下导入
 import DataOutput from '../pages/System/OpenAPI/DataOutput';
 
-// 在 componentMap 对象中确保有以下映射
+// --- 组件映射对象 (与 routeConfig.jsx 对应) ---
 export const componentMap = {
   // 布局与基础
   mainLayout: MainLayout,
@@ -154,4 +153,4 @@ export const getComponent = (componentName) => {
   return component;
 };
 
-export default componentMap;
+export default componentMap; 
