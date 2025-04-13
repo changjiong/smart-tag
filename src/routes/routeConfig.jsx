@@ -6,7 +6,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { componentMap } from './componentMap.jsx';
-import ProtectedRoute from '../components/ProtectedRoute'; // Import ProtectedRoute
+import ProtectedRoute from '../components/ProtectedRoute';
 
 // 系统管理模块路由配置
 export const systemRoutes = {
@@ -524,8 +524,8 @@ const getComponent = (key) => {
 };
 
 // 辅助函数：将配置转换为 React Router 所需的格式
-// Updated to accept authenticated and setAuthenticated
-export const generateRoutes = (config, authenticated, setAuthenticated) => {
+// Updated to accept authenticated, setAuthenticated and handleLogout
+export const generateRoutes = (config, authenticated, setAuthenticated, handleLogout) => {
   const routes = [];
 
   // Updated to handle elementKey and props
@@ -543,9 +543,11 @@ export const generateRoutes = (config, authenticated, setAuthenticated) => {
     } else if (elementKey) {
       // Get component from map using elementKey
       const Component = getComponent(elementKey);
-      // Pass setAuthenticated to Login component
+      // Pass props to components that need them
       if (elementKey === 'login') {
         RouteElement = <Component setAuthenticated={setAuthenticated} />;
+      } else if (elementKey === 'mainLayout') {
+        RouteElement = <Component handleLogout={handleLogout} />;
       } else {
         RouteElement = <Component />;
       }
@@ -554,12 +556,15 @@ export const generateRoutes = (config, authenticated, setAuthenticated) => {
     // If the route element is determined, wrap it if protected
     if (RouteElement) {
       if (isProtected) {
+        // Wrap protected routes with ProtectedRoute component
+        console.log(`Protecting route: ${path}`);
         route.element = (
           <ProtectedRoute authenticated={authenticated}>
             {RouteElement}
           </ProtectedRoute>
         );
       } else {
+        // Non-protected routes don't need the wrapper
         route.element = RouteElement;
       }
     } else if (!children) {
@@ -627,4 +632,4 @@ export const ROUTES = {
   // ... 其他模块的路由常量
 };
 
-export default routeConfig; 
+export default routeConfig;

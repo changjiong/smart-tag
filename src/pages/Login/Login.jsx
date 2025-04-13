@@ -17,7 +17,7 @@ const Login = ({ setAuthenticated }) => {
       ...formData,
       [name]: value,
     });
-    
+
     // Clear errors when user types
     if (errors[name]) {
       setErrors({
@@ -29,56 +29,77 @@ const Login = ({ setAuthenticated }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.username.trim()) {
       newErrors.username = '请输入用户名';
     }
-    
+
     if (!formData.password) {
       newErrors.password = '请输入密码';
     } else if (formData.password.length < 6) {
       newErrors.password = '密码长度至少6位';
     }
-    
+
     return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate form
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-    
+
     setIsSubmitting(true);
     setLoginError('');
-    
+
     try {
+      // Clean up input values to avoid whitespace issues
+      const username = formData.username.trim();
+      const password = formData.password.trim();
+
+      console.log('Attempting login with:', username);
+
       // Mock API call for authentication
       // In a real application, this would be an API call to your backend
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock authentication check
-      if (formData.username === 'admin' && formData.password === 'admin123') {
+
+      // Mock authentication check with exact comparison
+      if (username === 'admin' && password === 'admin123') {
+        console.log('Login successful');
+
         // Store token in localStorage (in a real app, this would be a JWT token)
-        localStorage.setItem('auth_token', 'mock-jwt-token');
-        localStorage.setItem('user', JSON.stringify({
+        const token = 'mock-jwt-token-' + Date.now(); // Add timestamp to make token unique
+        localStorage.setItem('auth_token', token);
+
+        // Store user data
+        const userData = {
           id: 1,
           name: '张三',
           email: 'zhangsan@example.com',
-          role: 'admin'
-        }));
-        
+          role: 'admin',
+          loginTime: new Date().toISOString()
+        };
+        localStorage.setItem('user', JSON.stringify(userData));
+
+        // Verify data was stored correctly
+        const storedToken = localStorage.getItem('auth_token');
+        console.log('Stored token verification:', storedToken === token ? 'Success' : 'Failed');
+
         // Update auth state
         setAuthenticated(true);
-        
+
         // Navigate to dashboard
+        console.log('Navigating to dashboard');
         navigate('/dashboard');
       } else {
-        setLoginError('用户名或密码错误');
+        console.log('Login failed: username or password incorrect');
+        console.log('Entered username:', username, 'Entered password:', password);
+        console.log('Expected: username="admin", password="admin123"');
+        setLoginError('用户名或密码错误 (请使用: admin / admin123)');
       }
     } catch (error) {
       console.error('登录失败:', error);
@@ -117,7 +138,7 @@ const Login = ({ setAuthenticated }) => {
           </div>
           <h2 className="text-2xl font-bold text-gray-900">观澜标签画像系统</h2>
         </div>
-        
+
         {loginError && (
           <div className="mb-4 rounded-md bg-red-50 p-4">
             <div className="flex">
@@ -142,7 +163,7 @@ const Login = ({ setAuthenticated }) => {
             </div>
           </div>
         )}
-        
+
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
             <label
@@ -164,7 +185,7 @@ const Login = ({ setAuthenticated }) => {
               <p className="mt-1 text-xs text-red-500">{errors.username}</p>
             )}
           </div>
-          
+
           <div className="mb-6">
             <label
               htmlFor="password"
@@ -185,7 +206,7 @@ const Login = ({ setAuthenticated }) => {
               <p className="mt-1 text-xs text-red-500">{errors.password}</p>
             )}
           </div>
-          
+
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -206,7 +227,7 @@ const Login = ({ setAuthenticated }) => {
               </a>
             </div>
           </div>
-          
+
           <div className="mb-6">
             <button
               type="submit"

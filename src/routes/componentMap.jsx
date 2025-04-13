@@ -72,6 +72,7 @@ import TrafficMonitoring from '../pages/System/Monitoring/Traffic';
 import LogsMonitoring from '../pages/System/Monitoring/Logs';
 import PlatformMonitoring from '../pages/System/Monitoring/Platform';
 import DataOutput from '../pages/System/OpenAPI/DataOutput';
+import APITags from '../pages/System/OpenAPI/APITags';
 
 // --- 组件映射对象 (与 routeConfig.jsx 对应) ---
 export const componentMap = {
@@ -140,7 +141,8 @@ export const componentMap = {
   trafficMonitoring: TrafficMonitoring,
   logsMonitoring: LogsMonitoring,
   platformMonitoring: PlatformMonitoring,
-  dataOutput: DataOutput
+  dataOutput: DataOutput,
+  apiTags: APITags
 };
 
 // 辅助函数：根据组件名获取组件
@@ -153,4 +155,4 @@ export const getComponent = (componentName) => {
   return component;
 };
 
-export default componentMap; 
+export default componentMap;
