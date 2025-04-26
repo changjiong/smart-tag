@@ -29,7 +29,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY <<EOF /etc/nginx/conf.d/default.conf
 server {
-    listen 8080;
+    listen 80;
     server_name _;
 
     root /usr/share/nginx/html;
@@ -53,7 +53,7 @@ server {
 EOF
 
 # Expose port 80
-EXPOSE 8080
+EXPOSE 80
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
