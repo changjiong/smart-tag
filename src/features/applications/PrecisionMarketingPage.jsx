@@ -38,7 +38,7 @@ import {
   getContentRecommendations,
   getChannelRecommendations,
   generateMarketingStrategy
-} from '../../../services/aiMarketingService';
+} from '../../services/aiMarketingService';
 
 const { Title, Paragraph, Text } = Typography;
 const { Step } = Steps;
@@ -46,7 +46,7 @@ const { Step } = Steps;
 /**
  * 精准营销引擎页面组件 - 提供营销目标选择、客群推荐、内容生成和渠道优化功能
  */
-const PrecisionMarketing = () => {
+const PrecisionMarketingPage = () => {
   // 步骤索引
   const [currentStep, setCurrentStep] = useState(0);
   
@@ -350,7 +350,6 @@ const PrecisionMarketing = () => {
 
   return (
     <div className="precision-marketing-page">
-
       
       <div className="steps-container" ref={stepsRef}>
         <Steps current={currentStep}>
@@ -397,4 +396,4 @@ const PrecisionMarketing = () => {
   );
 };
 
-export default PrecisionMarketing;
+export default PrecisionMarketingPage;

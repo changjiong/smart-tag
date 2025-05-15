@@ -33,7 +33,7 @@ import {
   AssetAllocation, 
   ProductRecommendation, 
   PerformanceReview 
-} from './components/advisor';
+} from './components/wealth';
 import { 
   getWealthGoals,
   getRiskAssessmentQuestions,
@@ -41,7 +41,7 @@ import {
   getProductRecommendations,
   generatePerformanceProjection,
   generateWealthPlan
-} from '../../../services/aiWealthAdvisorService.js';
+} from '../../services/aiWealthAdvisorService';
 
 const { Title, Paragraph, Text } = Typography;
 const { Step } = Steps;
@@ -49,7 +49,7 @@ const { Step } = Steps;
 /**
  * 财富增值顾问页面组件 - 提供财富目标评估、风险分析、资产配置和产品推荐功能
  */
-const WealthAdvisor = () => {
+const WealthAdvisorPage = () => {
   // 步骤索引
   const [currentStep, setCurrentStep] = useState(0);
   
@@ -366,7 +366,6 @@ const WealthAdvisor = () => {
 
   return (
     <div className="wealth-advisor-page">
-
       <div className="page-header">
         {currentStep >= 2 && (
           <div className="investment-amount">
@@ -445,4 +444,4 @@ const WealthAdvisor = () => {
   );
 };
 
-export default WealthAdvisor;
+export default WealthAdvisorPage;

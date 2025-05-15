@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
-import { routeConfig, generateRoutes } from './routes/routeConfig.jsx';
-import Login from './pages/Login/Login'; // Import Login directly for passing props
-import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
+import { routeConfig, generateRoutes } from './routes/routes.jsx';
 
 /**
  * 应用程序主组件

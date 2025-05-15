@@ -47,12 +47,14 @@ import GroupComparison from '../pages/Portrait/Analysis/Comparison';
 import YRFMAnalysis from '../pages/Portrait/Analysis/YRFM';
 
 // --- 业务场景 ---
-import ApplicationsRouter from '../pages/Applications/ApplicationsRouter';
-import BusinessRouter from '../pages/Applications/business/BusinessRouter';
-import BusinessApplications from '../pages/Applications/business/BusinessApplications';
-import PrecisionMarketing from '../pages/Applications/business/PrecisionMarketing';
-import RetentionAssistant from '../pages/Applications/business/RetentionAssistant';
-import WealthAdvisor from '../pages/Applications/business/WealthAdvisor';
+import { 
+  ApplicationsPage, 
+  ApplicationsRoutes, 
+  BusinessApplicationsPage, 
+  PrecisionMarketingPage, 
+  RetentionAssistantPage, 
+  WealthAdvisorPage 
+} from '../features/applications';
 import RiskMonitor from '../pages/Applications/business/RiskMonitor';
 import CorporatePortrait from '../pages/Applications/business/CorporatePortrait';
 
@@ -117,12 +119,12 @@ export const componentMap = {
   yrfmAnalysis: YRFMAnalysis,
 
   // 业务场景
-  applicationsRouter: ApplicationsRouter,
-  businessRouter: BusinessRouter,
-  businessApplications: BusinessApplications,
-  precisionMarketing: PrecisionMarketing,
-  retentionAssistant: RetentionAssistant,
-  wealthAdvisor: WealthAdvisor,
+  applicationsRouter: ApplicationsRoutes,
+  businessRouter: ApplicationsPage,
+  businessApplications: BusinessApplicationsPage,
+  precisionMarketing: PrecisionMarketingPage,
+  retentionAssistant: RetentionAssistantPage,
+  wealthAdvisor: WealthAdvisorPage,
   riskMonitor: RiskMonitor,
   corporatePortrait: CorporatePortrait,
 

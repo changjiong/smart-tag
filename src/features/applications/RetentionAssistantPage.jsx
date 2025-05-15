@@ -36,16 +36,16 @@ import {
   getInterventionRecommendations,
   getChannelRecommendations,
   generateRetentionPlan
-} from '../../../services/aiRetentionService';
+} from '../../services/aiRetentionService';
 
 const { Title, Paragraph, Text } = Typography;
 const { Step } = Steps;
 
 /**
- * 客户挖留助手页面组件
- * 用于识别流失风险客户，并生成挖留策略方案
+ * 客户挽留助手页面组件
+ * 用于识别流失风险客户，并生成挽留策略方案
  */
-const RetentionAssistant = () => {
+const RetentionAssistantPage = () => {
   // 步骤索引
   const [currentStep, setCurrentStep] = useState(0);
   
@@ -193,7 +193,7 @@ const RetentionAssistant = () => {
     setTimingOption(value);
   };
   
-  // 生成挖留方案
+  // 生成挽留方案
   const handleGeneratePlan = async () => {
     if (selectedChannels.length === 0) {
       message.error('请至少选择一个渠道');
@@ -244,10 +244,10 @@ const RetentionAssistant = () => {
       setGenerationResult(result);
       setCurrentStep(4); // 跳转到结果页
       scrollToCurrentStep();
-      message.success('挖留方案生成成功！');
+      message.success('挽留方案生成成功！');
     } catch (error) {
       console.error('Error generating retention plan:', error);
-      message.error('生成挖留方案失败，请重试');
+      message.error('生成挽留方案失败，请重试');
     } finally {
       setIsGenerating(false);
     }
@@ -348,7 +348,7 @@ const RetentionAssistant = () => {
             plan={generationResult}
             onReset={handleReset}
             onSave={() => {
-              message.success('挖留方案已保存');
+              message.success('挽留方案已保存');
               // 这里可以添加保存逻辑
             }}
           />
@@ -377,14 +377,13 @@ const RetentionAssistant = () => {
 
   return (
     <div className="retention-assistant-page">
-
       <div className="steps-container" ref={stepsRef}>
         <Steps current={currentStep}>
           <Step title="选择风险指标" icon={<WarningOutlined />} />
           <Step title="选择风险客群" icon={<TeamOutlined />} />
           <Step title="选择干预措施" icon={<ToolOutlined />} />
           <Step title="配置渠道与时间" icon={<SendOutlined />} />
-          <Step title="查看挖留方案" icon={<LineChartOutlined />} />
+          <Step title="查看挽留方案" icon={<LineChartOutlined />} />
         </Steps>
       </div>
       
@@ -441,4 +440,4 @@ const RetentionAssistant = () => {
   );
 };
 
-export default RetentionAssistant;
+export default RetentionAssistantPage;
