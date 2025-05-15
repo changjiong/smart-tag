@@ -12,6 +12,13 @@ const WorkflowManagementPage = lazy(() => import('./users/WorkflowManagementPage
 const ParametersPage = lazy(() => import('./settings/ParametersPage'));
 const AnnouncementsPage = lazy(() => import('./settings/AnnouncementsPage'));
 const SchedulesPage = lazy(() => import('./settings/SchedulesPage'));
+const AdvancedSettingsPage = lazy(() => import('./settings/AdvancedSettingsPage'));
+
+// 懒加载个人中心子组件
+const ProfilePage = lazy(() => import('./profile/ProfilePage'));
+
+// 懒加载通知中心子组件
+const NotificationsPage = lazy(() => import('./notifications/NotificationsPage'));
 
 // 懒加载AI管理子组件
 const ModelsPage = lazy(() => import('./ai/ModelsPage'));
@@ -87,8 +94,20 @@ export const systemRoutes = [
       {
         path: 'schedules',
         element: <SchedulesPage />
+      },
+      {
+        path: 'advanced',
+        element: <AdvancedSettingsPage />
       }
     ]
+  },
+  {
+    path: 'profile',
+    element: <ProfilePage />
+  },
+  {
+    path: 'notifications',
+    element: <NotificationsPage />
   },
   {
     path: 'ai',

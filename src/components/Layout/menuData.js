@@ -141,7 +141,8 @@ export const menuItems = [
         children: [
           { name: '调度任务', path: '/system/settings/schedules' },
           { name: '参数设置', path: '/system/settings/parameters' },
-          { name: '公告管理', path: '/system/settings/announcements' }
+          { name: '公告管理', path: '/system/settings/announcements' },
+          { name: '高级设置', path: '/system/settings/advanced' }
         ]
       },
       {
@@ -181,6 +182,16 @@ export const menuItems = [
             isNew: true,
           }
         ]
+      },
+      {
+        name: '个人中心',
+        path: '/system/profile',
+        children: []
+      },
+      {
+        name: '通知中心',
+        path: '/system/notifications',
+        children: []
       }
     ]
   }

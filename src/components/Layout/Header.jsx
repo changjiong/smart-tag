@@ -5,6 +5,9 @@ import { useMenuContext } from './MenuContext';
 // 导入菜单数据
 import { menuItems } from './menuData';
 
+// 导入顶部操作组件
+import HeaderActions from './HeaderActions';
+
 const Header = ({ toggleSidebar, handleLogout }) => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -91,23 +94,6 @@ const Header = ({ toggleSidebar, handleLogout }) => {
       console.error("Error in handleThirdMenuClick:", error);
     }
   }, [handleMenuChange]);
-
-  const toggleUserDropdown = () => {
-    setUserDropdownOpen(!userDropdownOpen);
-    if (notificationOpen) setNotificationOpen(false);
-  };
-
-  const toggleNotification = () => {
-    setNotificationOpen(!notificationOpen);
-    if (userDropdownOpen) setUserDropdownOpen(false);
-  };
-
-  const notifications = [
-    { id: 1, message: '标签"高价值潜在客户"已创建', time: '10分钟前', read: false },
-    { id: 2, message: '客群"理财达人"分析报告已生成', time: '30分钟前', read: false },
-    { id: 3, message: '系统更新完成', time: '1小时前', read: true },
-    { id: 4, message: '营销活动"年终理财"已启动', time: '2小时前', read: true },
-  ];
 
   // 确保菜单数据始终可用
   if (!menuItems || menuItems.length === 0) {
@@ -249,76 +235,9 @@ const Header = ({ toggleSidebar, handleLogout }) => {
           </ul>
         </nav>
 
-        {/* 右侧操作区 */}
+        {/* 右侧操作区 - 使用HeaderActions组件 */}
         <div className="flex items-center ml-auto">
-          {/* 通知图标 */}
-          <div className="relative">
-            <button
-              onClick={toggleNotification}
-              className="p-2 rounded-full text-gray-500 hover:text-blue-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              <span className="sr-only">View notifications</span>
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341A6.002 6.002 0 006 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-              </svg>
-              {notifications.some(n => !n.read) && (
-                <span className="absolute top-0 right-0 block h-2 w-2 rounded-full ring-2 ring-white bg-red-500"></span>
-              )}
-            </button>
-
-            {/* 通知下拉面板 */}
-            {notificationOpen && (
-              <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg overflow-hidden z-50">
-                <div className="py-2 px-3 border-b border-gray-200 font-semibold text-sm text-gray-700">通知中心</div>
-                <ul className="divide-y divide-gray-100 max-h-64 overflow-y-auto">
-                  {notifications.map(notification => (
-                    <li key={notification.id} className={`px-3 py-2 hover:bg-gray-50 ${!notification.read ? 'bg-blue-50' : ''}`}>
-                      <p className="text-sm text-gray-600">{notification.message}</p>
-                      <p className="text-xs text-gray-400 mt-1">{notification.time}</p>
-                    </li>
-                  ))}
-                </ul>
-                <div className="py-1 px-3 border-t border-gray-200">
-                  <Link to="/notifications" className="block text-center text-sm text-blue-600 hover:underline">查看所有通知</Link>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* 用户头像和下拉菜单 */}
-          <div className="relative ml-3">
-            <div>
-              <button
-                onClick={toggleUserDropdown}
-                className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-blue-300 transition duration-150 ease-in-out"
-              >
-                <img
-                  className="h-8 w-8 rounded-full object-cover"
-                  src="https://via.placeholder.com/40/92c9e0/ffffff?text=U"
-                  alt="User avatar"
-                />
-              </button>
-            </div>
-            {/* 用户下拉面板 */}
-            {userDropdownOpen && (
-              <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg z-50">
-                <div className="py-1 rounded-md bg-white shadow-xs">
-                  <div className="px-4 py-3 border-b border-gray-100">
-                    <p className="text-sm leading-5 text-gray-700">当前用户</p>
-                    <p className="text-sm font-medium leading-5 text-gray-900 truncate">admin@example.com</p>
-                  </div>
-                  <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">个人中心</Link>
-                  <Link to="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">系统设置</Link>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                  >
-                    退出登录
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+          <HeaderActions />
         </div>
       </div>
     </header>

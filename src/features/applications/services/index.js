@@ -27,3 +27,7 @@ export {
   generatePerformanceProjection,
   generateWealthPlan
 } from '@/services/aiWealthAdvisorService';
+
+// 企业客户画像服务
+import corporateService from './corporateService';
+export { corporateService };

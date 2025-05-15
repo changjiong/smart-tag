@@ -17,6 +17,13 @@ export { default as WorkflowManagementPage } from './users/WorkflowManagementPag
 export { default as ParametersPage } from './settings/ParametersPage';
 export { default as AnnouncementsPage } from './settings/AnnouncementsPage';
 export { default as SchedulesPage } from './settings/SchedulesPage';
+export { default as AdvancedSettingsPage } from './settings/AdvancedSettingsPage';
+
+// 个人中心页面
+export { default as ProfilePage } from './profile/ProfilePage';
+
+// 通知中心页面
+export { default as NotificationsPage } from './notifications/NotificationsPage';
 
 // AI管理页面
 export { default as ModelsPage } from './ai/ModelsPage';

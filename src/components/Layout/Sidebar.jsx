@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useMenuContext } from './MenuContext';
-
-// 导入与Header相同的菜单结构
 import { menuItems } from './menuData';
+import guanlanLogo from '../../assets/guanlan-logo.svg';
 
 const Sidebar = ({ isOpen, isMobile, closeSidebar }) => {
   const location = useLocation();
@@ -108,11 +107,10 @@ const Sidebar = ({ isOpen, isMobile, closeSidebar }) => {
     <div className={`fixed inset-y-0 left-0 w-64 bg-white shadow-md transform z-40 flex flex-col ${
       isOpen ? 'translate-x-0' : '-translate-x-full'
     } ${isMobile ? 'z-50' : 'z-30'} transition-transform`}>
-      {/* 侧边栏头部 - 显示SmartTag标识 - 固定不滚动 */}
-      <div className="h-16 px-6 flex items-center justify-between bg-blue-600 flex-shrink-0">
+      {/* 侧边栏头部 - 显示观澜标识 - 固定不滚动 */}
+      <div className="h-16 px-4 flex items-center justify-between bg-blue-600 flex-shrink-0">
         <div className="flex items-center">
-          <span className="text-2xl font-bold text-white">Smart</span>
-          <span className="text-2xl font-bold text-white">Tag</span>
+          <img src={guanlanLogo} alt="观澜" className="h-10" />
         </div>
         {isMobile && (
           <button 

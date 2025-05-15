@@ -65,10 +65,13 @@ import {
   RetentionAssistantPage, 
   WealthAdvisorPage 
 } from '../features/applications';
-import { 
+import {
   RiskMonitorPage,
   CorporatePortraitPage 
 } from '../features/applications';
+
+// --- 搜索功能 ---
+import { SearchResultsPage } from '../features/search';
 
 // --- 系统管理 (已重构) ---
 import {
@@ -81,6 +84,9 @@ import {
   ParametersPage,
   AnnouncementsPage,
   SchedulesPage,
+  AdvancedSettingsPage,
+  ProfilePage,
+  NotificationsPage,
   ModelsPage,
   PromptsPage,
   KnowledgePage,
@@ -153,6 +159,9 @@ export const componentMap = {
   systemParameters: ParametersPage,
   systemAnnouncements: AnnouncementsPage,
   systemSchedules: SchedulesPage,
+  advancedSettings: AdvancedSettingsPage,
+  userProfile: ProfilePage,
+  notificationCenter: NotificationsPage,
   aiModels: ModelsPage,
   aiPrompts: PromptsPage,
   aiKnowledge: KnowledgePage,
@@ -161,7 +170,8 @@ export const componentMap = {
   monitoringLogs: LogsPage,
   monitoringTraffic: TrafficPage,
   apiTags: APITagsPage,
-  dataOutput: DataOutputPage
+  dataOutput: DataOutputPage,
+  searchResults: SearchResultsPage
 };
 
 // 辅助函数：根据组件名获取组件
@@ -350,6 +360,12 @@ export const routeConfig = {
         }
       },
 
+      // 搜索结果页
+      search: {
+        path: 'search',
+        elementKey: 'searchResults'
+      },
+
       // 系统管理
       system: {
         path: 'system',
@@ -375,8 +391,17 @@ export const routeConfig = {
               index: { path: '', element: <Navigate to="/system/settings/parameters" replace /> },
               parameters: { path: 'parameters', elementKey: 'systemParameters' },
               schedules: { path: 'schedules', elementKey: 'systemSchedules' },
-              announcements: { path: 'announcements', elementKey: 'systemAnnouncements' }
+              announcements: { path: 'announcements', elementKey: 'systemAnnouncements' },
+              advanced: { path: 'advanced', elementKey: 'advancedSettings' }
             }
+          },
+          profile: {
+            path: 'profile',
+            elementKey: 'userProfile'
+          },
+          notifications: {
+            path: 'notifications',
+            elementKey: 'notificationCenter'
           },
           ai: {
             path: 'ai',
