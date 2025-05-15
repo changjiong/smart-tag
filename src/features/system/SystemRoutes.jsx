@@ -17,7 +17,6 @@ const SchedulesPage = lazy(() => import('./settings/SchedulesPage'));
 const ModelsPage = lazy(() => import('./ai/ModelsPage'));
 const PromptsPage = lazy(() => import('./ai/PromptsPage'));
 const KnowledgePage = lazy(() => import('./ai/KnowledgePage'));
-const AiTestPage = lazy(() => import('./ai/AiTestPage'));
 
 // 懒加载监控管理子组件
 const PlatformPage = lazy(() => import('./monitoring/PlatformPage'));
@@ -109,10 +108,6 @@ export const systemRoutes = [
       {
         path: 'knowledge',
         element: <KnowledgePage />
-      },
-      {
-        path: 'test',
-        element: <AiTestPage />
       }
     ]
   },

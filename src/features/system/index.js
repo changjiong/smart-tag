@@ -22,7 +22,6 @@ export { default as SchedulesPage } from './settings/SchedulesPage';
 export { default as ModelsPage } from './ai/ModelsPage';
 export { default as PromptsPage } from './ai/PromptsPage';
 export { default as KnowledgePage } from './ai/KnowledgePage';
-export { default as AiTestPage } from './ai/AiTestPage';
 
 // 监控管理页面
 export { default as PlatformPage } from './monitoring/PlatformPage';
