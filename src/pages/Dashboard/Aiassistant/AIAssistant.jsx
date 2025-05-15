@@ -172,55 +172,7 @@ function AIAssistant() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">{pageTitle}</h1>
-          <p className="mt-1 text-sm text-gray-500">{pageDescription}</p>
-        </div>
-        <div className="flex space-x-2">
-          <Link
-            to="/dashboard/assistant/conversation"
-            className={`px-3 py-2 rounded-lg text-sm ${
-              location.pathname.includes('/conversation')
-                ? 'bg-blue-100 text-blue-700'
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            对话分析
-          </Link>
-          <Link
-            to="/dashboard/assistant/qa"
-            className={`px-3 py-2 rounded-lg text-sm ${
-              location.pathname.includes('/qa')
-                ? 'bg-blue-100 text-blue-700'
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            问题解答
-          </Link>
-          <Link
-            to="/dashboard/assistant/analysis"
-            className={`px-3 py-2 rounded-lg text-sm ${
-              location.pathname.includes('/analysis')
-                ? 'bg-blue-100 text-blue-700'
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            智能解读
-          </Link>
-          <Link
-            to="/dashboard/assistant/guide"
-            className={`px-3 py-2 rounded-lg text-sm ${
-              location.pathname.includes('/guide')
-                ? 'bg-blue-100 text-blue-700'
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            操作引导
-          </Link>
-        </div>
-      </div>
+
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
