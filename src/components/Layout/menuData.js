@@ -98,19 +98,24 @@ export const menuItems = [
     isNew: true,
     children: [
       {
-        name: '场景模板',
-        path: '/applications/business',
+        name: '应用中心',
+        path: '/applications/home',
+        isNew: true,
+      },
+      {
+        name: '专项应用',
+        path: '/applications/home',
         isNew: true,
         children: [
-          { name: '精准营销引擎', path: '/applications/business/marketing-engine', isNew: true },
-          { name: '客户挽留助手', path: '/applications/business/retention-assistant', isNew: true },
-          { name: '财富增值顾问', path: '/applications/business/wealth-advisor', isNew: true },
-          { name: '风险预警监控', path: '/applications/business/risk-monitor', isNew: true },
-          { name: '企业客户画像', path: '/applications/business/corporate-portrait', isNew: true }
+          { name: '精准营销引擎', path: '/applications/marketing', isNew: true },
+          { name: '客户挽留助手', path: '/applications/retention', isNew: true },
+          { name: '财富增值顾问', path: '/applications/wealth', isNew: true },
+          { name: '风险预警监控', path: '/applications/risk', isNew: true },
+          { name: '企业客户画像', path: '/applications/corporate', isNew: true }
         ]
       },
       {
-        name: '业务应用',
+        name: '业务模板',
         path: '/applications/templates',
         isNew: true,
       }
@@ -124,8 +129,8 @@ export const menuItems = [
         name: '用户权限',
         path: '/system/users',
         children: [
+          { name: '用户管理', path: '/system/users/list' },
           { name: '机构管理', path: '/system/users/organizations' },
-          { name: '用户管理', path: '/system/users/accounts' },
           { name: '角色管理', path: '/system/users/roles' },
           { name: '流程管理', path: '/system/users/workflows' }
         ]
@@ -153,9 +158,10 @@ export const menuItems = [
         name: '运行监控',
         path: '/system/monitoring',
         children: [
-          { name: '流量监控', path: '/system/monitoring/traffic' },
+          { name: '平台监控', path: '/system/monitoring/platform' },
+          { name: '服务监控', path: '/system/monitoring/services' },
           { name: '日志监控', path: '/system/monitoring/logs' },
-          { name: '平台监控', path: '/system/monitoring/platform' }
+          { name: '流量监控', path: '/system/monitoring/traffic' }
         ]
       },
       {
@@ -164,7 +170,7 @@ export const menuItems = [
         children: [
           {
             name: 'API服务',
-            path: '/system/openapi/services',
+            path: '/system/openapi/tags',
             children: [
               { name: '标签快递（API）', path: '/system/openapi/tags' }
             ]

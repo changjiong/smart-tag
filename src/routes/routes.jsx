@@ -384,8 +384,7 @@ export const routeConfig = {
               index: { path: '', element: <Navigate to="/system/ai/models" replace /> },
               models: { path: 'models', elementKey: 'aiModels' },
               prompts: { path: 'prompts', elementKey: 'aiPrompts' },
-              knowledge: { path: 'knowledge', elementKey: 'aiKnowledge' },
-              test: { path: 'test', elementKey: 'aiTest' }
+              knowledge: { path: 'knowledge', elementKey: 'aiKnowledge' }
             }
           },
           monitoring: {

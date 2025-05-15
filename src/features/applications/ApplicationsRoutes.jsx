@@ -22,72 +22,70 @@ const ApplicationsRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<ApplicationsPage />}>
-        {/* 默认重定向到业务场景 */}
-        <Route index element={<Navigate to="business" replace />} />
+        {/* 默认重定向到业务应用入口页 */}
+        <Route index element={<Navigate to="home" replace />} />
         
-        {/* 业务场景路由 */}
-        <Route path="business" element={
+        {/* 业务应用入口页路由 */}
+        <Route path="home" element={
           <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
             <BusinessApplicationsPage />
           </Suspense>
         } />
 
-        {/* 业务专项路由 */}
-        <Route path="business/marketing-engine" element={
-          <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
-            <PrecisionMarketingPage />
-          </Suspense>
-        } />
-
-        <Route path="business/retention-assistant" element={
-          <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
-            <RetentionAssistantPage />
-          </Suspense>
-        } />
-
-        <Route path="business/wealth-advisor" element={
-          <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
-            <WealthAdvisorPage />
-          </Suspense>
-        } />
-
-        <Route path="business/risk-monitor" element={
-          <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
-            <RiskMonitorPage />
-          </Suspense>
-        } />
-
-        <Route path="business/corporate-portrait" element={
-          <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
-            <CorporatePortraitPage />
-          </Suspense>
-        } />
-        
-        {/* 原有的路由保留兼容性 */}
+        {/* 精准营销路由 */}
         <Route path="marketing" element={
           <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
             <PrecisionMarketingPage />
           </Suspense>
         } />
-        
+
+        {/* 客户振留路由 */}
         <Route path="retention" element={
           <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
             <RetentionAssistantPage />
           </Suspense>
         } />
-        
+
+        {/* 财富顾问路由 */}
         <Route path="wealth" element={
           <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
             <WealthAdvisorPage />
           </Suspense>
         } />
 
+        {/* 风险监控路由 */}
+        <Route path="risk" element={
+          <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
+            <RiskMonitorPage />
+          </Suspense>
+        } />
+
+        {/* 企业画像路由 */}
+        <Route path="corporate" element={
+          <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
+            <CorporatePortraitPage />
+          </Suspense>
+        } />
+        
         {/* 模板路由 */}
         <Route path="templates" element={
           <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
             <TemplatesPage />
           </Suspense>
         } />
+        
+        {/* 兼容旧版业务场景路由结构 */}
+        <Route path="business" element={
+          <Suspense fallback={<div className="loading-container"><Spin size="large" /></div>}>
+            <BusinessApplicationsPage />
+          </Suspense>
+        } />
+        
+        <Route path="business/marketing-engine" element={<Navigate to="/applications/marketing" replace />} />
+        <Route path="business/retention-assistant" element={<Navigate to="/applications/retention" replace />} />
+        <Route path="business/wealth-advisor" element={<Navigate to="/applications/wealth" replace />} />
+        <Route path="business/risk-monitor" element={<Navigate to="/applications/risk" replace />} />
+        <Route path="business/corporate-portrait" element={<Navigate to="/applications/corporate" replace />} />
       </Route>
     </Routes>
   );
