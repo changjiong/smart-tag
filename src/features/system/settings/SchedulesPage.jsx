@@ -1,5 +1,5 @@
 import React from 'react';
-import { createPlaceholderPage } from '../../../components/Common/PageFactory';
+import { createPlaceholderPage } from '@/components/Common/PageFactory';
 
 /**
  * 调度管理页面
@@ -8,3 +8,4 @@ import { createPlaceholderPage } from '../../../components/Common/PageFactory';
 const SchedulesPage = createPlaceholderPage('调度管理', '管理系统任务调度和计划任务');
 
 export default SchedulesPage;
+

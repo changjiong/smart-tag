@@ -10,14 +10,14 @@ export {
   getContentRecommendations,
   getChannelRecommendations,
   generateMarketingStrategy
-} from '../../../services/aiMarketingService';
+} from '@/services/aiMarketingService';
 
 export { 
   getChurnRiskMetrics, 
   getChurnRiskGroups, 
   getInterventionRecommendations,
   generateRetentionPlan
-} from '../../../services/aiRetentionService';
+} from '@/services/aiRetentionService';
 
 export { 
   getWealthGoals,
@@ -26,4 +26,4 @@ export {
   getProductRecommendations,
   generatePerformanceProjection,
   generateWealthPlan
-} from '../../../services/aiWealthAdvisorService';
+} from '@/services/aiWealthAdvisorService';

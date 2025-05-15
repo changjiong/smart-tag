@@ -1,5 +1,5 @@
 import React from 'react';
-import { createPlaceholderPage } from '../../../components/Common/PageFactory';
+import { createPlaceholderPage } from '@/components/Common/PageFactory';
 
 /**
  * 质量历史页面
@@ -8,3 +8,4 @@ import { createPlaceholderPage } from '../../../components/Common/PageFactory';
 const HistoryPage = createPlaceholderPage('质量历史', '查看标签质量的历史变化和趋势');
 
 export default HistoryPage;
+

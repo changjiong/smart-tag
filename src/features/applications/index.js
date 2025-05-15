@@ -12,6 +12,8 @@ export { default as BusinessApplicationsPage } from './BusinessApplicationsPage'
 export { default as PrecisionMarketingPage } from './PrecisionMarketingPage';
 export { default as RetentionAssistantPage } from './RetentionAssistantPage';
 export { default as WealthAdvisorPage } from './WealthAdvisorPage';
+export { default as RiskMonitorPage } from './RiskMonitorPage';
+export { default as CorporatePortraitPage } from './CorporatePortraitPage';
 
 // 导出服务
 export * from './services';

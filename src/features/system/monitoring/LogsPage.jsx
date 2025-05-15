@@ -1,5 +1,5 @@
 import React from 'react';
-import { createPlaceholderPage } from '../../../components/Common/PageFactory';
+import { createPlaceholderPage } from '@/components/Common/PageFactory';
 
 /**
  * 日志监控页面
@@ -8,3 +8,4 @@ import { createPlaceholderPage } from '../../../components/Common/PageFactory';
 const LogsPage = createPlaceholderPage('日志监控', '查看系统日志和异常记录');
 
 export default LogsPage;
+

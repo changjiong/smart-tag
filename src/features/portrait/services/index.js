@@ -13,6 +13,6 @@ export {
   fetchGroupInsights,
   fetchFunnelData,
   fetchYRFMData
-} from '../../../services/portraitService';
+} from '@/services/portraitService';
 
 // 如有需要可以添加更多导出

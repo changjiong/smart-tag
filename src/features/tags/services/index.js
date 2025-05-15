@@ -13,6 +13,6 @@ export {
   deleteTag,
   fetchTagQualityMetrics,
   fetchTagAlerts
-} from '../../../services/tagService';
+} from '@/services/tagService';
 
 // 如有需要可以添加更多导出

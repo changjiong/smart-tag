@@ -19,6 +19,63 @@ export const fetchDashboardData = async (timeRange) => {
   };
 };
 
+// 获取用户任务
+export const fetchUserTasks = async () => {
+  // 模拟API调用延迟
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  // 获取默认用户数据中的任务
+  const defaultData = getDefaultUserData();
+  return defaultData.tasks;
+};
+
+// 获取最近活动
+export const fetchRecentActivities = async () => {
+  // 模拟API调用延迟
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  // 模拟最近活动数据
+  return [
+    {
+      id: 1,
+      type: 'tag_created',
+      title: '创建了新标签',
+      description: '高价值客户标签已创建成功',
+      timestamp: new Date(Date.now() - 3600000).toISOString()
+    },
+    {
+      id: 2,
+      type: 'group_updated',
+      title: '更新了客群',
+      description: '零售高频客群条件已更新',
+      timestamp: new Date(Date.now() - 7200000).toISOString()
+    },
+    {
+      id: 3,
+      type: 'campaign_started',
+      title: '启动了营销活动',
+      description: '季度促销活动已启动',
+      timestamp: new Date(Date.now() - 86400000).toISOString()
+    }
+  ];
+};
+
+// 获取指标数据
+export const fetchMetrics = async () => {
+  // 模拟API调用延迟
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  // 模拟指标数据
+  return {
+    userCount: 1287,
+    userGrowth: 5.2,
+    activeTagCount: 367,
+    tagGrowth: 12.3,
+    activeGroupCount: 84,
+    groupGrowth: 8.7
+  };
+};
+
 // 基础数据，所有角色共享
 const getBaseData = (timeRange) => {
   return {
@@ -87,6 +144,28 @@ const getBaseData = (timeRange) => {
 // 默认用户数据
 const getDefaultUserData = (timeRange) => {
   return {
+    // 业务洞察
+    insights: [
+      {
+        title: '营销活动ROI',
+        value: '230%',
+        description: '基于智能分群的精准营销活动，较去年同期提升40%',
+        link: '/applications/business/marketing-engine'
+      },
+      {
+        title: '客户流失率',
+        value: '下降28%',
+        description: '通过客户挂留助手的预警机制，成功降低高价值客户流失',
+        link: '/applications/business/retention-assistant'
+      },
+      {
+        title: '客户生命周期价值',
+        value: '提升18%',
+        description: '通过标签驱动的个性化服务，提升了客户平均价值',
+        link: '/tags/value/insights'
+      }
+    ],
+    
     // 待处理任务
     tasks: [
       {

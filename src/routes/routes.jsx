@@ -9,7 +9,7 @@ import ProtectedRoute from '../components/ProtectedRoute';
 
 // --- 布局与基础组件 ---
 import MainLayout from '../components/Layout/MainLayout';
-import Login from '../pages/Login/Login';
+import { LoginPage } from '../features/auth';
 import NotFoundPage from '../components/ErrorPages/NotFoundPage';
 
 // --- 仪表盘 (已重构) ---
@@ -65,8 +65,10 @@ import {
   RetentionAssistantPage, 
   WealthAdvisorPage 
 } from '../features/applications';
-import RiskMonitor from '../pages/Applications/business/RiskMonitor';
-import CorporatePortrait from '../pages/Applications/business/CorporatePortrait';
+import { 
+  RiskMonitorPage,
+  CorporatePortraitPage 
+} from '../features/applications';
 
 // --- 系统管理 (已重构) ---
 import {
@@ -95,7 +97,7 @@ import {
 export const componentMap = {
   // 布局与基础
   mainLayout: MainLayout,
-  login: Login,
+  login: LoginPage,
   notFound: NotFoundPage,
 
   // 仪表盘（已重构）
@@ -140,8 +142,8 @@ export const componentMap = {
   precisionMarketing: PrecisionMarketingPage,
   retentionAssistant: RetentionAssistantPage,
   wealthAdvisor: WealthAdvisorPage,
-  riskMonitor: RiskMonitor,
-  corporatePortrait: CorporatePortrait,
+  riskMonitor: RiskMonitorPage,
+  corporatePortrait: CorporatePortraitPage,
 
   // 系统管理（已重构）
   systemRouter: SystemRoutes,

@@ -15,6 +15,6 @@ export {
   fetchSystemSettings,
   fetchSystemMetrics,
   fetchSystemLogs
-} from '../../../services/systemService';
+} from '@/services/systemService';
 
 // 如有需要可以添加更多导出

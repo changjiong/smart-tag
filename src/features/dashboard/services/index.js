@@ -9,6 +9,6 @@ export {
   fetchUserTasks,
   fetchRecentActivities,
   fetchMetrics
-} from '../../../services/dashboardService';
+} from '@/services/dashboardService';
 
 // 如有需要可以添加更多导出
