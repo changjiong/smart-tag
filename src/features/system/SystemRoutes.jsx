@@ -153,7 +153,7 @@ export const systemRoutes = [
         element: <APITagsPage />
       },
       {
-        path: 'data',
+        path: 'data-output',
         element: <DataOutputPage />
       }
     ]

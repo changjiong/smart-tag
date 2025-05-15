@@ -405,7 +405,7 @@ export const routeConfig = {
             children: {
               index: { path: '', element: <Navigate to="/system/openapi/tags" replace /> },
               tags: { path: 'tags', elementKey: 'apiTags' },
-              data: { path: 'data', elementKey: 'dataOutput' }
+              dataOutput: { path: 'data-output', elementKey: 'dataOutput' }
             }
           }
         }

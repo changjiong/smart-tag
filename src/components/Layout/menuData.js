@@ -160,18 +160,18 @@ export const menuItems = [
       },
       {
         name: '开放能力',
-        path: '/system/open-api',
+        path: '/system/openapi',
         children: [
           {
             name: 'API服务',
-            path: '/system/open-api/services',
+            path: '/system/openapi/services',
             children: [
-              { name: '标签快递（API）', path: '/system/open-api/services/tags' }
+              { name: '标签快递（API）', path: '/system/openapi/tags' }
             ]
           },
           {
             name: '数据输出',
-            path: '/system/open-api/data-output',
+            path: '/system/openapi/data-output',
             isNew: true,
           }
         ]
