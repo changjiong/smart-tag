@@ -10,6 +10,8 @@ const WealthAdvisorPage = lazy(() => import('./WealthAdvisorPage'));
 const BusinessApplicationsPage = lazy(() => import('./BusinessApplicationsPage'));
 const RiskMonitorPage = lazy(() => import('./RiskMonitorPage'));
 const CorporatePortraitPage = lazy(() => import('./CorporatePortraitPage'));
+// Import RiskDetailPage (not lazy-loaded for this example, adjust if needed)
+import RiskDetailPage from './components/RiskDetailPage'; 
 
 // 懒加载Templates页面
 const TemplatesPage = lazy(() => import('./templates/TemplatesPage'));
@@ -59,6 +61,12 @@ const ApplicationsRoutes = () => {
             <RiskMonitorPage />
           </Suspense>
         } />
+        {/* Route for Risk Detail Page */}
+        <Route path="risk/:riskId" element={
+          // No Suspense needed if not lazy-loading RiskDetailPage
+          // If lazy-loading, wrap with Suspense like other routes
+          <RiskDetailPage />
+        } />
 
         {/* 企业画像路由 */}
         <Route path="corporate" element={
@@ -85,6 +93,8 @@ const ApplicationsRoutes = () => {
         <Route path="business/retention-assistant" element={<Navigate to="/applications/retention" replace />} />
         <Route path="business/wealth-advisor" element={<Navigate to="/applications/wealth" replace />} />
         <Route path="business/risk-monitor" element={<Navigate to="/applications/risk" replace />} />
+        {/* It's good practice to also handle old detail page routes if they might exist or be bookmarked */}
+        {/* <Route path="business/risk-monitor/:riskId" element={<Navigate to="/applications/risk/:riskId" replace />} /> */}
         <Route path="business/corporate-portrait" element={<Navigate to="/applications/corporate" replace />} />
       </Route>
     </Routes>

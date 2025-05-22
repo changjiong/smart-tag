@@ -15,5 +15,8 @@ export { default as WealthAdvisorPage } from './WealthAdvisorPage';
 export { default as RiskMonitorPage } from './RiskMonitorPage';
 export { default as CorporatePortraitPage } from './CorporatePortraitPage';
 
+// Exporting the new RiskDetailPage (assuming it's in the components subfolder)
+export { default as RiskDetailPage } from './components/RiskDetailPage';
+
 // 导出服务
 export * from './services';
