@@ -100,3 +100,5 @@ const mockRisks = [
 // For the purpose of this task, defining the array should be sufficient.
 // If a specific export method is needed, the task should specify it.
 console.log("Mock risks data loaded:", mockRisks.length, "records.");
+
+export default mockRisks;
