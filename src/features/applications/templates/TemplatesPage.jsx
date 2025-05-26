@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Row, Col, Typography, Button, Divider, Tag, List } from 'antd';
 import { 
-  FileTemplateOutlined, 
+  FileOutlined, 
   UserOutlined, 
   StarOutlined, 
   ClockCircleOutlined,
@@ -121,7 +121,7 @@ const TemplatesPage = () => {
                     hoverable
                   >
                     <div className="template-header">
-                      <FileTemplateOutlined className="template-icon" />
+                      <FileOutlined className="template-icon" />
                       <div className="template-title">
                         <Text strong>{template.title}</Text>
                         <Tag color="blue">{template.category}</Tag>
