@@ -108,7 +108,7 @@ const Sidebar = ({ isOpen, isMobile, closeSidebar }) => {
       isOpen ? 'translate-x-0' : '-translate-x-full'
     } ${isMobile ? 'z-50' : 'z-30'} transition-transform`}>
       {/* 侧边栏头部 - 显示观澜标识 - 固定不滚动 */}
-      <div className="h-16 px-4 flex items-center justify-between bg-blue-600 flex-shrink-0">
+      <div className="h-[56px] px-4 flex items-center justify-between bg-blue-600 flex-shrink-0">
         <div className="flex items-center">
           <img src={guanlanLogo} alt="观澜" className="h-10" />
         </div>
