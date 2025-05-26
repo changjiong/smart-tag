@@ -18,28 +18,36 @@ This platform provides a complete solution for financial institutions to manage 
 ## Project Structure
 
 ```
-frontend/
-├── public/              # Static assets
+./
+├── .git/                # Git repository data
+├── .github/             # GitHub specific files (e.g., workflows)
+├── .cursor/             # Cursor specific files
+├── docs/                # Project documentation
+├── node_modules/        # Project dependencies (managed by pnpm)
 ├── src/
+│   ├── assets/          # Static assets (images, fonts, etc.)
 │   ├── components/      # Reusable UI components
-│   │   ├── Layout/      # Layout components (Header, Sidebar, Footer)
-│   │   ├── Forms/       # Form components
-│   │   └── Tables/      # Table components
-│   ├── context/         # React context for state management
+│   ├── config/          # Configuration files
+│   ├── features/        # Feature-specific modules
 │   ├── mockData/        # Mock data for development
-│   ├── pages/           # Page components organized by modules
-│   │   ├── Dashboard/   # Dashboard pages
-│   │   ├── Tags/        # Tag center pages
-│   │   ├── Portrait/    # Customer profile pages
-│   │   └── ...          # Other module pages
+│   ├── routes/          # Routing configuration
+│   ├── services/        # API service integrations
 │   ├── utils/           # Utility functions
 │   ├── App.jsx          # Main application component
-│   └── main.jsx         # Application entry point
-├── .gitignore           # Git ignore file
-├── package.json         # Project dependencies
-├── vite.config.js       # Vite configuration
+│   ├── main.jsx         # Application entry point
+│   └── index.css        # Global styles
+├── .cursorignore        # Files ignored by Cursor
+├── .gitattributes       # Git attributes
+├── .gitignore           # Files ignored by Git
+├── Dockerfile           # Docker configuration for containerization
+├── eslint.config.js     # ESLint configuration
+├── index.html           # Main HTML entry point
+├── package.json         # Project metadata and dependencies
+├── pnpm-lock.yaml       # Exact versions of dependencies
+├── postcss.config.js    # PostCSS configuration
+├── README.md            # This file
 ├── tailwind.config.js   # Tailwind CSS configuration
-└── postcss.config.js    # PostCSS configuration
+└── vite.config.js       # Vite build tool configuration
 ```
 
 ## Development Guidelines
